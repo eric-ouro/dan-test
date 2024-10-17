@@ -1,5 +1,6 @@
 import { RecyclingRecord, Plastic } from '../common/types';
 
+// this expects records to be filtered already and willl summarize them over all plastic types
 export const calculateSummaries = (records: RecyclingRecord[]) => {
   const summaries = {
     MixedPlastic: { processed: 0, quantity: 0, recycled: 0 },

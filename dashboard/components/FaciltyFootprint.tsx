@@ -19,7 +19,7 @@ const FacilityFootprint = () => {
   
   const plastics = useSelector((state: RootState) => state.recyclingRecords);
   const dispatch = useDispatch();
-  console.log(selectedFacilities);
+  // console.log(selectedFacilities);
 
   const [sortConfig, setSortConfig] = useState({ key: 'percentage', direction: 'descending' });
 
@@ -100,7 +100,7 @@ const CoverageBar = ({ facilities, selectedFacilities, filteredRecords, totalCov
       const isSelected = selectedFacilities?.some((f: { facilityID: string }) => f.facilityID === facility.facilityID) ?? false;
       const displayLabel = facility.facilityName === 'Mixed' ? 'MIXED' : facility.facilityName;
 
-      console.log('Is Selected:', isSelected);
+      // console.log('Is Selected:', isSelected);
 
       return (
         <div

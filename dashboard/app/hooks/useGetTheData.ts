@@ -60,7 +60,7 @@ const useGetTheData = (): GetTheDataResponse => {
 
         const { data, error } = await supabase.auth.getSession()
 
-        console.log(data)
+        // console.log(data)
 
         const {startMonth, startYear, endMonth, endYear} = selectedDates;
       

@@ -19,8 +19,6 @@ const PartnerFootprint = () => {
   const selectedPartnerFacilities = useSelector((state: RootState) => state.selectedPartnerFacilities.selectedPartnerFacilities);
   const plastics = useSelector((state: RootState) => state.recyclingRecords);
   const dispatch = useDispatch();
-  console.log(selectedPartners);
-
 
 
   const [sortConfig, setSortConfig] = useState({ key: 'percentage', direction: 'descending' });
@@ -42,6 +40,16 @@ const PartnerFootprint = () => {
       direction: prev.key === key && prev.direction === 'ascending' ? 'descending' : 'ascending'
     }));
   };
+  const largestQuantity = selectedPartners.reduce((max, partner) => {
+    const partnerRecords = filteredRecords.filter(record => record.PartnerCompanyID === partner.CompanyID);
+    const partnerSummaries = calculateSummaries(partnerRecords);
+    const partnerMaxQuantity = partnerSummaries.reduce((maxQuantity, summary) => {
+      return summary.quantity > maxQuantity ? summary.quantity : maxQuantity;
+    }, 0);
+    return partnerMaxQuantity > max ? partnerMaxQuantity : max;
+  }, 0);
+
+  console.log(largestQuantity)
 
   const totalCoverage = calculateTotalCoverage(selectedPartners, filteredRecords);
   const globalCoverage = calculateTotalCoverage(validPartners, records);
@@ -60,12 +68,15 @@ const PartnerFootprint = () => {
           sortConfig={sortConfig}
           requestSort={requestSort}
           totalCoverage={totalCoverage}
-          
+          largestQuantity={largestQuantity}
         />
       ))}
     </div>
   );
 };
+
+
+
 const LoadingComponent = () => (
   <div className="bg-neutral-100 rounded-lg border shadow-sm p-6 h-[214px]">
     <div className="h4 w-[180px] rounded-full bg-neutral-300">&nbsp;</div>
@@ -76,21 +87,6 @@ const ErrorComponent = ({ error }: { error: string }) => (
   <div>{`ERROR: ${error}`}</div>
 );
 
-const filterRecords = (records: RecyclingRecord[], selectedPartners: any[], selectedPartnerFacilities: any[]) => {
-  return records.filter(record => {
-    const partnerMatch = selectedPartners.some(partner => partner.CompanyID === record.PartnerCompanyID);
-    const partnerFacilityMatch = selectedPartnerFacilities.some(facility => facility.facilityID === record.PartnerFacilityID);
-    return partnerMatch && partnerFacilityMatch;
-  });
-};
-
-const calculateTotalCoverage = (partners: any[], records: RecyclingRecord[]) => {
-  return partners.reduce((sum, partner) => {
-    const partnerRecords = records.filter(record => record.PartnerCompanyID === partner.CompanyID);
-    const partnerSummaries = calculateSummaries(partnerRecords);
-    return sum + partnerSummaries.reduce((coverage, summary) => coverage + summary.quantity, 0);
-  }, 0);
-};
 const CoverageBar = ({ partners, selectedPartners, filteredRecords, totalCoverage, clickable = false, dispatch, isValidPartners = false }: any) => (
   <div className={`flex gap-1 mb-2 ${clickable ? 'overflow-hidden' : 'rounded overflow-hidden min-h-[70px]'}`}>
     {partners.map((partner: { CompanyID: string, CompanyName: string }, index: number) => {
@@ -99,17 +95,9 @@ const CoverageBar = ({ partners, selectedPartners, filteredRecords, totalCoverag
       const partnerCoverage = partnerSummaries.reduce((coverage, summary) => coverage + summary.quantity, 0);
       const coveragePercentage = (partnerCoverage / totalCoverage) * 100;
 
-      // Debugging: Log the selectedPartners and partner.CompanyID
-      console.log('Selected Partners:', selectedPartners);
-      console.log('Current Partner CompanyID:', partner.CompanyID);
-
-      // This line checks if the current partner is in the list of selected partners.
-      // It uses the `some` method to see if any partner in `selectedPartners` has the same `CompanyID` as the current partner.
-      // If `selectedPartners` is undefined or null, it defaults to `false`.
       const isSelected = selectedPartners?.some((p: { CompanyID: string }) => p.CompanyID === partner.CompanyID) ?? false;
       const displayLabel = partner.CompanyName === 'Mixed' ? 'MIXED' : partner.CompanyName;
 
-      console.log('Is Selected:', isSelected);
 
       return (
         <div
@@ -135,7 +123,7 @@ const CoverageBar = ({ partners, selectedPartners, filteredRecords, totalCoverag
   </div>
 );
 
-const PartnerDetails = ({ partner, filteredRecords, selectedPlastics, sortConfig, requestSort, totalCoverage }: any) => {
+const PartnerDetails = ({ partner, filteredRecords, selectedPlastics, sortConfig, requestSort, totalCoverage, largestQuantity }: any) => {
   const partnerRecords = filteredRecords.filter((record: { PartnerCompanyID: string }) => record.PartnerCompanyID === partner.CompanyID);
   const partnerSummaries = calculateSummaries(partnerRecords);
   const partnerCoverage = partnerSummaries.reduce((coverage, summary) => coverage + summary.quantity, 0);
@@ -177,7 +165,7 @@ const PartnerDetails = ({ partner, filteredRecords, selectedPlastics, sortConfig
           </thead>
           <tbody>
             {sortedSummaries.map((item, index) => (
-              <SummaryRow key={index} item={item} totalQuantity={totalQuantity} largestFootprintPercentage={largestFootprintPercentage} />
+              <SummaryRow key={index} item={item} totalQuantity={totalQuantity} largestFootprintPercentage={largestFootprintPercentage} largestQuantity={largestQuantity} />
             ))}
           </tbody>
         </table>
@@ -186,7 +174,7 @@ const PartnerDetails = ({ partner, filteredRecords, selectedPlastics, sortConfig
   );
 };
 
-const SummaryRow = ({ item, totalQuantity, largestFootprintPercentage }: any) => {
+const SummaryRow = ({ item, totalQuantity, largestFootprintPercentage, largestQuantity }: any) => {
   const displayLabel = item.label === 'MixedPlastic' ? 'MIXED' : item.label;
   const rates = calculateItemRatios(item);
   const recycleRate = rates.get('recycleRate');
@@ -194,7 +182,7 @@ const SummaryRow = ({ item, totalQuantity, largestFootprintPercentage }: any) =>
   const processingLossRate = rates.get('processingLossRate');
   const minWidth = item.quantity > 0 ? '10%' : '0';
   const footprintPercentage = totalQuantity > 0 ? (item.quantity / totalQuantity) * 100 : 0;
-  const normalizedWidth = (item.quantity / largestFootprintPercentage);
+  const normalizedWidth = (item.quantity / largestQuantity);
 
   return (
     <tr className="align-middle text-right h-[44px]">
@@ -238,6 +226,8 @@ const SummaryRow = ({ item, totalQuantity, largestFootprintPercentage }: any) =>
   );
 };
 
+
+// HELPER FUNCTIONS
 const getHeaderClass = (key: SortKey, sortConfig: any) => {
   return sortConfig.key === key ? 'text-black' : 'text-neutral-400';
 };
@@ -246,6 +236,22 @@ const calculateStatistics = (summaries: ReturnType<typeof calculateSummaries>) =
   const totalQuantity = summaries.reduce((sum, item) => sum + item.quantity, 0);
   const largestFootprintPercentage = summaries.reduce((max, item) => item.quantity > max.quantity ? item : max, summaries[0]);
   return { totalQuantity, largestFootprintPercentage };
+};
+
+const filterRecords = (records: RecyclingRecord[], selectedPartners: any[], selectedPartnerFacilities: any[]) => {
+  return records.filter(record => {
+    const partnerMatch = selectedPartners.some(partner => partner.CompanyID === record.PartnerCompanyID);
+    const partnerFacilityMatch = selectedPartnerFacilities.some(facility => facility.facilityID === record.PartnerFacilityID);
+    return partnerMatch && partnerFacilityMatch;
+  });
+};
+
+const calculateTotalCoverage = (partners: any[], records: RecyclingRecord[]) => {
+  return partners.reduce((sum, partner) => {
+    const partnerRecords = records.filter(record => record.PartnerCompanyID === partner.CompanyID);
+    const partnerSummaries = calculateSummaries(partnerRecords);
+    return sum + partnerSummaries.reduce((coverage, summary) => coverage + summary.quantity, 0);
+  }, 0);
 };
 
 export default PartnerFootprint;
