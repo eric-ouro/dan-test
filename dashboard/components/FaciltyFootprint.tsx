@@ -44,6 +44,19 @@ const FacilityFootprint = () => {
   const totalCoverage = calculateTotalCoverage(selectedFacilities, filteredRecords);
   const globalCoverage = calculateTotalCoverage(validFacilities, records);
 
+  const largestQuantity = selectedFacilities.reduce((max, facility) => {
+    const facilityRecords = filteredRecords.filter(record => record.FacilityID === facility.facilityID);
+    const facilitySummaries = calculateSummaries(facilityRecords);
+    const facilityMaxQuantity = facilitySummaries.reduce((maxQuantity, summary) => {
+      return summary.quantity > maxQuantity ? summary.quantity : maxQuantity;
+    }, 0);
+    return facilityMaxQuantity > max ? facilityMaxQuantity : max;
+  }, 0);
+
+  console.log(largestQuantity)
+
+
+
   return (
     <div className="dashcomponent">
       <DashboardDisplayHeader headerText="Plastic Footprint & Recycle Rates Per Facility" />
@@ -58,6 +71,7 @@ const FacilityFootprint = () => {
           sortConfig={sortConfig}
           requestSort={requestSort}
           totalCoverage={totalCoverage}
+          largestQuantity={largestQuantity}
         />
       ))}
     </div>
@@ -106,7 +120,7 @@ const CoverageBar = ({ facilities, selectedFacilities, filteredRecords, totalCov
         <div
           key={index}
           className={`flex h-20 items-end justify-left min-w-[50px] text-white rounded-sm text-sm font-regular ${clickable ? 'cursor-pointer' : ''} ${
-            isValidFacilities ? `h-2 ${isSelected ? 'bg-neutral-500' : 'bg-neutral-300'}` : 'bg-black'
+            isValidFacilities ? `h-4 ${isSelected ? 'bg-neutral-500' : 'bg-neutral-300'}` : 'bg-black'
           }`}
           onClick={clickable ? () => dispatch(toggleFacility(facility as unknown as FacilitiesRecord)) : undefined}
           style={{
@@ -126,7 +140,7 @@ const CoverageBar = ({ facilities, selectedFacilities, filteredRecords, totalCov
   </div>
 );
 
-const FacilityDetails = ({ facility, filteredRecords, selectedPlastics, sortConfig, requestSort, totalCoverage }: any) => {
+const FacilityDetails = ({ facility, filteredRecords, selectedPlastics, sortConfig, requestSort, totalCoverage, largestQuantity }: any) => {
   const facilityRecords = filteredRecords.filter((record: { FacilityID: string }) => record.FacilityID === facility.facilityID);
   const facilitySummaries = calculateSummaries(facilityRecords);
   const facilityCoverage = facilitySummaries.reduce((coverage, summary) => coverage + summary.quantity, 0);
@@ -168,7 +182,7 @@ const FacilityDetails = ({ facility, filteredRecords, selectedPlastics, sortConf
           </thead>
           <tbody>
             {sortedSummaries.map((item, index) => (
-              <SummaryRow key={index} item={item} totalQuantity={totalQuantity} largestFootprintPercentage={largestFootprintPercentage} />
+              <SummaryRow key={index} item={item} totalQuantity={totalQuantity} largestFootprintPercentage={largestFootprintPercentage} largestQuantity={largestQuantity} />
             ))}
           </tbody>
         </table>
@@ -177,7 +191,7 @@ const FacilityDetails = ({ facility, filteredRecords, selectedPlastics, sortConf
   );
 };
 
-const SummaryRow = ({ item, totalQuantity, largestFootprintPercentage }: any) => {
+const SummaryRow = ({ item, totalQuantity, largestQuantity }: any) => {
   const displayLabel = item.label === 'MixedPlastic' ? 'MIXED' : item.label;
   const rates = calculateItemRatios(item);
   const recycleRate = rates.get('recycleRate');
@@ -185,7 +199,7 @@ const SummaryRow = ({ item, totalQuantity, largestFootprintPercentage }: any) =>
   const processingLossRate = rates.get('processingLossRate');
   const minWidth = item.quantity > 0 ? '10%' : '0';
   const footprintPercentage = totalQuantity > 0 ? (item.quantity / totalQuantity) * 100 : 0;
-  const normalizedWidth = (item.quantity / largestFootprintPercentage);
+  const normalizedWidth = (item.quantity / largestQuantity);
 
   return (
     <tr className="align-middle text-right h-[44px]">

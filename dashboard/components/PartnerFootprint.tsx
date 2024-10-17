@@ -174,7 +174,7 @@ const PartnerDetails = ({ partner, filteredRecords, selectedPlastics, sortConfig
   );
 };
 
-const SummaryRow = ({ item, totalQuantity, largestFootprintPercentage, largestQuantity }: any) => {
+const SummaryRow = ({ item, totalQuantity, largestQuantity }: any) => {
   const displayLabel = item.label === 'MixedPlastic' ? 'MIXED' : item.label;
   const rates = calculateItemRatios(item);
   const recycleRate = rates.get('recycleRate');
