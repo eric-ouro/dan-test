@@ -103,7 +103,7 @@ const CoverageBar = ({ partners, selectedPartners, filteredRecords, totalCoverag
         <div
           key={index}
           className={`flex h-20 items-end justify-left min-w-[50px] text-white rounded-sm text-sm font-regular ${clickable ? 'cursor-pointer' : ''} ${
-            isValidPartners ? ` h-2 ${isSelected ? 'bg-neutral-500' : 'bg-neutral-300'}` : 'bg-black'
+            isValidPartners ? ` h-4 ${isSelected ? 'bg-neutral-500' : 'bg-neutral-300'}` : 'bg-black'
           }`}
           onClick={clickable ? () => dispatch(togglePartner(partner as unknown as PartnersRecord)) : undefined}
           style={{
