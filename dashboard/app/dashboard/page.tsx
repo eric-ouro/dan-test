@@ -1,9 +1,12 @@
+
 import { InfoIcon } from "lucide-react";
 import withAuth, { AuthedPageProps } from "@hoc/with-server-auth";
+import DashWrapper from "@/components/DashWrapper"
 
 const DashboardPage = ({ user }: AuthedPageProps) => {
   return (
-    <div className="flex-1 w-full flex flex-col gap-12">
+    <div>
+    {/* <div className="flex-1 w-full flex flex-col gap-12">
       <div className="w-full">
         <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
           <InfoIcon size="16" strokeWidth={2} />
@@ -17,7 +20,10 @@ const DashboardPage = ({ user }: AuthedPageProps) => {
           {JSON.stringify(user, null, 2)}
         </pre>
       </div>
+    </div> */}
+    <DashWrapper/>
     </div>
+
   );
 };
 
