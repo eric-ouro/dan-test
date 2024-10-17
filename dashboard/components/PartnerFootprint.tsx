@@ -49,7 +49,6 @@ const PartnerFootprint = () => {
     return partnerMaxQuantity > max ? partnerMaxQuantity : max;
   }, 0);
 
-  console.log(largestQuantity)
 
   const totalCoverage = calculateTotalCoverage(selectedPartners, filteredRecords);
   const globalCoverage = calculateTotalCoverage(validPartners, records);

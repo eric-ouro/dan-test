@@ -53,7 +53,7 @@ const FacilityFootprint = () => {
     return facilityMaxQuantity > max ? facilityMaxQuantity : max;
   }, 0);
 
-  console.log(largestQuantity)
+  // console.log(largestQuantity)
 
 
 

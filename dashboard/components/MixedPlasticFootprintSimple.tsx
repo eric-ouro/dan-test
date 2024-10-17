@@ -72,29 +72,31 @@ const MixedPlasticFootprintSimple = () => {
 
   // Calculate the total quantity of all items in the summaries array
   const totalQuantity = summaries.reduce(
-    (acc, item) => acc + (item.quantity || 0),
+    (acc, item) => item.label !== 'MixedPlastic' ? acc + (item.quantity || 0) : acc,
     0
   );
 
-  //console.log(totalQuantity)
 
- // Filter the summaries to only include items that are in the selectedPlastics list
-  // and have a quantity greater than 0
+  // Filter the summaries to only include items that are in the selectedPlastics list,
+  // have a quantity greater than 0, and are not labeled 'MixedPlastic'
   const selectedData = summaries.filter(
     (item) => selectedPlastics.includes(item.label) && item.quantity > 0 && item.label !== 'MixedPlastic',
   );
+    
 
-  // Filter the summaries to only include items that are in the selectedPlastics list
-  // and have a quantity greater than 0
+  // Filter the summaries to only include items that have a quantity greater than 0
+  // and are not labeled 'MixedPlastic'
   const clickySummaries = summaries.filter(
     (item) => item.quantity > 0 && item.label !== 'MixedPlastic'
   );
 
-  // Calculate the total quantity of the selected items
+  // Calculate the total quantity of the selected items by summing up their quantities
   const totalSelectedQuantity = selectedData.reduce(
     (acc, item) => acc + (item.quantity || 0),
     0
   );
+
+
 
   // Sort the selectedData by quantity in descending order
   const sortedSelectedData = [...selectedData].sort((a, b) => b.quantity - a.quantity);
@@ -131,7 +133,6 @@ const MixedPlasticFootprintSimple = () => {
                     ? MAPPING_LIGHT[item.label]
                     : "bg-neutral-300" }`}
                 style={{
-                  height: `${processingLossRate.toFixed(1)}%`,
                   transition: "height 200ms ease, background-color 200ms ease",
                 }}
               >
