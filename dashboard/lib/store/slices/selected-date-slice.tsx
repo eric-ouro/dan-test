@@ -1,39 +1,86 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+const NULL_DATE = new Date(0).toISOString();
+
+type SerializedDate = string;
+
+interface SerializedDateRange {
+  start: SerializedDate;
+  end: SerializedDate;
+}
+
 interface SelectedDateState {
-  startMonth: number;
-  startYear: number;
-  endMonth: number;
-  endYear: number;
+  valid: SerializedDateRange;
+  selected: SerializedDateRange;
 }
 
 const initialState: SelectedDateState = {
-  // set to negative infinity
-  startMonth: -Infinity,
-  startYear: -Infinity,
-  endMonth: Infinity,
-  endYear: Infinity,
+  valid: {
+    start: NULL_DATE,
+    end: NULL_DATE,
+  },
+  selected: {
+    start: NULL_DATE,
+    end: NULL_DATE,
+  },
 };
 
 const selectedDateSlice = createSlice({
   name: "selectedDate",
   initialState,
   reducers: {
-    setStartMonth: (state, action: PayloadAction<number>) => {
-      state.startMonth = action.payload;
+    setValidInterval: (state, action: PayloadAction<SerializedDateRange>) => {
+      console.log("setValidInterval", action.payload);
+      state.valid.start = action.payload.start;
+      state.valid.end = action.payload.end;
+      // if selected interval is default, set it to valid interval
+      if (
+        state.selected.start === NULL_DATE ||
+        state.selected.end === NULL_DATE
+      ) {
+        state.selected.start = action.payload.start;
+        state.selected.end = action.payload.end;
+      }
+
+      // if selected start date is outside the valid interval, set it to valid start
+      if (state.selected.start < action.payload.start) {
+        state.selected.start = action.payload.start;
+      }
+      // if selected end date is outside the valid interval, set it to valid end
+      if (state.selected.end > action.payload.end) {
+        state.selected.end = action.payload.end;
+      }
     },
-    setStartYear: (state, action: PayloadAction<number>) => {
-      state.startYear = action.payload;
+    setSelectedInterval: (
+      state,
+      action: PayloadAction<SerializedDateRange>,
+    ) => {
+      state.selected.start = action.payload.start;
+      state.selected.end = action.payload.end;
     },
-    setEndMonth: (state, action: PayloadAction<number>) => {
-      state.endMonth = action.payload;
+    setStart: (state, action: PayloadAction<SerializedDate>) => {
+      // if action payload is outside the valid interval, do nothing
+      if (
+        action.payload < state.valid.start ||
+        action.payload > state.valid.end
+      ) {
+        return;
+      }
+      state.selected.start = action.payload;
     },
-    setEndYear: (state, action: PayloadAction<number>) => {
-      state.endYear = action.payload;
+    setEnd: (state, action: PayloadAction<SerializedDate>) => {
+      // if action payload is outside the valid interval, do nothing
+      if (
+        action.payload < state.valid.start ||
+        action.payload > state.valid.end
+      ) {
+        return;
+      }
+      state.selected.end = action.payload;
     },
   },
 });
 
-export const { setStartMonth, setStartYear, setEndMonth, setEndYear } =
+export const { setValidInterval, setSelectedInterval, setStart, setEnd } =
   selectedDateSlice.actions;
 export default selectedDateSlice.reducer;

@@ -5,11 +5,13 @@ import PartnerFacilitiesList from "@/components/partner-facilities-list";
 import PartnersList from "@/components/partners-list";
 import StoreViewer from "@/components/store-viewer";
 import WasteTypesList from "@/components/waste-types-list";
+import ReportingDataList from "@/components/reporting-data-list";
 
 const DashboardPage = () => {
   return (
     <div className="flex-1 w-full flex flex-row gap-12">
       <div className="flex-1 flex flex-col gap-12">
+        <ReportingDataList />
         <WasteTypesList />
         <FacilitiesList />
         <PartnerFacilitiesList />
