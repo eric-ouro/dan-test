@@ -25,7 +25,10 @@
       "@components/*": ["./components/*"],
       "@lib/*": ["./lib/*"],
       "@app/*": ["./app/*"],
-      "@hoc/*": ["./lib/hoc/*"]
+      "@hoc/*": ["./lib/hoc/*"],
+      "@store/*": ["./lib/store/*"],
+      "@hooks/*": ["./lib/hooks/*"],
+      "@slices/*": ["./lib/store/slices/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
