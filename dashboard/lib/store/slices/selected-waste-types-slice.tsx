@@ -16,7 +16,8 @@ export const fetchWasteTypes = createAsyncThunk(
         `
         wastetypes (
           id,
-          name
+          name,
+          display_color
         )
       `,
       );

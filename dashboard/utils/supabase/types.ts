@@ -817,14 +817,17 @@ export type Database = {
       }
       wastetypes: {
         Row: {
+          display_color: string | null
           id: number
           name: string | null
         }
         Insert: {
+          display_color?: string | null
           id?: number
           name?: string | null
         }
         Update: {
+          display_color?: string | null
           id?: number
           name?: string | null
         }

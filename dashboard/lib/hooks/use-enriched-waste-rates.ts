@@ -38,7 +38,8 @@ export const useEnrichedWasteRateData =
           ),
           wastetype:wastetypes (
             id,
-            name
+            name,
+            display_color
           ),
           parentwastetype,
           processed,

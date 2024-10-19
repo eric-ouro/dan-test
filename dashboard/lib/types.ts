@@ -3,6 +3,7 @@
 export interface WasteType {
   id: number;
   name: string;
+  display_color: string;
 }
 
 export interface Company {

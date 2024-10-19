@@ -40,8 +40,8 @@ const PlasticFootprintSimple = () => {
       return selectedWasteTypes.some(
         (selectedWasteType) => selectedWasteType.id === wasteType.id,
       )
-        ? "bg-red-500"
-        : "bg-neutral-300";
+        ? `#${wasteType.display_color}`
+        : "#d4d4d4";
     },
     [selectedWasteTypes],
   );
@@ -67,11 +67,12 @@ const PlasticFootprintSimple = () => {
                 style={{ width: `${totalWidthPercentage.toFixed(1)}%` }}
               >
                 <div
-                  className={`flex-grow flex-col items-end justify-left w-full min-h-[24px] rounded-sm ${colorForWasteType(item.label)}`}
+                  className={`flex-grow flex-col items-end justify-left w-full min-h-[24px] rounded-sm`}
                   style={{
                     height: `${processingLossRate.toFixed(1)}%`,
                     transition:
                       "height 200ms ease, background-color 200ms ease",
+                    background: colorForWasteType(item.label),
                   }}
                 >
                   <div className="p-2 flex flex-col justify-between overflow-hidden sm:flex-row">
@@ -90,13 +91,14 @@ const PlasticFootprintSimple = () => {
             return (
               <div
                 key={index}
-                className={`flex items-end justify-left min-w-[40px] text-white rounded-sm text-sm font-regular cursor-pointer ${colorForWasteType(item.label)}`}
+                className={`flex items-end justify-left min-w-[40px] text-white rounded-sm text-sm font-regular cursor-pointer`}
                 onClick={() => {
                   dispatch(toggleWasteType(item.label));
                 }}
                 style={{
                   width: `${footprintPercentage}%`,
                   transition: "background-color 200ms ease",
+                  background: colorForWasteType(item.label),
                 }}
               >
                 <div className="p-2 w-0 ">
