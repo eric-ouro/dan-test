@@ -12,7 +12,7 @@ import { useAppSelector, useAppDispatch } from "@hooks/store-hooks";
 
 const PartnersList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { partners, selectedPartners, status, error } = useAppSelector(
+  const { valid, selected, status, error } = useAppSelector(
     (state: RootState) => state.selectedPartners,
   );
 
@@ -21,7 +21,7 @@ const PartnersList: React.FC = () => {
   }, [dispatch]);
 
   const handlePartnerToggle = (partner: Company) => {
-    if (selectedPartners.some((p) => p.id === partner.id)) {
+    if (selected.some((p) => p.id === partner.id)) {
       dispatch(removePartnerById(partner.id));
     } else {
       dispatch(addPartner(partner));
@@ -35,12 +35,12 @@ const PartnersList: React.FC = () => {
     <div>
       <h2>Partners</h2>
       <ul>
-        {partners.map((partner) => (
+        {valid.map((partner) => (
           <li key={partner.id}>
             <label>
               <input
                 type="checkbox"
-                checked={selectedPartners.some((p) => p.id === partner.id)}
+                checked={selected.some((p) => p.id === partner.id)}
                 onChange={() => {
                   handlePartnerToggle(partner);
                 }}

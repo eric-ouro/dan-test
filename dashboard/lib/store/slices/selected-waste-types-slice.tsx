@@ -1,13 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { createClient } from "@/utils/supabase/client";
 import { AppThunk } from "@store/configuration";
-import { FetchableThunkState } from "@store/slices/types";
-import { WasteType } from "@/lib/types";
+import { WasteType, FetchableListSelector } from "@/lib/types";
 
-interface SelectedWasteTypesState extends FetchableThunkState {
-  wasteTypes: WasteType[];
-  selectedWasteTypes: WasteType[];
-}
+type SelectedWasteTypesState = FetchableListSelector<WasteType>;
 
 // Async thunk for fetching plastic types
 export const fetchWasteTypes = createAsyncThunk(
@@ -47,8 +43,8 @@ export const fetchWasteTypesIfEmpty =
   };
 
 const initialState: SelectedWasteTypesState = {
-  wasteTypes: [],
-  selectedWasteTypes: [],
+  valid: [],
+  selected: [],
   status: "idle",
   error: null,
 };
@@ -58,10 +54,10 @@ const selectedWasteTypesSlice = createSlice({
   initialState,
   reducers: {
     addWasteType: (state, action: PayloadAction<WasteType>) => {
-      state.selectedWasteTypes.push(action.payload);
+      state.selected.push(action.payload);
     },
     removeWasteTypeById: (state, action: PayloadAction<number>) => {
-      state.selectedWasteTypes = state.selectedWasteTypes.filter(
+      state.selected = state.selected.filter(
         (wasteType) => wasteType.id !== action.payload,
       );
     },
@@ -72,18 +68,17 @@ const selectedWasteTypesSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchWasteTypes.fulfilled, (state, action) => {
-        if (state.wasteTypes.length === 0) {
+        if (state.valid.length === 0) {
           // set selected waste types to all waste types initially
-          state.selectedWasteTypes = action.payload;
+          state.selected = action.payload;
         } else {
-          state.selectedWasteTypes = state.selectedWasteTypes.filter(
-            (wasteType) =>
-              action.payload.some(
-                (newWasteType) => newWasteType.id === wasteType.id,
-              ),
+          state.selected = state.selected.filter((wasteType) =>
+            action.payload.some(
+              (newWasteType) => newWasteType.id === wasteType.id,
+            ),
           );
         }
-        state.wasteTypes = action.payload;
+        state.valid = action.payload;
         state.status = "succeeded";
       })
       .addCase(fetchWasteTypes.rejected, (state, action) => {

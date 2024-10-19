@@ -122,23 +122,19 @@ export const useEnrichedWasteRates = () => {
         )
         .in(
           "facilityid",
-          selectedFacilities.selectedFacilities.map((facility) => facility.id),
+          selectedFacilities.selected.map((facility) => facility.id),
         )
         .in(
           "partnerfacilityid",
-          selectedPartnerFacilities.selectedPartnerFacilities.map(
-            (facility) => facility.id,
-          ),
+          selectedPartnerFacilities.selected.map((facility) => facility.id),
         )
         .in(
           "partnercompanyid",
-          selectedPartners.selectedPartners.map((partner) => partner.id),
+          selectedPartners.selected.map((partner) => partner.id),
         )
         .in(
           "wastetype",
-          selectedWasteTypes.selectedWasteTypes.map(
-            (wasteType) => wasteType.id,
-          ),
+          selectedWasteTypes.selected.map((wasteType) => wasteType.id),
         )
         .gte("timerange", selectedDateRange.selected.start)
         .lte("timerange", selectedDateRange.selected.end);
@@ -161,11 +157,11 @@ export const useEnrichedWasteRates = () => {
     }
   }, [
     selectedValuesInitialized,
-    selectedFacilities.selectedFacilities,
-    selectedPartnerFacilities.selectedPartnerFacilities,
-    selectedPartners.selectedPartners,
+    selectedFacilities.selected,
+    selectedPartnerFacilities.selected,
+    selectedPartners.selected,
     selectedDateRange.selected,
-    selectedWasteTypes.selectedWasteTypes,
+    selectedWasteTypes.selected,
   ]);
 
   return { data, error, loading };

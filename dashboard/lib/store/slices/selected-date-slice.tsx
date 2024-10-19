@@ -1,21 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { createClient } from "@/utils/supabase/client";
 import { AppThunk } from "@store/configuration";
-import { FetchableThunkState } from "@store/slices/types";
+import { FetchableIntervalSelector } from "@/lib/types";
 
 const NULL_DATE = new Date(0).toISOString();
 
 type SerializedDate = string;
 
-interface SerializedDateRange {
-  start: SerializedDate;
-  end: SerializedDate;
-}
-
-interface SelectedDateState extends FetchableThunkState {
-  valid: SerializedDateRange;
-  selected: SerializedDateRange;
-}
+type SelectedDateState = FetchableIntervalSelector<SerializedDate>;
 
 export const fetchDates = createAsyncThunk(
   "selectedDate/fetchDates",

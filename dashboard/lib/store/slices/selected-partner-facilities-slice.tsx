@@ -3,13 +3,9 @@
 import { createClient } from "@/utils/supabase/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "@store/configuration";
-import { FetchableThunkState } from "@store/slices/types";
-import { Facility } from "@/lib/types";
+import { Facility, FetchableListSelector } from "@/lib/types";
 
-interface SelectedPartnerFacilitiesState extends FetchableThunkState {
-  partnerFacilities: Facility[];
-  selectedPartnerFacilities: Facility[];
-}
+type SelectedPartnerFacilitiesState = FetchableListSelector<Facility>;
 
 export const fetchPartnerFacilities = createAsyncThunk(
   "selectedPartnerFacilities/fetchPartnerFacilities",
@@ -48,8 +44,8 @@ export const fetchPartnerFacilitiesIfEmpty =
   };
 
 const initialState: SelectedPartnerFacilitiesState = {
-  partnerFacilities: [],
-  selectedPartnerFacilities: [],
+  valid: [],
+  selected: [],
   status: "idle",
   error: null,
 };
@@ -59,10 +55,10 @@ const selectedPartnerFacilitiesSlice = createSlice({
   initialState,
   reducers: {
     addPartnerFacility: (state, action: PayloadAction<Facility>) => {
-      state.selectedPartnerFacilities.push(action.payload);
+      state.selected.push(action.payload);
     },
     removePartnerFacilityById: (state, action: PayloadAction<number>) => {
-      state.selectedPartnerFacilities = state.selectedPartnerFacilities.filter(
+      state.selected = state.selected.filter(
         (facility) => facility.id !== action.payload,
       );
     },
@@ -73,17 +69,16 @@ const selectedPartnerFacilitiesSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchPartnerFacilities.fulfilled, (state, action) => {
-        if (state.partnerFacilities.length === 0) {
-          state.selectedPartnerFacilities = action.payload;
+        if (state.valid.length === 0) {
+          state.selected = action.payload;
         } else {
-          state.selectedPartnerFacilities =
-            state.selectedPartnerFacilities.filter((facility) =>
-              action.payload.some(
-                (newFacility) => newFacility.id === facility.id,
-              ),
-            );
+          state.selected = state.selected.filter((facility) =>
+            action.payload.some(
+              (newFacility) => newFacility.id === facility.id,
+            ),
+          );
         }
-        state.partnerFacilities = action.payload;
+        state.valid = action.payload;
         state.status = "succeeded";
       })
       .addCase(fetchPartnerFacilities.rejected, (state, action) => {

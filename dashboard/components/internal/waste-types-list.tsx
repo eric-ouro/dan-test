@@ -37,18 +37,18 @@ const WasteTypesList = () => {
           </tr>
         </thead>
         <tbody>
-          {selectedWasteTypes.wasteTypes.map((wasteType) => (
+          {selectedWasteTypes.valid.map((wasteType) => (
             <tr key={wasteType.id}>
               <td>{wasteType.name}</td>
               <td>
                 <input
                   type="checkbox"
-                  checked={selectedWasteTypes.selectedWasteTypes.some(
+                  checked={selectedWasteTypes.selected.some(
                     (selectedType) => selectedType.id === wasteType.id,
                   )}
                   onChange={() => {
                     if (
-                      selectedWasteTypes.selectedWasteTypes.some(
+                      selectedWasteTypes.selected.some(
                         (selectedType) => selectedType.id === wasteType.id,
                       )
                     ) {

@@ -12,8 +12,9 @@ import { useEffect } from "react";
 
 const PartnerFacilitiesList = () => {
   const dispatch = useAppDispatch();
-  const { selectedPartnerFacilities, partnerFacilities, status, error } =
-    useAppSelector((state: RootState) => state.selectedPartnerFacilities);
+  const { selected, valid, status, error } = useAppSelector(
+    (state: RootState) => state.selectedPartnerFacilities,
+  );
 
   useEffect(() => {
     console.log("fetching partner facilities");
@@ -21,7 +22,7 @@ const PartnerFacilitiesList = () => {
   }, [dispatch]);
 
   const handlePartnerFacilityToggle = (facility: Facility) => {
-    if (selectedPartnerFacilities.some((p) => p.id === facility.id)) {
+    if (selected.some((p) => p.id === facility.id)) {
       dispatch(removePartnerFacilityById(facility.id));
     } else {
       dispatch(addPartnerFacility(facility));
@@ -35,14 +36,12 @@ const PartnerFacilitiesList = () => {
     <div>
       <h1>Partner Facilities</h1>
       <ul>
-        {partnerFacilities.map((facility) => (
+        {valid.map((facility) => (
           <li key={facility.id}>
             <label>
               <input
                 type="checkbox"
-                checked={selectedPartnerFacilities.some(
-                  (p) => p.id === facility.id,
-                )}
+                checked={selected.some((p) => p.id === facility.id)}
                 onChange={() => {
                   handlePartnerFacilityToggle(facility);
                 }}

@@ -94,18 +94,18 @@ export const useWasteRates = () => {
     if (selectedValuesInitialized && data.length > 0) {
       const filteredData = data.filter((item) => {
         return (
-          selectedFacilities.selectedFacilities.some(
+          selectedFacilities.selected.some(
             (facility) => facility.id === item.facilityid,
           ) &&
-          selectedPartnerFacilities.selectedPartnerFacilities.some(
+          selectedPartnerFacilities.selected.some(
             (facility) => facility.id === item.partnerfacilityid,
           ) &&
-          selectedPartners.selectedPartners.some(
+          selectedPartners.selected.some(
             (partner) => partner.id === item.partnercompanyid,
           ) &&
           selectedDateRange.selected.start <= item.timerange &&
           selectedDateRange.selected.end >= item.timerange &&
-          selectedWasteTypes.selectedWasteTypes.some(
+          selectedWasteTypes.selected.some(
             (wasteType) => wasteType.id === item.wastetype,
           )
         );
@@ -115,11 +115,11 @@ export const useWasteRates = () => {
   }, [
     data,
     selectedValuesInitialized,
-    selectedFacilities.selectedFacilities,
-    selectedPartnerFacilities.selectedPartnerFacilities,
-    selectedPartners.selectedPartners,
+    selectedFacilities.selected,
+    selectedPartnerFacilities.selected,
+    selectedPartners.selected,
     selectedDateRange.selected,
-    selectedWasteTypes.selectedWasteTypes,
+    selectedWasteTypes.selected,
   ]);
 
   return { data: filteredData, error, loading };

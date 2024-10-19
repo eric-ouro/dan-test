@@ -1,13 +1,9 @@
 import { createClient } from "@/utils/supabase/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "@store/configuration";
-import { FetchableThunkState } from "@store/slices/types";
-import { Company } from "@/lib/types";
+import { Company, FetchableListSelector } from "@/lib/types";
 
-interface SelectedPartnersState extends FetchableThunkState {
-  partners: Company[];
-  selectedPartners: Company[];
-}
+type SelectedPartnersState = FetchableListSelector<Company>;
 
 export const fetchPartners = createAsyncThunk(
   "selectedPartners/fetchPartners",
@@ -46,8 +42,8 @@ export const fetchPartnersIfEmpty =
   };
 
 const initialState: SelectedPartnersState = {
-  partners: [],
-  selectedPartners: [],
+  valid: [],
+  selected: [],
   status: "idle",
   error: null,
 };
@@ -57,10 +53,10 @@ const selectedPartnersSlice = createSlice({
   initialState,
   reducers: {
     addPartner: (state, action: PayloadAction<Company>) => {
-      state.selectedPartners.push(action.payload);
+      state.selected.push(action.payload);
     },
     removePartnerById: (state, action: PayloadAction<number>) => {
-      state.selectedPartners = state.selectedPartners.filter(
+      state.selected = state.selected.filter(
         (partner) => partner.id !== action.payload,
       );
     },
@@ -71,14 +67,14 @@ const selectedPartnersSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchPartners.fulfilled, (state, action) => {
-        if (state.partners.length === 0) {
-          state.selectedPartners = action.payload;
+        if (state.valid.length === 0) {
+          state.selected = action.payload;
         } else {
-          state.selectedPartners = state.selectedPartners.filter((partner) =>
+          state.selected = state.selected.filter((partner) =>
             action.payload.some((newPartner) => newPartner.id === partner.id),
           );
         }
-        state.partners = action.payload;
+        state.valid = action.payload;
         state.status = "succeeded";
       })
       .addCase(fetchPartners.rejected, (state, action) => {

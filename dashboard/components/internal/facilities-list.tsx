@@ -12,7 +12,7 @@ import { useEffect } from "react";
 
 const FacilitiesList = () => {
   const dispatch = useAppDispatch();
-  const { facilities, selectedFacilities, status, error } = useAppSelector(
+  const { valid, selected, status, error } = useAppSelector(
     (state: RootState) => state.selectedFacilities,
   );
 
@@ -22,7 +22,7 @@ const FacilitiesList = () => {
 
   // add handleFacilityToggle
   const handleFacilityToggle = (facility: Facility) => {
-    if (selectedFacilities.some((f) => f.id === facility.id)) {
+    if (selected.some((f) => f.id === facility.id)) {
       dispatch(removeFacilityById(facility.id));
     } else {
       dispatch(addFacility(facility));
@@ -36,12 +36,12 @@ const FacilitiesList = () => {
     <div>
       <h1>Facilities</h1>
       <ul>
-        {facilities.map((facility) => (
+        {valid.map((facility) => (
           <li key={facility.id}>
             <label>
               <input
                 type="checkbox"
-                checked={selectedFacilities.some((f) => f.id === facility.id)}
+                checked={selected.some((f) => f.id === facility.id)}
                 onChange={() => {
                   handleFacilityToggle(facility);
                 }}
