@@ -48,7 +48,7 @@ export const updateSession = async (request: NextRequest) => {
 
     return response;
   } catch (e) {
-    console.log("could not update session", e);
+    console.error("could not update session", e);
     return NextResponse.next({
       request: {
         headers: request.headers,

@@ -17,7 +17,6 @@ const PartnerFacilitiesList = () => {
   );
 
   useEffect(() => {
-    console.log("fetching partner facilities");
     dispatch(fetchPartnerFacilitiesIfEmpty());
   }, [dispatch]);
 
