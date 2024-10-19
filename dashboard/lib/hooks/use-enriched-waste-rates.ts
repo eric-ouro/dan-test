@@ -96,9 +96,7 @@ export const useEnrichedWasteRates = ({
         partner: filters.includes("partner")
           ? (item) => item.partnercompany.id
           : undefined,
-        date: filters.includes("date")
-          ? (item) => new Date(item.timerange).getTime()
-          : undefined,
+        date: filters.includes("date") ? (item) => item.timerange : undefined,
         wasteType: filters.includes("wasteType")
           ? (item) => item.wastetype.id
           : undefined,

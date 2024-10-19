@@ -61,10 +61,8 @@ export const useSelectorFilters = <RecordType>({
           case "date":
             f.push((item: RecordType) => {
               return (
-                new Date(selectedDateRange.selected.start).getTime() <=
-                  filterLens(item) &&
-                new Date(selectedDateRange.selected.end).getTime() >=
-                  filterLens(item)
+                selectedDateRange.selected.start <= filterLens(item) &&
+                selectedDateRange.selected.end >= filterLens(item)
               );
             });
             break;

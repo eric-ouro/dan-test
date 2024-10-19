@@ -88,8 +88,16 @@ export interface EnabledFilters {
   filters: FilterType[];
 }
 
+export interface FilterLensValues {
+  facility: Facility["id"];
+  partnerFacility: Facility["id"];
+  partner: Company["id"];
+  date: string;
+  wasteType: WasteType["id"];
+}
+
 // Filter lenses map an item to a value that can be assessed against a filter function
-export type FilterLens<T> = (item: T) => number;
+export type FilterLens<T, V> = (item: T) => V;
 
 // Filter functions map an item to a boolean value
 export type FilterFn<T> = (item: T) => boolean;
@@ -97,7 +105,7 @@ export type FilterFn<T> = (item: T) => boolean;
 // TODO: genericize filter lens across multiple types
 export interface FilterSpec<T> {
   lenses: {
-    [key in FilterType]?: FilterLens<T>;
+    [key in FilterType]?: FilterLens<T, FilterLensValues[key]>;
   };
 }
 

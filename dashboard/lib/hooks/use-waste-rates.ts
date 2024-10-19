@@ -51,9 +51,7 @@ export const useWasteRates = ({
         partner: filters.includes("partner")
           ? (item) => item.partnercompanyid
           : undefined,
-        date: filters.includes("date")
-          ? (item) => new Date(item.timerange).getTime()
-          : undefined,
+        date: filters.includes("date") ? (item) => item.timerange : undefined,
         wasteType: filters.includes("wasteType")
           ? (item) => item.wastetype
           : undefined,
