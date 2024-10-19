@@ -7,13 +7,6 @@ const customRules = {
     // This rule is not compatible with Next.js
     "@typescript-eslint/no-misused-promises": "off",
   },
-  // Supabase types are not type checked by ESLint
-  overrides: [
-    {
-      files: ["utils/supabase/types.ts"],
-      rules: "off",
-    },
-  ],
 };
 
 export default tseslint.config(
@@ -29,6 +22,10 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+  },
+  {
+    files: ["utils/supabase/types.ts"],
+    rules: "off",
   },
   customRules
 );
