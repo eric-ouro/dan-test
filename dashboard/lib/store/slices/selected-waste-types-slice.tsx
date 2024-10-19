@@ -69,12 +69,9 @@ const selectedWasteTypesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchWasteTypes.pending, (state) => {
-        console.log("fetchWasteTypes.pending");
         state.status = "loading";
       })
       .addCase(fetchWasteTypes.fulfilled, (state, action) => {
-        console.log("fetchWasteTypes.fulfilled");
-        state.status = "succeeded";
         if (state.wasteTypes.length === 0) {
           // set selected waste types to all waste types initially
           state.selectedWasteTypes = action.payload;
@@ -87,9 +84,9 @@ const selectedWasteTypesSlice = createSlice({
           );
         }
         state.wasteTypes = action.payload;
+        state.status = "succeeded";
       })
       .addCase(fetchWasteTypes.rejected, (state, action) => {
-        console.log("fetchWasteTypes.rejected");
         state.status = "failed";
         state.error = action.error.message ?? "Failed to fetch waste types";
       });

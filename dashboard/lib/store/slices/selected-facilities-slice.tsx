@@ -71,7 +71,6 @@ const selectedFacilitiesSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchFacilities.fulfilled, (state, action) => {
-        state.status = "succeeded";
         if (state.facilities.length === 0) {
           state.selectedFacilities = action.payload;
         } else {
@@ -83,6 +82,7 @@ const selectedFacilitiesSlice = createSlice({
           );
         }
         state.facilities = action.payload;
+        state.status = "succeeded";
       })
       .addCase(fetchFacilities.rejected, (state, action) => {
         state.status = "failed";

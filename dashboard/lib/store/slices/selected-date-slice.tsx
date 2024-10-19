@@ -21,21 +21,30 @@ export const fetchDates = createAsyncThunk(
   "selectedDate/fetchDates",
   async () => {
     const supabase = createClient();
-    const { data, error } = await supabase
+    const minDateQuery = supabase
       .from("wasterates_monthly_facilitypartner")
-      .select("timerange");
+      .select("timerange")
+      .order("timerange", { ascending: true })
+      .limit(1);
+    const maxDateQuery = supabase
+      .from("wasterates_monthly_facilitypartner")
+      .select("timerange")
+      .order("timerange", { ascending: false })
+      .limit(1);
 
-    if (error) throw new Error(error.message);
+    const [minDateQueryResult, maxDateQueryResult] = await Promise.all([
+      minDateQuery,
+      maxDateQuery,
+    ]);
 
-    const timeranges = data.map((item) => item.timerange as string);
-    const minDate = timeranges.reduce((min, current) => {
-      return min < current ? min : current;
-    }, timeranges[0]);
-    const maxDate = timeranges.reduce((max, current) => {
-      return max > current ? max : current;
-    }, timeranges[0]);
+    if (minDateQueryResult.error || maxDateQueryResult.error) {
+      throw new Error("Failed to fetch dates");
+    }
 
-    return { minDate, maxDate };
+    return {
+      minDate: minDateQueryResult.data[0].timerange as SerializedDate,
+      maxDate: maxDateQueryResult.data[0].timerange as SerializedDate,
+    };
   },
 );
 
@@ -90,11 +99,11 @@ const selectedDateSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchDates.fulfilled, (state, action) => {
-        state.status = "succeeded";
         state.valid.start = action.payload.minDate;
         state.valid.end = action.payload.maxDate;
         state.selected.start = action.payload.minDate;
         state.selected.end = action.payload.maxDate;
+        state.status = "succeeded";
       })
       .addCase(fetchDates.rejected, (state, action) => {
         state.status = "failed";

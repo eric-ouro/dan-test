@@ -71,7 +71,6 @@ const selectedPartnersSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchPartners.fulfilled, (state, action) => {
-        state.status = "succeeded";
         if (state.partners.length === 0) {
           state.selectedPartners = action.payload;
         } else {
@@ -80,6 +79,7 @@ const selectedPartnersSlice = createSlice({
           );
         }
         state.partners = action.payload;
+        state.status = "succeeded";
       })
       .addCase(fetchPartners.rejected, (state, action) => {
         state.status = "failed";
