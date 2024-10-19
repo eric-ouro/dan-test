@@ -21,13 +21,38 @@ interface WasteRate {
   recycled: number;
 }
 
-export const useWasteRates = () => {
-  const dispatch = useAppDispatch();
-  const supabase = createClient();
-
+const useWasteRateData = () => {
   const [data, setData] = useState<WasteRate[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("wasterates_monthly_facilitypartner")
+        .select();
+
+      if (error) {
+        setError(error.message);
+      } else {
+        setData(data as WasteRate[]);
+      }
+      if (loading) {
+        setLoading(false);
+      }
+    };
+
+    void fetchData();
+  }, []);
+
+  return { data, error, loading };
+};
+
+export const useWasteRates = () => {
+  const dispatch = useAppDispatch();
+  const { data, error, loading } = useWasteRateData();
+  const [filteredData, setFilteredData] = useState<WasteRate[]>([]);
 
   const selectedFacilities = useAppSelector(
     (state) => state.selectedFacilities,
@@ -88,47 +113,26 @@ export const useWasteRates = () => {
   ]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const query = supabase
-        .from("wasterates_monthly_facilitypartner")
-        .select()
-        .in(
-          "facilityid",
-          selectedFacilities.selectedFacilities.map((facility) => facility.id),
-        )
-        .in(
-          "partnerfacilityid",
-          selectedPartnerFacilities.selectedPartnerFacilities.map(
-            (facility) => facility.id,
-          ),
-        )
-        .in(
-          "partnercompanyid",
-          selectedPartners.selectedPartners.map((partner) => partner.id),
-        )
-        .in(
-          "wastetype",
-          selectedWasteTypes.selectedWasteTypes.map(
-            (wasteType) => wasteType.id,
-          ),
-        )
-        .gte("timerange", selectedDateRange.selected.start)
-        .lte("timerange", selectedDateRange.selected.end);
-
-      const { data, error } = await query;
-
-      if (error) {
-        setError(error.message);
-      } else {
-        setData(data as WasteRate[]);
-      }
-      if (loading) {
-        setLoading(false);
-      }
-    };
-
     if (selectedValuesInitialized) {
-      void fetchData();
+      const filteredData = data.filter((item) => {
+        return (
+          selectedFacilities.selectedFacilities.some(
+            (facility) => facility.id === item.facilityid,
+          ) &&
+          selectedPartnerFacilities.selectedPartnerFacilities.some(
+            (facility) => facility.id === item.partnerfacilityid,
+          ) &&
+          selectedPartners.selectedPartners.some(
+            (partner) => partner.id === item.partnercompanyid,
+          ) &&
+          selectedDateRange.selected.start <= item.timerange &&
+          selectedDateRange.selected.end >= item.timerange &&
+          selectedWasteTypes.selectedWasteTypes.some(
+            (wasteType) => wasteType.id === item.wastetype,
+          )
+        );
+      });
+      setFilteredData(filteredData);
     }
   }, [
     selectedValuesInitialized,
@@ -139,5 +143,5 @@ export const useWasteRates = () => {
     selectedWasteTypes.selectedWasteTypes,
   ]);
 
-  return { data, error, loading };
+  return { data: filteredData, error, loading };
 };
