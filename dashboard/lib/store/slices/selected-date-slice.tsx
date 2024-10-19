@@ -40,8 +40,8 @@ export const fetchDates = createAsyncThunk(
 );
 
 export const fetchDatesIfEmpty = (): AppThunk => async (dispatch, getState) => {
-  const { valid } = getState().selectedDate;
-  if (valid.start === NULL_DATE || valid.end === NULL_DATE) {
+  const { status } = getState().selectedDate;
+  if (status === "idle") {
     await dispatch(fetchDates());
   }
 };

@@ -113,7 +113,7 @@ export const useWasteRates = () => {
   ]);
 
   useEffect(() => {
-    if (selectedValuesInitialized) {
+    if (selectedValuesInitialized && data.length > 0) {
       const filteredData = data.filter((item) => {
         return (
           selectedFacilities.selectedFacilities.some(
@@ -135,6 +135,7 @@ export const useWasteRates = () => {
       setFilteredData(filteredData);
     }
   }, [
+    data,
     selectedValuesInitialized,
     selectedFacilities.selectedFacilities,
     selectedPartnerFacilities.selectedPartnerFacilities,

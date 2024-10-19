@@ -40,8 +40,8 @@ export const fetchWasteTypes = createAsyncThunk(
 
 export const fetchWasteTypesIfEmpty =
   (): AppThunk => async (dispatch, getState) => {
-    const { wasteTypes } = getState().selectedWasteTypes;
-    if (wasteTypes.length === 0) {
+    const { status } = getState().selectedWasteTypes;
+    if (status === "idle") {
       await dispatch(fetchWasteTypes());
     }
   };

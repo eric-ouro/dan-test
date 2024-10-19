@@ -39,8 +39,8 @@ export const fetchPartners = createAsyncThunk(
 
 export const fetchPartnersIfEmpty =
   (): AppThunk => async (dispatch, getState) => {
-    const { partners } = getState().selectedPartners;
-    if (partners.length === 0) {
+    const { status } = getState().selectedPartners;
+    if (status === "idle") {
       await dispatch(fetchPartners());
     }
   };
