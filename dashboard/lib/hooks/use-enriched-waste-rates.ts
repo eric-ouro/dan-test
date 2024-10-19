@@ -10,78 +10,17 @@ import { fetchPartnerFacilitiesIfEmpty } from "@store/slices/selected-partner-fa
 import { fetchWasteTypesIfEmpty } from "@store/slices/selected-waste-types-slice";
 import { AsyncHookState, EnrichedWasteRate } from "@/lib/types";
 
-export const useEnrichedWasteRates = (): AsyncHookState<EnrichedWasteRate> => {
-  const dispatch = useAppDispatch();
-  const supabase = createClient();
-
+const useEnrichedWasteRateData = (): AsyncHookState<EnrichedWasteRate> => {
   const [data, setData] = useState<EnrichedWasteRate[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const selectedFacilities = useAppSelector(
-    (state) => state.selectedFacilities,
-  );
-  const selectedPartnerFacilities = useAppSelector(
-    (state) => state.selectedPartnerFacilities,
-  );
-  const selectedPartners = useAppSelector((state) => state.selectedPartners);
-  const selectedDateRange = useAppSelector((state) => state.selectedDate);
-  const selectedWasteTypes = useAppSelector(
-    (state) => state.selectedWasteTypes,
-  );
-
-  useEffect(() => {
-    if (selectedFacilities.status === "idle") {
-      dispatch(fetchFacilitiesIfEmpty());
-    }
-  }, [selectedFacilities.status, dispatch]);
-
-  useEffect(() => {
-    if (selectedPartnerFacilities.status === "idle") {
-      dispatch(fetchPartnerFacilitiesIfEmpty());
-    }
-  }, [selectedPartnerFacilities.status, dispatch]);
-
-  useEffect(() => {
-    if (selectedPartners.status === "idle") {
-      dispatch(fetchPartnersIfEmpty());
-    }
-  }, [selectedPartners.status, dispatch]);
-
-  useEffect(() => {
-    if (selectedDateRange.status === "idle") {
-      dispatch(fetchDatesIfEmpty());
-    }
-  }, [selectedDateRange.status, dispatch]);
-
-  useEffect(() => {
-    if (selectedWasteTypes.status === "idle") {
-      dispatch(fetchWasteTypesIfEmpty());
-    }
-  }, [selectedWasteTypes.status, dispatch]);
-
-  const selectedValuesInitialized = useMemo(() => {
-    return [
-      selectedFacilities.status,
-      selectedPartnerFacilities.status,
-      selectedPartners.status,
-      selectedDateRange.status,
-      selectedWasteTypes.status,
-    ].every((value) => value === "succeeded");
-  }, [
-    selectedFacilities.status,
-    selectedPartnerFacilities.status,
-    selectedPartners.status,
-    selectedDateRange.status,
-    selectedWasteTypes.status,
-  ]);
+  const supabase = createClient();
 
   useEffect(() => {
     const fetchData = async () => {
-      const query = supabase
-        .from("wasterates_monthly_facilitypartner")
-        .select(
-          `
+      const query = supabase.from("wasterates_monthly_facilitypartner").select(
+        `
           company:companies!wasterates_monthly_facilitypartner_companyid_fkey (
             id,
             name
@@ -107,25 +46,7 @@ export const useEnrichedWasteRates = (): AsyncHookState<EnrichedWasteRate> => {
           recycled,
           timerange
           `,
-        )
-        .in(
-          "facilityid",
-          selectedFacilities.selected.map((facility) => facility.id),
-        )
-        .in(
-          "partnerfacilityid",
-          selectedPartnerFacilities.selected.map((facility) => facility.id),
-        )
-        .in(
-          "partnercompanyid",
-          selectedPartners.selected.map((partner) => partner.id),
-        )
-        .in(
-          "wastetype",
-          selectedWasteTypes.selected.map((wasteType) => wasteType.id),
-        )
-        .gte("timerange", selectedDateRange.selected.start)
-        .lte("timerange", selectedDateRange.selected.end);
+      );
 
       const { data, error } = await query;
 
@@ -152,10 +73,77 @@ export const useEnrichedWasteRates = (): AsyncHookState<EnrichedWasteRate> => {
       }
     };
 
-    if (selectedValuesInitialized) {
-      void fetchData();
+    void fetchData();
+  }, []);
+
+  return { data, error, loading };
+};
+
+export const useEnrichedWasteRates = (): AsyncHookState<EnrichedWasteRate> => {
+  const dispatch = useAppDispatch();
+  const { data, error, loading } = useEnrichedWasteRateData();
+  const [filteredData, setFilteredData] = useState<EnrichedWasteRate[]>([]);
+
+  const selectedFacilities = useAppSelector(
+    (state) => state.selectedFacilities,
+  );
+  const selectedPartnerFacilities = useAppSelector(
+    (state) => state.selectedPartnerFacilities,
+  );
+  const selectedPartners = useAppSelector((state) => state.selectedPartners);
+  const selectedDateRange = useAppSelector((state) => state.selectedDate);
+  const selectedWasteTypes = useAppSelector(
+    (state) => state.selectedWasteTypes,
+  );
+
+  useEffect(() => {
+    dispatch(fetchFacilitiesIfEmpty());
+    dispatch(fetchPartnerFacilitiesIfEmpty());
+    dispatch(fetchPartnersIfEmpty());
+    dispatch(fetchDatesIfEmpty());
+    dispatch(fetchWasteTypesIfEmpty());
+  }, [dispatch]);
+
+  const selectedValuesInitialized = useMemo(() => {
+    return [
+      selectedFacilities.status,
+      selectedPartnerFacilities.status,
+      selectedPartners.status,
+      selectedDateRange.status,
+      selectedWasteTypes.status,
+    ].every((value) => value === "succeeded");
+  }, [
+    selectedFacilities.status,
+    selectedPartnerFacilities.status,
+    selectedPartners.status,
+    selectedDateRange.status,
+    selectedWasteTypes.status,
+  ]);
+
+  useEffect(() => {
+    if (selectedValuesInitialized && data.length > 0) {
+      const filteredData = data.filter((item) => {
+        return (
+          selectedFacilities.selected.some(
+            (facility) => facility.id === item.facility.id,
+          ) &&
+          selectedPartnerFacilities.selected.some(
+            (facility) => facility.id === item.partnerfacility.id,
+          ) &&
+          selectedPartners.selected.some(
+            (partner) => partner.id === item.partnercompany.id,
+          ) &&
+          selectedDateRange.selected.start <= item.timerange &&
+          selectedDateRange.selected.end >= item.timerange &&
+          selectedWasteTypes.selected.some(
+            (wasteType) => wasteType.id === item.wastetype.id,
+          )
+        );
+      });
+      setFilteredData(filteredData);
     }
   }, [
+    data,
     selectedValuesInitialized,
     selectedFacilities.selected,
     selectedPartnerFacilities.selected,
@@ -164,5 +152,5 @@ export const useEnrichedWasteRates = (): AsyncHookState<EnrichedWasteRate> => {
     selectedWasteTypes.selected,
   ]);
 
-  return { data, error, loading };
+  return { data: filteredData, error, loading };
 };
