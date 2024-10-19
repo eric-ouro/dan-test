@@ -2,11 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { createClient } from "@/utils/supabase/client";
 import { AppThunk } from "@store/configuration";
 import { FetchableThunkState } from "@store/slices/types";
-
-export interface WasteType {
-  id: number;
-  name: string;
-}
+import { WasteType } from "@/lib/types";
 
 interface SelectedWasteTypesState extends FetchableThunkState {
   wasteTypes: WasteType[];

@@ -8,15 +8,15 @@ import PartnerFacilitiesList from "@/components/partner-facilities-list";
 
 const DashboardPage = () => {
   return (
-    <div className="flex-1 w-full flex flex-row gap-12">
-      <div className="flex-1 flex flex-col gap-12">
-        <ReportingDataList />
-      </div>
-      <div className="flex-1 flex flex-col gap-12">
+    <div className="flex-1 w-full flex flex-col gap-8">
+      <div className="w-full flex flex-row gap-4">
         <PartnerFacilitiesList />
         <PartnersList />
         <FacilitiesList />
         <WasteTypesList />
+      </div>
+      <div className="w-full">
+        <ReportingDataList />
       </div>
     </div>
   );

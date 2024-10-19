@@ -4,10 +4,10 @@ import { useAppSelector, useAppDispatch } from "@hooks/store-hooks";
 import { RootState } from "@store/configuration";
 import {
   addFacility,
-  Facility,
   fetchFacilitiesIfEmpty,
   removeFacilityById,
 } from "@store/slices/selected-facilities-slice";
+import { Facility } from "@lib/types";
 import { useEffect } from "react";
 
 const FacilitiesList = () => {

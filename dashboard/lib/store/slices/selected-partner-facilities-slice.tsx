@@ -4,15 +4,11 @@ import { createClient } from "@/utils/supabase/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "@store/configuration";
 import { FetchableThunkState } from "@store/slices/types";
-
-export interface PartnerFacility {
-  id: number;
-  name: string;
-}
+import { Facility } from "@/lib/types";
 
 interface SelectedPartnerFacilitiesState extends FetchableThunkState {
-  partnerFacilities: PartnerFacility[];
-  selectedPartnerFacilities: PartnerFacility[];
+  partnerFacilities: Facility[];
+  selectedPartnerFacilities: Facility[];
 }
 
 export const fetchPartnerFacilities = createAsyncThunk(
@@ -39,7 +35,7 @@ export const fetchPartnerFacilities = createAsyncThunk(
           index === self.findIndex((t) => t.id === value.id),
       );
 
-    return uniqueData as PartnerFacility[];
+    return uniqueData as Facility[];
   },
 );
 
@@ -62,7 +58,7 @@ const selectedPartnerFacilitiesSlice = createSlice({
   name: "selectedPartnerFacilities",
   initialState,
   reducers: {
-    addPartnerFacility: (state, action: PayloadAction<PartnerFacility>) => {
+    addPartnerFacility: (state, action: PayloadAction<Facility>) => {
       state.selectedPartnerFacilities.push(action.payload);
     },
     removePartnerFacilityById: (state, action: PayloadAction<number>) => {

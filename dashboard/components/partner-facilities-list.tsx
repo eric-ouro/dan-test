@@ -5,9 +5,9 @@ import { RootState } from "@store/configuration";
 import {
   addPartnerFacility,
   fetchPartnerFacilitiesIfEmpty,
-  PartnerFacility,
   removePartnerFacilityById,
 } from "@store/slices/selected-partner-facilities-slice";
+import { Facility } from "@lib/types";
 import { useEffect } from "react";
 
 const PartnerFacilitiesList = () => {
@@ -20,7 +20,7 @@ const PartnerFacilitiesList = () => {
     dispatch(fetchPartnerFacilitiesIfEmpty());
   }, [dispatch]);
 
-  const handlePartnerFacilityToggle = (facility: PartnerFacility) => {
+  const handlePartnerFacilityToggle = (facility: Facility) => {
     if (selectedPartnerFacilities.some((p) => p.id === facility.id)) {
       dispatch(removePartnerFacilityById(facility.id));
     } else {

@@ -7,7 +7,6 @@ import {
   fetchWasteTypesIfEmpty,
   removeWasteTypeById,
   addWasteType,
-  fetchWasteTypes,
 } from "@store/slices/selected-waste-types-slice";
 
 const WasteTypesList = () => {
@@ -28,19 +27,13 @@ const WasteTypesList = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2>All Waste Types</h2>
-        <button
-          onClick={() => dispatch(fetchWasteTypes())}
-          className="px-4 py-2 bg-accent text-foreground rounded hover:bg-accent/80 transition-colors"
-        >
-          Refresh
-        </button>
+        <h2>Waste Types</h2>
       </div>
       <table className="w-full">
         <thead>
           <tr>
-            <th className="text-left">Waste Type</th>
-            <th className="text-left">Selected</th>
+            <th className="text-left"></th>
+            <th className="text-left"></th>
           </tr>
         </thead>
         <tbody>

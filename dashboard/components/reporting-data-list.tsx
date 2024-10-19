@@ -2,10 +2,10 @@
 
 // component that displays a list of reporting data from the reporting-summaries hook
 import React from "react";
-import { useReportingSummaries } from "@hooks/use-reporting-summaries";
+import { useEnrichedWasteRates } from "@hooks/use-enriched-waste-rates";
 
 const ReportingDataList: React.FC = () => {
-  const { data, error, loading } = useReportingSummaries();
+  const { data, error, loading } = useEnrichedWasteRates();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -80,22 +80,22 @@ const ReportingDataList: React.FC = () => {
                   {summary.timerange}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {summary.facilityid}
+                  {summary.facility.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {summary.companyid}
+                  {summary.company.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {summary.partnerfacilityid}
+                  {summary.partnerfacility.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {summary.partnercompanyid}
+                  {summary.partnercompany.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {summary.parentwastetype}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {summary.wastetype}
+                  {summary.wastetype.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {summary.processed}

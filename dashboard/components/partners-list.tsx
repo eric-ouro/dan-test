@@ -6,8 +6,8 @@ import {
   fetchPartnersIfEmpty,
   addPartner,
   removePartnerById,
-  Partner,
 } from "@slices/selected-partners-slice";
+import { Company } from "@lib/types";
 import { useAppSelector, useAppDispatch } from "@hooks/store-hooks";
 
 const PartnersList: React.FC = () => {
@@ -20,7 +20,7 @@ const PartnersList: React.FC = () => {
     dispatch(fetchPartnersIfEmpty());
   }, [dispatch]);
 
-  const handlePartnerToggle = (partner: Partner) => {
+  const handlePartnerToggle = (partner: Company) => {
     if (selectedPartners.some((p) => p.id === partner.id)) {
       dispatch(removePartnerById(partner.id));
     } else {

@@ -2,11 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { createClient } from "@/utils/supabase/client";
 import { AppThunk } from "@store/configuration";
 import { FetchableThunkState } from "@store/slices/types";
-
-export interface Facility {
-  id: number;
-  name: string;
-}
+import { Facility } from "@/lib/types";
 
 interface SelectedFacilitiesState extends FetchableThunkState {
   facilities: Facility[];
