@@ -77,6 +77,30 @@ export interface AsyncHookState<T> {
   loading: boolean;
 }
 
+export type FilterType =
+  | "facility"
+  | "partnerFacility"
+  | "partner"
+  | "date"
+  | "wasteType";
+
+export interface EnabledFilters {
+  filters: FilterType[];
+}
+
+// Filter lenses map an item to a value that can be assessed against a filter function
+export type FilterLens<T> = (item: T) => number;
+
+// Filter functions map an item to a boolean value
+export type FilterFn<T> = (item: T) => boolean;
+
+// TODO: genericize filter lens across multiple types
+export interface FilterSpec<T> {
+  lenses: {
+    [key in FilterType]?: FilterLens<T>;
+  };
+}
+
 /* Summary Types */
 
 export interface SummaryData {
@@ -85,10 +109,12 @@ export interface SummaryData {
   recycled: number;
 }
 
-export interface WasteRateSummary {
+export interface WasteRateSummary extends SummaryData {
   label: WasteType["id"];
-  quantity: number;
-  recycled: number;
-  processed: number;
+  percentage: number;
+}
+
+export interface EnrichedWasteRateSummary extends SummaryData {
+  label: WasteType;
   percentage: number;
 }

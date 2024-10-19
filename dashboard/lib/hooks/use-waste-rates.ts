@@ -1,14 +1,9 @@
 "use client";
 
 import { createClient } from "@utils/supabase/client";
-import { useEffect, useState, useMemo } from "react";
-import { useAppDispatch, useAppSelector } from "@hooks/store-hooks";
-import { fetchDatesIfEmpty } from "@store/slices/selected-date-slice";
-import { fetchFacilitiesIfEmpty } from "@store/slices/selected-facilities-slice";
-import { fetchPartnersIfEmpty } from "@store/slices/selected-partners-slice";
-import { fetchPartnerFacilitiesIfEmpty } from "@store/slices/selected-partner-facilities-slice";
-import { fetchWasteTypesIfEmpty } from "@store/slices/selected-waste-types-slice";
-import { AsyncHookState, WasteRate } from "@/lib/types";
+import { useEffect, useState } from "react";
+import { useSelectorFilters } from "@hooks/use-selector-filters";
+import { AsyncHookState, EnabledFilters, WasteRate } from "@/lib/types";
 
 const useWasteRateData = (): AsyncHookState<WasteRate> => {
   const [data, setData] = useState<WasteRate[]>([]);
@@ -38,78 +33,38 @@ const useWasteRateData = (): AsyncHookState<WasteRate> => {
   return { data, error, loading };
 };
 
-export const useWasteRates = (): AsyncHookState<WasteRate> => {
-  const dispatch = useAppDispatch();
+export const useWasteRates = ({
+  filters = [],
+}: EnabledFilters): AsyncHookState<WasteRate> => {
   const { data, error, loading } = useWasteRateData();
   const [filteredData, setFilteredData] = useState<WasteRate[]>([]);
 
-  const selectedFacilities = useAppSelector(
-    (state) => state.selectedFacilities,
-  );
-  const selectedPartnerFacilities = useAppSelector(
-    (state) => state.selectedPartnerFacilities,
-  );
-  const selectedPartners = useAppSelector((state) => state.selectedPartners);
-  const selectedDateRange = useAppSelector((state) => state.selectedDate);
-  const selectedWasteTypes = useAppSelector(
-    (state) => state.selectedWasteTypes,
-  );
+  const filterFn = useSelectorFilters<WasteRate>({
+    filterSpec: {
+      lenses: {
+        facility: filters.includes("facility")
+          ? (item) => item.facilityid
+          : undefined,
+        partnerFacility: filters.includes("partnerFacility")
+          ? (item) => item.partnerfacilityid
+          : undefined,
+        partner: filters.includes("partner")
+          ? (item) => item.partnercompanyid
+          : undefined,
+        date: filters.includes("date")
+          ? (item) => new Date(item.timerange).getTime()
+          : undefined,
+        wasteType: filters.includes("wasteType")
+          ? (item) => item.wastetype
+          : undefined,
+      },
+    },
+  });
 
   useEffect(() => {
-    dispatch(fetchFacilitiesIfEmpty());
-    dispatch(fetchPartnerFacilitiesIfEmpty());
-    dispatch(fetchPartnersIfEmpty());
-    dispatch(fetchDatesIfEmpty());
-    dispatch(fetchWasteTypesIfEmpty());
-  }, [dispatch]);
-
-  const selectedValuesInitialized = useMemo(() => {
-    return [
-      selectedFacilities.status,
-      selectedPartnerFacilities.status,
-      selectedPartners.status,
-      selectedDateRange.status,
-      selectedWasteTypes.status,
-    ].every((value) => value === "succeeded");
-  }, [
-    selectedFacilities.status,
-    selectedPartnerFacilities.status,
-    selectedPartners.status,
-    selectedDateRange.status,
-    selectedWasteTypes.status,
-  ]);
-
-  useEffect(() => {
-    if (selectedValuesInitialized && data.length > 0) {
-      const filteredData = data.filter((item) => {
-        return (
-          selectedFacilities.selected.some(
-            (facility) => facility.id === item.facilityid,
-          ) &&
-          selectedPartnerFacilities.selected.some(
-            (facility) => facility.id === item.partnerfacilityid,
-          ) &&
-          selectedPartners.selected.some(
-            (partner) => partner.id === item.partnercompanyid,
-          ) &&
-          selectedDateRange.selected.start <= item.timerange &&
-          selectedDateRange.selected.end >= item.timerange &&
-          selectedWasteTypes.selected.some(
-            (wasteType) => wasteType.id === item.wastetype,
-          )
-        );
-      });
-      setFilteredData(filteredData);
-    }
-  }, [
-    data,
-    selectedValuesInitialized,
-    selectedFacilities.selected,
-    selectedPartnerFacilities.selected,
-    selectedPartners.selected,
-    selectedDateRange.selected,
-    selectedWasteTypes.selected,
-  ]);
+    const filtered = data.filter(filterFn);
+    setFilteredData(filtered);
+  }, [data, filterFn]);
 
   return { data: filteredData, error, loading };
 };

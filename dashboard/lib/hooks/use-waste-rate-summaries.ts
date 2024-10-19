@@ -3,6 +3,7 @@
 import { useWasteRates } from "@/lib/hooks/use-waste-rates";
 import {
   AsyncHookState,
+  EnabledFilters,
   SummaryData,
   WasteRateSummary,
   WasteType,
@@ -23,8 +24,10 @@ const wasteRateSummaryFromData = (
   };
 };
 
-export const useWasteRateSummaries = (): AsyncHookState<WasteRateSummary> => {
-  const { data, error, loading } = useWasteRates();
+export const useWasteRateSummaries = ({
+  filters = [],
+}: EnabledFilters): AsyncHookState<WasteRateSummary> => {
+  const { data, error, loading } = useWasteRates({ filters });
 
   const summaries: Record<WasteType["id"], SummaryData> = {};
 

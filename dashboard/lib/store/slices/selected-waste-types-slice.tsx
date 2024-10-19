@@ -62,6 +62,17 @@ const selectedWasteTypesSlice = createSlice({
         (wasteType) => wasteType.id !== action.payload,
       );
     },
+    toggleWasteType: (state, action: PayloadAction<WasteType>) => {
+      if (
+        state.selected.some((wasteType) => wasteType.id === action.payload.id)
+      ) {
+        state.selected = state.selected.filter(
+          (wasteType) => wasteType.id !== action.payload.id,
+        );
+      } else {
+        state.selected.push(action.payload);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -89,6 +100,6 @@ const selectedWasteTypesSlice = createSlice({
   },
 });
 
-export const { addWasteType, removeWasteTypeById } =
+export const { addWasteType, removeWasteTypeById, toggleWasteType } =
   selectedWasteTypesSlice.actions;
 export default selectedWasteTypesSlice.reducer;
