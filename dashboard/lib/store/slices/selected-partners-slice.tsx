@@ -24,12 +24,13 @@ export const fetchPartners = createAsyncThunk(
 
     const uniqueData = data
       .flatMap((item) => item.companies)
+      .filter((value): value is Company => value !== null)
       .filter(
         (value, index, self) =>
           index === self.findIndex((t) => t.id === value.id),
       );
 
-    return uniqueData as Company[];
+    return uniqueData;
   },
 );
 

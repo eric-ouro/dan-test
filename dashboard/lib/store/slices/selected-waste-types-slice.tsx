@@ -25,12 +25,13 @@ export const fetchWasteTypes = createAsyncThunk(
 
     const uniqueData = data
       .flatMap((item) => item.wastetypes)
+      .filter((value): value is WasteType => value !== null)
       .filter(
         (value, index, self) =>
           index === self.findIndex((t) => t.id === value.id),
       );
 
-    return uniqueData as WasteType[];
+    return uniqueData;
   },
 );
 

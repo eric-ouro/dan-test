@@ -1,11 +1,11 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { readEnv } from "@utils/env";
-
+import { Database } from "@utils/supabase/types";
 export const createClient = () => {
   const cookieStore = cookies();
 
-  return createServerClient(
+  return createServerClient<Database>(
     readEnv().NEXT_PUBLIC_SUPABASE_URL,
     readEnv().NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {

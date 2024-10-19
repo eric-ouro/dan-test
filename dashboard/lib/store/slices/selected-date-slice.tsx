@@ -34,8 +34,8 @@ export const fetchDates = createAsyncThunk(
     }
 
     return {
-      minDate: minDateQueryResult.data[0].timerange as SerializedDate,
-      maxDate: maxDateQueryResult.data[0].timerange as SerializedDate,
+      minDate: minDateQueryResult.data[0].timerange,
+      maxDate: maxDateQueryResult.data[0].timerange,
     };
   },
 );

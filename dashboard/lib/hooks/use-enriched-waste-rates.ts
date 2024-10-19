@@ -132,8 +132,20 @@ export const useEnrichedWasteRates = (): AsyncHookState<EnrichedWasteRate> => {
       if (error) {
         setError(error.message);
       } else {
-        // @ts-expect-error Supabase types are not correct (it expects arrays for each of the foreign key fields)
-        setData(data);
+        // filter out null values
+        const filteredData = data.filter(
+          (value): value is EnrichedWasteRate => {
+            return (
+              value.company !== null &&
+              value.partnercompany !== null &&
+              value.facility !== null &&
+              value.partnerfacility !== null &&
+              value.wastetype !== null
+            );
+          },
+        );
+
+        setData(filteredData);
       }
       if (loading) {
         setLoading(false);
