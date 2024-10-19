@@ -1,13 +1,12 @@
 // hook that calculates summaries for waste rates from the use-waste-rates hook
 
 import { useWasteRates } from "@/lib/hooks/use-waste-rates";
-import { AsyncHookState, WasteRateSummary, WasteType } from "@/lib/types";
-
-interface SummaryData {
-  processed: number;
-  quantity: number;
-  recycled: number;
-}
+import {
+  AsyncHookState,
+  SummaryData,
+  WasteRateSummary,
+  WasteType,
+} from "@/lib/types";
 
 const wasteRateSummaryFromData = (
   wasteType: WasteType["id"],
@@ -43,9 +42,11 @@ export const useWasteRateSummaries = (): AsyncHookState<WasteRateSummary> => {
   });
 
   return {
-    data: Object.entries(summaries).map(([wasteType, data]) =>
-      wasteRateSummaryFromData(Number(wasteType), data),
-    ),
+    data: Object.entries(summaries)
+      .map(([wasteType, data]) =>
+        wasteRateSummaryFromData(Number(wasteType), data),
+      )
+      .sort((a, b) => b.quantity - a.quantity),
     error,
     loading,
   };

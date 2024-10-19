@@ -79,6 +79,12 @@ export interface AsyncHookState<T> {
 
 /* Summary Types */
 
+export interface SummaryData {
+  processed: number;
+  quantity: number;
+  recycled: number;
+}
+
 export interface WasteRateSummary {
   label: WasteType["id"];
   quantity: number;

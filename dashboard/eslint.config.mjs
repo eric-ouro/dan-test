@@ -6,6 +6,7 @@ const customRules = {
   rules: {
     // This rule is not compatible with Next.js
     "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
   },
 };
 
