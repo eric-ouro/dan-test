@@ -1,3 +1,5 @@
+/* Data Types */
+
 export interface WasteType {
   id: number;
   name: string;
@@ -12,6 +14,32 @@ export interface Facility {
   id: number;
   name: string;
 }
+
+export interface WasteRate {
+  facilityid: number;
+  companyid: number;
+  partnerfacilityid: number;
+  partnercompanyid: number;
+  timerange: string;
+  parentwastetype: number;
+  wastetype: number;
+  processed: number;
+  recycled: number;
+}
+
+export interface EnrichedWasteRate {
+  facility: Facility;
+  company: Company;
+  partnerfacility: Facility;
+  partnercompany: Company;
+  timerange: string;
+  parentwastetype: number;
+  wastetype: WasteType;
+  processed: number;
+  recycled: number;
+}
+
+/* Store Types */
 
 export interface FetchableThunkState {
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -40,3 +68,21 @@ export interface FetchableIntervalSelector<T>
 export interface FetchableListSelector<T>
   extends FetchableThunkState,
     Selector<T> {}
+
+/* Hook Types */
+
+export interface AsyncHookState<T> {
+  data: T[];
+  error: string | null;
+  loading: boolean;
+}
+
+/* Summary Types */
+
+export interface WasteRateSummary {
+  label: WasteType["id"];
+  quantity: number;
+  recycled: number;
+  processed: number;
+  percentage: number;
+}

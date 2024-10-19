@@ -8,20 +8,9 @@ import { fetchFacilitiesIfEmpty } from "@store/slices/selected-facilities-slice"
 import { fetchPartnersIfEmpty } from "@store/slices/selected-partners-slice";
 import { fetchPartnerFacilitiesIfEmpty } from "@store/slices/selected-partner-facilities-slice";
 import { fetchWasteTypesIfEmpty } from "@store/slices/selected-waste-types-slice";
+import { AsyncHookState, WasteRate } from "@/lib/types";
 
-interface WasteRate {
-  facilityid: number;
-  companyid: number;
-  partnerfacilityid: number;
-  partnercompanyid: number;
-  timerange: string;
-  parentwastetype: number;
-  wastetype: number;
-  processed: number;
-  recycled: number;
-}
-
-const useWasteRateData = () => {
+const useWasteRateData = (): AsyncHookState<WasteRate> => {
   const [data, setData] = useState<WasteRate[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -49,7 +38,7 @@ const useWasteRateData = () => {
   return { data, error, loading };
 };
 
-export const useWasteRates = () => {
+export const useWasteRates = (): AsyncHookState<WasteRate> => {
   const dispatch = useAppDispatch();
   const { data, error, loading } = useWasteRateData();
   const [filteredData, setFilteredData] = useState<WasteRate[]>([]);

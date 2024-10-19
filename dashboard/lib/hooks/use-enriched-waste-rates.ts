@@ -8,21 +8,9 @@ import { fetchFacilitiesIfEmpty } from "@store/slices/selected-facilities-slice"
 import { fetchPartnersIfEmpty } from "@store/slices/selected-partners-slice";
 import { fetchPartnerFacilitiesIfEmpty } from "@store/slices/selected-partner-facilities-slice";
 import { fetchWasteTypesIfEmpty } from "@store/slices/selected-waste-types-slice";
-import { Company, Facility, WasteType } from "@/lib/types";
+import { AsyncHookState, EnrichedWasteRate } from "@/lib/types";
 
-interface EnrichedWasteRate {
-  facility: Facility;
-  company: Company;
-  partnerfacility: Facility;
-  partnercompany: Company;
-  timerange: string;
-  parentwastetype: number;
-  wastetype: WasteType;
-  processed: number;
-  recycled: number;
-}
-
-export const useEnrichedWasteRates = () => {
+export const useEnrichedWasteRates = (): AsyncHookState<EnrichedWasteRate> => {
   const dispatch = useAppDispatch();
   const supabase = createClient();
 
