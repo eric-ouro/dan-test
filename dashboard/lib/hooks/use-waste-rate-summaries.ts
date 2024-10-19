@@ -4,21 +4,16 @@ import { useWasteRates } from "@/lib/hooks/use-waste-rates";
 import {
   AsyncHookState,
   EnabledFilters,
-  SummaryData,
   WasteRateSummary,
   WasteType,
 } from "@/lib/types";
 
-const wasteRateSummaryFromData = (
-  wasteType: WasteType["id"],
-  data: SummaryData,
-) => {
+const withPercentage = (data: WasteRateSummary) => {
   // calculate percentage
   const percentage =
     data.quantity > 0 ? (data.recycled / data.quantity) * 100 : 0;
 
   return {
-    label: wasteType,
     ...data,
     percentage,
   };
@@ -29,15 +24,22 @@ export const useWasteRateSummaries = ({
 }: EnabledFilters): AsyncHookState<WasteRateSummary> => {
   const { data, error, loading } = useWasteRates({ filters });
 
-  const summaries: Record<WasteType["id"], SummaryData> = {};
+  const summaries: Record<WasteType["id"], WasteRateSummary> = {};
 
   // for each waste rate, add the processed, quantity, and recycled to the summaries
   data.forEach((wasteRate) => {
     const { processed, recycled, wastetype } = wasteRate;
-    summaries[wastetype] ??= { processed: 0, quantity: 0, recycled: 0 };
+    summaries[wastetype] ??= {
+      label: wastetype,
+      processed: 0,
+      quantity: 0,
+      recycled: 0,
+      percentage: 0,
+    };
 
     // add processed and recycled to existing values
     summaries[wastetype] = {
+      ...summaries[wastetype],
       processed: summaries[wastetype].processed + processed,
       recycled: summaries[wastetype].recycled + recycled,
       quantity: summaries[wastetype].quantity + processed + recycled,
@@ -45,10 +47,8 @@ export const useWasteRateSummaries = ({
   });
 
   return {
-    data: Object.entries(summaries)
-      .map(([wasteType, data]) =>
-        wasteRateSummaryFromData(Number(wasteType), data),
-      )
+    data: Object.values(summaries)
+      .map((summary) => withPercentage(summary))
       .sort((a, b) => b.quantity - a.quantity),
     error,
     loading,
