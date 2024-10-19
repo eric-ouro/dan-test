@@ -5,7 +5,9 @@ import React from "react";
 import { useWasteRates } from "@/lib/hooks/use-waste-rates";
 
 const ReportingDataList: React.FC = () => {
-  const { data, error, loading } = useWasteRates();
+  const { data, error, loading } = useWasteRates({
+    filters: ["date", "wasteType", "facility", "partnerFacility", "partner"],
+  });
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
