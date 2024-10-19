@@ -1,17 +1,16 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { createClient } from "@/utils/supabase/client";
 import { AppThunk } from "@store/configuration";
+import { FetchableThunkState } from "@store/slices/types";
 
 export interface Facility {
   id: number;
   name: string;
 }
 
-interface SelectedFacilitiesState {
+interface SelectedFacilitiesState extends FetchableThunkState {
   facilities: Facility[];
   selectedFacilities: Facility[];
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
 }
 
 export const fetchFacilities = createAsyncThunk(
@@ -19,10 +18,10 @@ export const fetchFacilities = createAsyncThunk(
   async () => {
     const supabase = createClient();
     const { data, error } = await supabase
-      .from("mixedplasticrates_monthly_facilitypartner")
+      .from("wasterates_monthly_facilitypartner")
       .select(
         `
-        facilities!mixedplasticrates_monthly_facilitypartner_facilityid_fkey (
+        facilities!wasterates_monthly_facilitypartner_facilityid_fkey (
           id,
           name
         )

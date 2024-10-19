@@ -1,4 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createClient } from "@/utils/supabase/client";
+import { AppThunk } from "@store/configuration";
+import { FetchableThunkState } from "@store/slices/types";
 
 const NULL_DATE = new Date(0).toISOString();
 
@@ -9,10 +12,39 @@ interface SerializedDateRange {
   end: SerializedDate;
 }
 
-interface SelectedDateState {
+interface SelectedDateState extends FetchableThunkState {
   valid: SerializedDateRange;
   selected: SerializedDateRange;
 }
+
+export const fetchDates = createAsyncThunk(
+  "selectedDate/fetchDates",
+  async () => {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("wasterates_monthly_facilitypartner")
+      .select("timerange");
+
+    if (error) throw new Error(error.message);
+
+    const timeranges = data.map((item) => item.timerange as string);
+    const minDate = timeranges.reduce((min, current) => {
+      return min < current ? min : current;
+    }, timeranges[0]);
+    const maxDate = timeranges.reduce((max, current) => {
+      return max > current ? max : current;
+    }, timeranges[0]);
+
+    return { minDate, maxDate };
+  },
+);
+
+export const fetchDatesIfEmpty = (): AppThunk => async (dispatch, getState) => {
+  const { valid } = getState().selectedDate;
+  if (valid.start === NULL_DATE || valid.end === NULL_DATE) {
+    await dispatch(fetchDates());
+  }
+};
 
 const initialState: SelectedDateState = {
   valid: {
@@ -23,41 +55,14 @@ const initialState: SelectedDateState = {
     start: NULL_DATE,
     end: NULL_DATE,
   },
+  status: "idle",
+  error: null,
 };
 
 const selectedDateSlice = createSlice({
   name: "selectedDate",
   initialState,
   reducers: {
-    setValidInterval: (state, action: PayloadAction<SerializedDateRange>) => {
-      console.log("setValidInterval", action.payload);
-      state.valid.start = action.payload.start;
-      state.valid.end = action.payload.end;
-      // if selected interval is default, set it to valid interval
-      if (
-        state.selected.start === NULL_DATE ||
-        state.selected.end === NULL_DATE
-      ) {
-        state.selected.start = action.payload.start;
-        state.selected.end = action.payload.end;
-      }
-
-      // if selected start date is outside the valid interval, set it to valid start
-      if (state.selected.start < action.payload.start) {
-        state.selected.start = action.payload.start;
-      }
-      // if selected end date is outside the valid interval, set it to valid end
-      if (state.selected.end > action.payload.end) {
-        state.selected.end = action.payload.end;
-      }
-    },
-    setSelectedInterval: (
-      state,
-      action: PayloadAction<SerializedDateRange>,
-    ) => {
-      state.selected.start = action.payload.start;
-      state.selected.end = action.payload.end;
-    },
     setStart: (state, action: PayloadAction<SerializedDate>) => {
       // if action payload is outside the valid interval, do nothing
       if (
@@ -79,8 +84,24 @@ const selectedDateSlice = createSlice({
       state.selected.end = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchDates.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchDates.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.valid.start = action.payload.minDate;
+        state.valid.end = action.payload.maxDate;
+        state.selected.start = action.payload.minDate;
+        state.selected.end = action.payload.maxDate;
+      })
+      .addCase(fetchDates.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message ?? "Failed to fetch dates";
+      });
+  },
 });
 
-export const { setValidInterval, setSelectedInterval, setStart, setEnd } =
-  selectedDateSlice.actions;
+export const { setStart, setEnd } = selectedDateSlice.actions;
 export default selectedDateSlice.reducer;

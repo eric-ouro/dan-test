@@ -1,17 +1,15 @@
 import { createClient } from "@/utils/supabase/client";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "@store/configuration";
-
+import { FetchableThunkState } from "@store/slices/types";
 export interface Partner {
   id: number;
   name: string;
 }
 
-interface SelectedPartnersState {
+interface SelectedPartnersState extends FetchableThunkState {
   partners: Partner[];
   selectedPartners: Partner[];
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
 }
 
 export const fetchPartners = createAsyncThunk(
@@ -19,17 +17,15 @@ export const fetchPartners = createAsyncThunk(
   async () => {
     const supabase = createClient();
     const { data, error } = await supabase
-      .from("mixedplasticrates_monthly_facilitypartner")
+      .from("wasterates_monthly_facilitypartner")
       .select(
         `
-        companies!mixedplasticrates_monthly_facilitypartner_partnercompanyid_fkey (
+        companies!wasterates_monthly_facilitypartner_partnercompanyid_fkey (
           id,
           name
         )
       `,
       );
-
-    console.log({ data, error });
 
     if (error) throw new Error(error.message);
 

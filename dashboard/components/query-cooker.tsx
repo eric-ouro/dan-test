@@ -48,6 +48,7 @@ const QueryCooker: React.FC = () => {
               fontSize: 14,
               scrollBeyondLastLine: false,
               wordWrap: "on",
+              tabSize: 2,
             }}
           />
         </div>

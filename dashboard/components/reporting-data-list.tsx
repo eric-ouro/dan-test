@@ -13,16 +13,101 @@ const ReportingDataList: React.FC = () => {
   return (
     <div>
       <h2>Reporting Data</h2>
-      <ul>
-        {data.map((summary, index) => (
-          <li key={index}>
-            {`${summary.year.toString().padStart(4, "0")}-${summary.month.toString().padStart(2, "0")}: 
-            ${summary.petrecycled !== null ? `PET Recycled: ${summary.petrecycled.toString()}, ` : ""}
-            ${summary.hdperecycled !== null ? `HDPE Recycled: ${summary.hdperecycled.toString()}, ` : ""}
-            ${summary.mixedplasticrecycled !== null ? `Mixed Plastic Recycled: ${summary.mixedplasticrecycled.toString()}` : ""}`}
-          </li>
-        ))}
-      </ul>
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-700">
+          <thead className="bg-gray-800">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider bg-transparent"
+              >
+                Time Range
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider bg-transparent"
+              >
+                Facility ID
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider bg-transparent"
+              >
+                Company ID
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider bg-transparent"
+              >
+                Partner Facility ID
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider bg-transparent"
+              >
+                Partner Company ID
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider bg-transparent"
+              >
+                Parent Waste Type
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider bg-transparent"
+              >
+                Waste Type
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider bg-transparent"
+              >
+                Processed
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider bg-transparent"
+              >
+                Recycled
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-gray-900 divide-y divide-gray-700">
+            {data.map((summary, index) => (
+              <tr key={index}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {summary.timerange}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {summary.facilityid}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {summary.companyid}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {summary.partnerfacilityid}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {summary.partnercompanyid}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {summary.parentwastetype}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {summary.wastetype}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {summary.processed}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {summary.recycled}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

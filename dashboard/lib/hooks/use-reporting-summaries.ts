@@ -1,75 +1,152 @@
 "use client";
 
 import { createClient } from "@utils/supabase/client";
-import { useEffect, useState } from "react";
-import { setValidInterval } from "@store/slices/selected-date-slice";
-import { useAppDispatch } from "@hooks/store-hooks";
+import { useEffect, useState, useMemo } from "react";
+import { useAppDispatch, useAppSelector } from "@hooks/store-hooks";
+import { fetchDatesIfEmpty } from "@store/slices/selected-date-slice";
+import { fetchFacilitiesIfEmpty } from "@store/slices/selected-facilities-slice";
+import { fetchPartnersIfEmpty } from "@store/slices/selected-partners-slice";
+import { fetchPartnerFacilitiesIfEmpty } from "@store/slices/selected-partner-facilities-slice";
+import { fetchWasteTypesIfEmpty } from "@store/slices/selected-waste-types-slice";
 
 interface ReportingSummary {
   facilityid: number;
   companyid: number;
   partnerfacilityid: number;
   partnercompanyid: number;
-  month: number;
-  year: number;
-  petrecycled: number | null;
-  petprocessed: number | null;
-  hdperecycled: number | null;
-  hdpeprocessed: number | null;
-  pvcrecycled: number | null;
-  pvcprocessed: number | null;
-  ldperecycled: number | null;
-  ldpeprocessed: number | null;
-  pprecycled: number | null;
-  ppprocessed: number | null;
-  psrecycled: number | null;
-  psprocessed: number | null;
-  mixedplasticrecycled: number | null;
-  mixedplasticprocessed: number | null;
-  mixedplasticquantity: number | null;
+  timerange: string;
+  parentwastetype: number;
+  wastetype: number;
+  processed: number;
+  recycled: number;
 }
 
-export function useReportingSummaries() {
+export const useReportingSummaries = () => {
   const dispatch = useAppDispatch();
+  const supabase = createClient();
+
   const [data, setData] = useState<ReportingSummary[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const supabase = createClient();
+  const selectedFacilities = useAppSelector(
+    (state) => state.selectedFacilities,
+  );
+  const selectedPartnerFacilities = useAppSelector(
+    (state) => state.selectedPartnerFacilities,
+  );
+  const selectedPartners = useAppSelector((state) => state.selectedPartners);
+  const selectedDateRange = useAppSelector((state) => state.selectedDate);
+  const selectedWasteTypes = useAppSelector(
+    (state) => state.selectedWasteTypes,
+  );
 
   useEffect(() => {
+    if (selectedFacilities.status === "idle") {
+      dispatch(fetchFacilitiesIfEmpty());
+    }
+  }, [selectedFacilities.status, dispatch]);
+
+  useEffect(() => {
+    if (selectedPartnerFacilities.status === "idle") {
+      dispatch(fetchPartnerFacilitiesIfEmpty());
+    }
+  }, [selectedPartnerFacilities.status, dispatch]);
+
+  useEffect(() => {
+    if (selectedPartners.status === "idle") {
+      dispatch(fetchPartnersIfEmpty());
+    }
+  }, [selectedPartners.status, dispatch]);
+
+  useEffect(() => {
+    if (selectedDateRange.status === "idle") {
+      dispatch(fetchDatesIfEmpty());
+    }
+  }, [selectedDateRange.status, dispatch]);
+
+  useEffect(() => {
+    if (selectedWasteTypes.status === "idle") {
+      dispatch(fetchWasteTypesIfEmpty());
+    }
+  }, [selectedWasteTypes.status, dispatch]);
+
+  const selectedValuesInitialized = useMemo(() => {
+    return [
+      selectedFacilities.status,
+      selectedPartnerFacilities.status,
+      selectedPartners.status,
+      selectedDateRange.status,
+      selectedWasteTypes.status,
+    ].every((value) => value === "succeeded");
+  }, [
+    selectedFacilities.status,
+    selectedPartnerFacilities.status,
+    selectedPartners.status,
+    selectedDateRange.status,
+    selectedWasteTypes.status,
+  ]);
+
+  useEffect(() => {
+    console.log("useEffect", selectedValuesInitialized);
     const fetchData = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("mixedplasticrates_monthly_facilitypartner")
-        .select();
+      const query = supabase
+        .from("wasterates_monthly_facilitypartner")
+        .select()
+        .in(
+          "facilityid",
+          selectedFacilities.selectedFacilities.map((facility) => facility.id),
+        )
+        .in(
+          "partnerfacilityid",
+          selectedPartnerFacilities.selectedPartnerFacilities.map(
+            (facility) => facility.id,
+          ),
+        )
+        .in(
+          "partnercompanyid",
+          selectedPartners.selectedPartners.map((partner) => partner.id),
+        )
+        .in(
+          "wastetype",
+          selectedWasteTypes.selectedWasteTypes.map(
+            (wasteType) => wasteType.id,
+          ),
+        )
+        .gte("timerange", selectedDateRange.selected.start)
+        .lte("timerange", selectedDateRange.selected.end);
+
+      const { data, error } = await query;
+
       if (error) {
         setError(error.message);
       } else {
-        setData(data);
+        setData(
+          data.map(
+            (summary: ReportingSummary) =>
+              ({
+                ...summary,
+                timerange: new Date(summary.timerange).toISOString(),
+              }) as ReportingSummary,
+          ),
+        );
       }
-      setLoading(false);
+      if (loading) {
+        setLoading(false);
+      }
     };
 
-    void fetchData();
-  }, []);
-
-  // calculate date range on data change
-  useEffect(() => {
-    // if data is empty return
-    if (data.length === 0) return;
-
-    const dates = data.map((summary) => {
-      return new Date(summary.year, summary.month - 1).toISOString();
-    });
-    const start = dates.reduce((min, current) => {
-      return current < min ? current : min;
-    }, dates[0]);
-    const end = dates.reduce((max, current) => {
-      return current > max ? current : max;
-    }, dates[0]);
-    dispatch(setValidInterval({ start, end }));
-  }, [data]);
+    if (selectedValuesInitialized) {
+      void fetchData();
+    }
+  }, [
+    selectedValuesInitialized,
+    selectedFacilities.selectedFacilities,
+    selectedPartnerFacilities.selectedPartnerFacilities,
+    selectedPartners.selectedPartners,
+    selectedDateRange.selected,
+    selectedWasteTypes.selectedWasteTypes,
+  ]);
 
   return { data, error, loading };
-}
+};

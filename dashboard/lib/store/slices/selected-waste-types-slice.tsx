@@ -1,17 +1,16 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { createClient } from "@/utils/supabase/client";
 import { AppThunk } from "@store/configuration";
+import { FetchableThunkState } from "@store/slices/types";
 
 export interface WasteType {
   id: number;
   name: string;
 }
 
-interface SelectedWasteTypesState {
+interface SelectedWasteTypesState extends FetchableThunkState {
   wasteTypes: WasteType[];
   selectedWasteTypes: WasteType[];
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
 }
 
 // Async thunk for fetching plastic types
@@ -19,10 +18,27 @@ export const fetchWasteTypes = createAsyncThunk(
   "selectedWasteTypes/fetchWasteTypes",
   async () => {
     const supabase = createClient();
-    const { data, error } = await supabase.from("wastetypes").select();
-    console.log({ data, error });
+    const { data, error } = await supabase
+      .from("wasterates_monthly_facilitypartner")
+      .select(
+        `
+        wastetypes (
+          id,
+          name
+        )
+      `,
+      );
+
     if (error) throw new Error(error.message);
-    return data as WasteType[];
+
+    const uniqueData = data
+      .flatMap((item) => item.wastetypes)
+      .filter(
+        (value, index, self) =>
+          index === self.findIndex((t) => t.id === value.id),
+      );
+
+    return uniqueData as WasteType[];
   },
 );
 
