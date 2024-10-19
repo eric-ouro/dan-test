@@ -67,34 +67,12 @@ export const useWasteRates = () => {
   );
 
   useEffect(() => {
-    if (selectedFacilities.status === "idle") {
-      dispatch(fetchFacilitiesIfEmpty());
-    }
-  }, [selectedFacilities.status, dispatch]);
-
-  useEffect(() => {
-    if (selectedPartnerFacilities.status === "idle") {
-      dispatch(fetchPartnerFacilitiesIfEmpty());
-    }
-  }, [selectedPartnerFacilities.status, dispatch]);
-
-  useEffect(() => {
-    if (selectedPartners.status === "idle") {
-      dispatch(fetchPartnersIfEmpty());
-    }
-  }, [selectedPartners.status, dispatch]);
-
-  useEffect(() => {
-    if (selectedDateRange.status === "idle") {
-      dispatch(fetchDatesIfEmpty());
-    }
-  }, [selectedDateRange.status, dispatch]);
-
-  useEffect(() => {
-    if (selectedWasteTypes.status === "idle") {
-      dispatch(fetchWasteTypesIfEmpty());
-    }
-  }, [selectedWasteTypes.status, dispatch]);
+    dispatch(fetchFacilitiesIfEmpty());
+    dispatch(fetchPartnerFacilitiesIfEmpty());
+    dispatch(fetchPartnersIfEmpty());
+    dispatch(fetchDatesIfEmpty());
+    dispatch(fetchWasteTypesIfEmpty());
+  }, [dispatch]);
 
   const selectedValuesInitialized = useMemo(() => {
     return [
