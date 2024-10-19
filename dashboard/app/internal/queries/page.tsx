@@ -1,6 +1,6 @@
 import withAuth from "@hoc/with-server-auth";
 
-import QueryCooker from "@/components/query-cooker";
+import QueryCooker from "@/components/internal/query-cooker";
 
 const DashboardPage = () => {
   return (

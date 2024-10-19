@@ -1,10 +1,10 @@
 import withAuth from "@hoc/with-server-auth";
 
-import ReportingDataList from "@/components/reporting-data-list";
-import PartnersList from "@/components/partners-list";
-import FacilitiesList from "@/components/facilities-list";
-import WasteTypesList from "@/components/waste-types-list";
-import PartnerFacilitiesList from "@/components/partner-facilities-list";
+import ReportingDataList from "@/components/internal/reporting-data-list";
+import PartnersList from "@/components/internal/partners-list";
+import FacilitiesList from "@/components/internal/facilities-list";
+import WasteTypesList from "@/components/internal/waste-types-list";
+import PartnerFacilitiesList from "@/components/internal/partner-facilities-list";
 
 const DashboardPage = () => {
   return (

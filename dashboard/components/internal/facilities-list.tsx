@@ -17,7 +17,6 @@ const FacilitiesList = () => {
   );
 
   useEffect(() => {
-    console.log("fetching facilities");
     dispatch(fetchFacilitiesIfEmpty());
   }, [dispatch]);
 
