@@ -4,7 +4,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint \"**/*.{ts,tsx}\" --ignore-pattern node_modules/ --ignore-pattern .next/"
+    "lint": "eslint \"**/*.{ts,tsx}\" --ignore-pattern node_modules/ --ignore-pattern .next/",
+    "sync-types": "npx supabase gen types --lang typescript --project-id bhjrrzkowqjjimxdghkl > ./utils/supabase/types.ts"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
