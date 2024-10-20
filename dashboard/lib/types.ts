@@ -118,6 +118,14 @@ export interface SummaryData {
   recycled: number;
 }
 
+export interface SummaryRatios {
+  recycleRate: number;
+  recyclingLossQuantity: number;
+  recyclingLossRate: number;
+  processingLoss: number;
+  processingLossRate: number;
+}
+
 export interface WasteRateSummary extends SummaryData {
   label: WasteType["id"];
   percentage: number;
@@ -127,3 +135,7 @@ export interface EnrichedWasteRateSummary extends SummaryData {
   label: WasteType;
   percentage: number;
 }
+
+export interface EnrichedWasteRateSummaryWithRatios
+  extends EnrichedWasteRateSummary,
+    SummaryRatios {}

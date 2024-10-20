@@ -61,6 +61,15 @@ const selectedPartnersSlice = createSlice({
         (partner) => partner.id !== action.payload,
       );
     },
+    togglePartner: (state, action: PayloadAction<Company>) => {
+      if (state.selected.some((partner) => partner.id === action.payload.id)) {
+        state.selected = state.selected.filter(
+          (partner) => partner.id !== action.payload.id,
+        );
+      } else {
+        state.selected.push(action.payload);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
