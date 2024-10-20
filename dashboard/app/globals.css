@@ -67,3 +67,53 @@
     @apply bg-background text-foreground;
   }
 }
+
+body {
+  font-family: 'DM Mono', sans-serif;
+}
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+.dm-mono {
+  font-family: 'DM Mono', monospace;
+}
+
+
+.dashcomponent{
+  padding: 1rem;
+  margin-top:40px;
+  font-size:small;
+
+}
+
+.dashloading{
+  border-radius: 0.5rem;
+  padding: 1rem;
+  height: 320px;
+}
+
+.responsive-padding {
+  padding: 50px;
+  padding-top: 0px;
+}
+
+@media (min-width: 768px) {
+  .responsive-padding {
+    padding: 100px;
+    padding-top: 0px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-padding {
+    padding: 200px;
+    padding-top: 0px;
+  }
+  .dashcomponent{
+    padding: 0rem;
+  }
+}
+
+

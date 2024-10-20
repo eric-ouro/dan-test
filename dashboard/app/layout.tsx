@@ -24,6 +24,13 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang="en" className={GeistSans.className} suppressHydrationWarning>
+        <head>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+            rel="stylesheet"
+          />
+          <link rel="icon" href="/favicon.svg" />
+        </head>
         <body className="bg-background text-foreground">
           <ThemeProvider
             attribute="class"
