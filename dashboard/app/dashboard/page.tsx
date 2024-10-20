@@ -5,7 +5,7 @@ import PlasticFootprintMultiStackBar from "@/components/plastic-footprint-multi-
 
 const DashboardPage = () => {
   return (
-    <div className="flex-1 w-full flex flex-col gap-8">
+    <div className="responsive-padding min-h-screen flex flex-col gap-8">
       <PlasticFootprintSimple />
       <PlasticFootprintMultiStackBar />
     </div>
