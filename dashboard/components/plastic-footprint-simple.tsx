@@ -31,6 +31,10 @@ const PlasticFootprintSimple = () => {
     return summaries.reduce((acc, curr) => acc + curr.quantity, 0);
   }, [summaries]);
 
+  const totalFilteredQuantity = useMemo(() => {
+    return filteredSummaries.reduce((acc, curr) => acc + curr.quantity, 0);
+  }, [filteredSummaries]);
+
   const clickableSummaries = useMemo(() => {
     return summaries.filter((item) => item.quantity > 0);
   }, [summaries]);
@@ -57,7 +61,8 @@ const PlasticFootprintSimple = () => {
         <DashboardDisplayHeader headerText="Plastic Footprint" />
         <div className="flex-grow flex gap-1 h-[128px]">
           {filteredSummaries.map((item, index) => {
-            const totalWidthPercentage = (item.quantity / totalQuantity) * 100;
+            const totalWidthPercentage =
+              (item.quantity / totalFilteredQuantity) * 100;
             const processingLossRate = item.percentage;
             // TODO: include whether a waste type is mixed, and pull from db into data layer
             return (
