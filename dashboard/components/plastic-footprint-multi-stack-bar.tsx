@@ -66,7 +66,7 @@ const PlasticFootprintMultiStackBar = () => {
   );
 
   const getHeaderClass = (key: SortKey) => {
-    return sortConfig.key === key ? "text-black" : "text-neutral-400";
+    return sortConfig.key === key ? "custom-underline" : "text-neutral-400";
   };
 
   if (summariesLoading) return <div>Loading...</div>;
