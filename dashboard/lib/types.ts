@@ -52,6 +52,10 @@ export interface Selector<T> {
   selected: T[];
 }
 
+export interface List<T> {
+  data: T[];
+}
+
 interface ItemSelector<T> {
   valid: T;
   selected: T;
@@ -69,6 +73,8 @@ export interface FetchableIntervalSelector<T>
 export interface FetchableListSelector<T>
   extends FetchableThunkState,
     Selector<T> {}
+
+export interface FetchableList<T> extends FetchableThunkState, List<T> {}
 
 /* Sorting Types */
 

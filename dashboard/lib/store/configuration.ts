@@ -1,5 +1,6 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 
+import enrichedWasteRatesSlice from "@slices/enriched-waste-rates-slice";
 import selectedDateSlice from "@slices/selected-date-slice";
 import selectedWasteTypesSlice from "@slices/selected-waste-types-slice";
 import selectedFacilitiesSlice from "@slices/selected-facilities-slice";
@@ -9,6 +10,7 @@ import selectedPartnersSlice from "@slices/selected-partners-slice";
 export const makeStore = () => {
   return configureStore({
     reducer: {
+      enrichedWasteRates: enrichedWasteRatesSlice,
       selectedDate: selectedDateSlice,
       selectedWasteTypes: selectedWasteTypesSlice,
       selectedFacilities: selectedFacilitiesSlice,
