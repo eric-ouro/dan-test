@@ -70,6 +70,15 @@ export interface FetchableListSelector<T>
   extends FetchableThunkState,
     Selector<T> {}
 
+/* Sorting Types */
+
+export type SortDirection = "ascending" | "descending";
+
+export interface SortConfig<T, K extends keyof T> {
+  key: K;
+  direction: SortDirection;
+}
+
 /* Hook Types */
 
 export interface AsyncHookState<T> {

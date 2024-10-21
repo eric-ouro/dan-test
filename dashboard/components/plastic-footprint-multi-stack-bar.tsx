@@ -3,6 +3,11 @@
 import { useMemo, useState } from "react";
 import { useEnrichedWasteRateSummariesWithRatios } from "@/lib/hooks/use-enriched-waste-rate-summaries";
 import DashboardDisplayHeader from "@components/dashboard-display-header";
+import {
+  EnrichedWasteRateSummaryWithRatios,
+  SortConfig,
+  SortDirection,
+} from "@/lib/types";
 
 type SortKey =
   | "percentage"
@@ -11,15 +16,10 @@ type SortKey =
   | "recyclingLossRate"
   | "processingLossRate";
 
-type SortDirection = "ascending" | "descending";
-
-interface SortConfig {
-  key: SortKey;
-  direction: SortDirection;
-}
-
 const PlasticFootprintMultiStackBar = () => {
-  const [sortConfig, setSortConfig] = useState<SortConfig>({
+  const [sortConfig, setSortConfig] = useState<
+    SortConfig<EnrichedWasteRateSummaryWithRatios, SortKey>
+  >({
     key: "percentage",
     direction: "descending",
   });
@@ -77,7 +77,7 @@ const PlasticFootprintMultiStackBar = () => {
       <div className="flex flex-col gap-3 overflow-hidden h-full">
         <DashboardDisplayHeader headerText="Plastic Footprint & Recycle Rates" />
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white table-auto">
+          <table className="min-w-full table-auto">
             <thead className="cursor-pointer text-xs text-left ">
               <tr className="h-12">
                 <th className="text-neutral-400 text-xs text-left min-w-[80px] font-normal ">
@@ -181,11 +181,10 @@ const PlasticFootprintMultiStackBar = () => {
                           </div>
                         </div>
                         <div
-                          className={`h-full flex items-center justify-start`}
+                          className={`h-full flex items-center justify-start bg-neutral-400`}
                           style={{
                             width: `${Math.max(item.recyclingLossRate, 10)}%`,
                             minWidth,
-                            background: `#${item.label.display_color}`,
                           }}
                         >
                           <div className="text-white text-xs ml-1 opacity-60 flex items-center">
@@ -194,7 +193,7 @@ const PlasticFootprintMultiStackBar = () => {
                           </div>
                         </div>
                         <div
-                          className={`h-full flex items-center justify-start  bg-neutral-500`}
+                          className={`h-full flex items-center justify-start bg-neutral-500`}
                           style={{
                             width: `${Math.max(item.processingLossRate, 10)}%`,
                             minWidth,
