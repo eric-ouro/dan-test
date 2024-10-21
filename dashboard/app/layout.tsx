@@ -43,8 +43,10 @@ export default function RootLayout({
                 <div className="flex gap-5 items-center font-semibold">
                   <Link href={"/"}>OURO</Link>
                 </div>
-                <ThemeSwitcher />
-                <HeaderAuth />
+                <div className="flex gap-5 items-center">
+                  <HeaderAuth />
+                  <ThemeSwitcher />
+                </div>
               </div>
             </nav>
             {children}
