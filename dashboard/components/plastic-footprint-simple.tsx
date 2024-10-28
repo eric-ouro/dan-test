@@ -18,6 +18,7 @@ const PlasticFootprintSimple = () => {
     error: filteredSummariesError,
   } = useEnrichedWasteRateSummaries({
     filters: ["partner", "facility", "partnerFacility", "wasteType"],
+    group: "none",
   });
   const {
     data: summaries,
@@ -25,6 +26,7 @@ const PlasticFootprintSimple = () => {
     error: summariesError,
   } = useEnrichedWasteRateSummaries({
     filters: ["partner", "facility", "partnerFacility"],
+    group: "none",
   });
 
   const totalQuantity = useMemo(() => {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEnrichedWasteRateSummariesWithRatios } from "@/lib/hooks/use-enriched-waste-rate-summaries";
+import { EnrichedWasteRateSummaryWithRatios } from "@/lib/types";
 import MultiStackBar from "@components/display/multi-stack-bar";
 
 const PartnerFootprintMultiStackBar = () => {
@@ -10,13 +11,28 @@ const PartnerFootprintMultiStackBar = () => {
     error: summariesError,
   } = useEnrichedWasteRateSummariesWithRatios({
     filters: ["partner", "facility", "partnerFacility", "wasteType"],
-    group: "none",
+    group: "facility",
   });
 
   if (summariesLoading) return <div>Loading...</div>;
   if (summariesError) return <div>Error: {summariesError}</div>;
 
-  return <MultiStackBar summaries={summaries} />;
+  // group summaries by facility and render a multi stack bar for each facility
+  const facilitySummaries = summaries.reduce<
+    Record<string, EnrichedWasteRateSummaryWithRatios[]>
+  >((acc, curr) => {
+    acc[curr.group] ??= [];
+    acc[curr.group].push(curr);
+    return acc;
+  }, {});
+
+  return (
+    <>
+      {Object.values(facilitySummaries).map((summaries) => (
+        <MultiStackBar name={summaries[0].groupName} summaries={summaries} />
+      ))}
+    </>
+  );
 };
 
 export default PartnerFootprintMultiStackBar;

@@ -93,6 +93,10 @@ export interface AsyncHookState<T> {
   loading: boolean;
 }
 
+// Group types are used as an additional key for summaries so that waste rates can be calculated for
+// an additional dimension beyond waste type.
+export type GroupType = "facility" | "partnerfacility" | "partner" | "none";
+
 export type FilterType =
   | "facility"
   | "partnerFacility"
@@ -148,6 +152,10 @@ export interface WasteRateSummary extends SummaryData {
 
 export interface EnrichedWasteRateSummary extends SummaryData {
   label: WasteType;
+  // group is the key used to group summaries - db enforces unique values
+  group: string;
+  // groupName is the name of the group - not necessarily unique
+  groupName: string;
   percentage: number;
 }
 

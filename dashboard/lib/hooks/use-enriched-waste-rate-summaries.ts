@@ -4,9 +4,10 @@ import { useEnrichedWasteRates } from "@/lib/hooks/use-enriched-waste-rates";
 import {
   AsyncHookState,
   EnabledFilters,
+  EnrichedWasteRate,
   EnrichedWasteRateSummary,
   EnrichedWasteRateSummaryWithRatios,
-  WasteType,
+  GroupType,
 } from "@/lib/types";
 
 const withPercentage = (data: EnrichedWasteRateSummary) => {
@@ -22,18 +23,61 @@ const withPercentage = (data: EnrichedWasteRateSummary) => {
 
 export const useEnrichedWasteRateSummaries = ({
   filters = [],
-}: EnabledFilters): AsyncHookState<EnrichedWasteRateSummary> => {
+  group = "none",
+}: EnabledFilters & {
+  group: GroupType;
+}): AsyncHookState<EnrichedWasteRateSummary> => {
   const { data, error, loading } = useEnrichedWasteRates({
     filters,
   });
 
-  const summaries: Record<WasteType["id"], EnrichedWasteRateSummary> = {};
+  // summaries are organized by group and then by waste type
+  const summaries: Record<
+    string,
+    Record<string, EnrichedWasteRateSummary>
+  > = {};
+
+  const getGroupKey = (wasteRate: EnrichedWasteRate) => {
+    const { facility, partnerfacility, partnercompany } = wasteRate;
+    // case statements to return the correct key for the group
+    switch (group) {
+      case "facility":
+        return facility.id;
+      case "partnerfacility":
+        return partnerfacility.id;
+      case "partner":
+        return partnercompany.id;
+      default:
+        return -1;
+    }
+  };
+
+  const getGroupName = (wasteRate: EnrichedWasteRate) => {
+    const { facility, partnerfacility, partnercompany } = wasteRate;
+    switch (group) {
+      case "facility":
+        return facility.name;
+      case "partnerfacility":
+        return partnerfacility.name;
+      case "partner":
+        return partnercompany.name;
+      default:
+        return "";
+    }
+  };
 
   // for each waste rate, add the processed, quantity, and recycled to the summaries
   data.forEach((wasteRate) => {
     const { processed, recycled, wastetype } = wasteRate;
-    summaries[wastetype.id] ??= {
+    const groupKey = getGroupKey(wasteRate);
+    // initialize the waste type summary if it doesn't exist
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    summaries[groupKey] ??= {};
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    summaries[groupKey][wastetype.id] ??= {
       label: wastetype,
+      group: groupKey.toString(),
+      groupName: getGroupName(wasteRate),
       processed: 0,
       quantity: 0,
       recycled: 0,
@@ -41,17 +85,20 @@ export const useEnrichedWasteRateSummaries = ({
     };
 
     // add processed and recycled to existing values
-    summaries[wastetype.id] = {
-      ...summaries[wastetype.id],
-      processed: summaries[wastetype.id].processed + processed,
-      recycled: summaries[wastetype.id].recycled + recycled,
-      quantity: summaries[wastetype.id].quantity + processed + recycled,
+    summaries[groupKey][wastetype.id] = {
+      ...summaries[groupKey][wastetype.id],
+      processed: summaries[groupKey][wastetype.id].processed + processed,
+      recycled: summaries[groupKey][wastetype.id].recycled + recycled,
+      quantity:
+        summaries[groupKey][wastetype.id].quantity + processed + recycled,
     };
   });
 
   return {
     data: Object.values(summaries)
-      .map((summary) => withPercentage(summary))
+      .flatMap((group) =>
+        Object.values(group).map((summary) => withPercentage(summary)),
+      )
       .sort((a, b) => b.quantity - a.quantity),
     error,
     loading,
@@ -60,8 +107,14 @@ export const useEnrichedWasteRateSummaries = ({
 
 export const useEnrichedWasteRateSummariesWithRatios = ({
   filters = [],
-}: EnabledFilters): AsyncHookState<EnrichedWasteRateSummaryWithRatios> => {
-  const { data, error, loading } = useEnrichedWasteRateSummaries({ filters });
+  group = "none",
+}: EnabledFilters & {
+  group: GroupType;
+}): AsyncHookState<EnrichedWasteRateSummaryWithRatios> => {
+  const { data, error, loading } = useEnrichedWasteRateSummaries({
+    filters,
+    group,
+  });
 
   const calculateItemRatios = (
     item: EnrichedWasteRateSummary,
