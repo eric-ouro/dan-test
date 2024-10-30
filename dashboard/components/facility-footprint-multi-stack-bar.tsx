@@ -4,14 +4,17 @@ import { useEnrichedWasteRateSummariesWithRatios } from "@/lib/hooks/use-enriche
 import { EnrichedWasteRateSummaryWithRatios } from "@/lib/types";
 import MultiStackBar from "@components/display/multi-stack-bar";
 
-const PartnerFootprintMultiStackBar = () => {
+const FacilityFootprintMultiStackBar = () => {
   const {
     data: summaries,
     loading: summariesLoading,
     error: summariesError,
   } = useEnrichedWasteRateSummariesWithRatios({
     filters: ["partner", "facility", "partnerFacility", "wasteType"],
-    group: "facility",
+    groupConfig: {
+      group: "facility",
+      aggregate: false,
+    },
   });
 
   if (summariesLoading) return <div>Loading...</div>;
@@ -35,4 +38,4 @@ const PartnerFootprintMultiStackBar = () => {
   );
 };
 
-export default PartnerFootprintMultiStackBar;
+export default FacilityFootprintMultiStackBar;

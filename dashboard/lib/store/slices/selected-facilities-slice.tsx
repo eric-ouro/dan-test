@@ -61,6 +61,17 @@ const selectedFacilitiesSlice = createSlice({
         (facility) => facility.id !== action.payload,
       );
     },
+    toggleFacility: (state, action: PayloadAction<Facility>) => {
+      if (
+        state.selected.some((facility) => facility.id === action.payload.id)
+      ) {
+        state.selected = state.selected.filter(
+          (facility) => facility.id !== action.payload.id,
+        );
+      } else {
+        state.selected.push(action.payload);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -87,6 +98,6 @@ const selectedFacilitiesSlice = createSlice({
   },
 });
 
-export const { addFacility, removeFacilityById } =
+export const { addFacility, removeFacilityById, toggleFacility } =
   selectedFacilitiesSlice.actions;
 export default selectedFacilitiesSlice.reducer;

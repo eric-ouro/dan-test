@@ -3,14 +3,14 @@
 import { useCallback } from "react";
 import { useEnrichedWasteRateSummaries } from "@/lib/hooks/use-enriched-waste-rate-summaries";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks/store-hooks";
-import { toggleWasteType } from "@store/slices/selected-waste-types-slice";
-import { WasteType } from "@/lib/types";
+import { toggleFacility } from "@store/slices/selected-facilities-slice";
+import { Facility } from "@/lib/types";
 import WasteRateSummary from "./display/waste-rate-summary";
 
-const PlasticFootprintSimple = () => {
+const FacilityFootprintSimple = () => {
   const dispatch = useAppDispatch();
-  const selectedWasteTypes = useAppSelector(
-    (state) => state.selectedWasteTypes.selected,
+  const selectedFacilities = useAppSelector(
+    (state) => state.selectedFacilities.selected,
   );
   const {
     data: filteredSummaries,
@@ -19,8 +19,8 @@ const PlasticFootprintSimple = () => {
   } = useEnrichedWasteRateSummaries({
     filters: ["partner", "facility", "partnerFacility", "wasteType"],
     groupConfig: {
-      group: "none",
-      aggregate: false,
+      group: "facility",
+      aggregate: true,
     },
   });
   const {
@@ -28,22 +28,22 @@ const PlasticFootprintSimple = () => {
     loading: summariesLoading,
     error: summariesError,
   } = useEnrichedWasteRateSummaries({
-    filters: ["partner", "facility", "partnerFacility"],
+    filters: ["partner", "partnerFacility", "wasteType"],
     groupConfig: {
-      group: "none",
-      aggregate: false,
+      group: "facility",
+      aggregate: true,
     },
   });
 
-  const colorForWasteType = useCallback(
-    (wasteType: WasteType) => {
-      return selectedWasteTypes.some(
-        (selectedWasteType) => selectedWasteType.id === wasteType.id,
+  const colorForFacility = useCallback(
+    (facility: Facility) => {
+      return selectedFacilities.some(
+        (selectedFacility) => selectedFacility.id === facility.id,
       )
-        ? `#${wasteType.display_color}`
+        ? "#523D28"
         : "#d4d4d4";
     },
-    [selectedWasteTypes],
+    [selectedFacilities],
   );
 
   if (filteredSummariesLoading || summariesLoading)
@@ -53,13 +53,13 @@ const PlasticFootprintSimple = () => {
 
   return (
     <WasteRateSummary
-      name="Plastic Footprint"
+      name="Facility Footprint"
       summaries={summaries}
       filteredSummaries={filteredSummaries}
-      onSelectItem={(item) => dispatch(toggleWasteType(item))}
-      colorForItem={colorForWasteType}
+      onSelectItem={(item) => dispatch(toggleFacility(item))}
+      colorForItem={colorForFacility}
     />
   );
 };
 
-export default PlasticFootprintSimple;
+export default FacilityFootprintSimple;

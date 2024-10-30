@@ -7,7 +7,7 @@ import {
   EnrichedWasteRate,
   EnrichedWasteRateSummary,
   EnrichedWasteRateSummaryWithRatios,
-  GroupType,
+  GroupConfig,
 } from "@/lib/types";
 
 const withPercentage = (data: EnrichedWasteRateSummary) => {
@@ -21,11 +21,38 @@ const withPercentage = (data: EnrichedWasteRateSummary) => {
   };
 };
 
+const mergeSummaries = (summaries: EnrichedWasteRateSummary[]) => {
+  console.log(summaries);
+  return summaries.reduce(
+    (acc, curr) => {
+      acc.processed += curr.processed;
+      acc.recycled += curr.recycled;
+      acc.quantity += curr.quantity;
+      return acc;
+    },
+    {
+      label: {
+        id: parseInt(summaries[0].group),
+        name: summaries[0].groupName,
+      },
+      group: summaries[0].group,
+      groupName: summaries[0].groupName,
+      processed: 0,
+      quantity: 0,
+      recycled: 0,
+      percentage: 0,
+    },
+  );
+};
+
 export const useEnrichedWasteRateSummaries = ({
   filters = [],
-  group = "none",
+  groupConfig = {
+    group: "none",
+    aggregate: false,
+  },
 }: EnabledFilters & {
-  group: GroupType;
+  groupConfig: GroupConfig;
 }): AsyncHookState<EnrichedWasteRateSummary> => {
   const { data, error, loading } = useEnrichedWasteRates({
     filters,
@@ -40,7 +67,7 @@ export const useEnrichedWasteRateSummaries = ({
   const getGroupKey = (wasteRate: EnrichedWasteRate) => {
     const { facility, partnerfacility, partnercompany } = wasteRate;
     // case statements to return the correct key for the group
-    switch (group) {
+    switch (groupConfig.group) {
       case "facility":
         return facility.id;
       case "partnerfacility":
@@ -54,7 +81,7 @@ export const useEnrichedWasteRateSummaries = ({
 
   const getGroupName = (wasteRate: EnrichedWasteRate) => {
     const { facility, partnerfacility, partnercompany } = wasteRate;
-    switch (group) {
+    switch (groupConfig.group) {
       case "facility":
         return facility.name;
       case "partnerfacility":
@@ -94,6 +121,18 @@ export const useEnrichedWasteRateSummaries = ({
     };
   });
 
+  if (groupConfig.aggregate) {
+    const data = Object.values(summaries)
+      .map((group) => withPercentage(mergeSummaries(Object.values(group))))
+      .sort((a, b) => b.quantity - a.quantity);
+
+    return {
+      data,
+      error,
+      loading,
+    };
+  }
+
   return {
     data: Object.values(summaries)
       .flatMap((group) =>
@@ -107,13 +146,16 @@ export const useEnrichedWasteRateSummaries = ({
 
 export const useEnrichedWasteRateSummariesWithRatios = ({
   filters = [],
-  group = "none",
+  groupConfig = {
+    group: "none",
+    aggregate: false,
+  },
 }: EnabledFilters & {
-  group: GroupType;
+  groupConfig: GroupConfig;
 }): AsyncHookState<EnrichedWasteRateSummaryWithRatios> => {
   const { data, error, loading } = useEnrichedWasteRateSummaries({
     filters,
-    group,
+    groupConfig,
   });
 
   const calculateItemRatios = (

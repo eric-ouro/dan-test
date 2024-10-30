@@ -10,7 +10,10 @@ const PartnerFootprintMultiStackBar = () => {
     error: summariesError,
   } = useEnrichedWasteRateSummariesWithRatios({
     filters: ["partner", "facility", "partnerFacility", "wasteType"],
-    group: "none",
+    groupConfig: {
+      group: "none",
+      aggregate: false,
+    },
   });
 
   if (summariesLoading) return <div>Loading...</div>;

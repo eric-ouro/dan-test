@@ -94,5 +94,6 @@ const selectedPartnersSlice = createSlice({
   },
 });
 
-export const { addPartner, removePartnerById } = selectedPartnersSlice.actions;
+export const { addPartner, removePartnerById, togglePartner } =
+  selectedPartnersSlice.actions;
 export default selectedPartnersSlice.reducer;

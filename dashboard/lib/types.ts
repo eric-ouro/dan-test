@@ -1,20 +1,21 @@
 /* Data Types */
 
-export interface WasteType {
+export interface DbObject {
   id: number;
   name: string;
+}
+
+export type DbObjectFields<T extends DbObject> = Pick<T, keyof DbObject>;
+
+export interface WasteType extends DbObject {
   display_color: string;
 }
 
-export interface Company {
-  id: number;
-  name: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface Company extends DbObject {}
 
-export interface Facility {
-  id: number;
-  name: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface Facility extends DbObject {}
 
 export interface WasteRate {
   facilityid: number;
@@ -97,6 +98,11 @@ export interface AsyncHookState<T> {
 // an additional dimension beyond waste type.
 export type GroupType = "facility" | "partnerfacility" | "partner" | "none";
 
+export interface GroupConfig {
+  group: GroupType;
+  aggregate: boolean;
+}
+
 export type FilterType =
   | "facility"
   | "partnerFacility"
@@ -151,7 +157,7 @@ export interface WasteRateSummary extends SummaryData {
 }
 
 export interface EnrichedWasteRateSummary extends SummaryData {
-  label: WasteType;
+  label: DbObject;
   // group is the key used to group summaries - db enforces unique values
   group: string;
   // groupName is the name of the group - not necessarily unique
