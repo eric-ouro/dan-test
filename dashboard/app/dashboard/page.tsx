@@ -6,10 +6,12 @@ import PartnerFootprintSimple from "@/components/partner-footprint-simple";
 import PartnerFootprintMultiStackBar from "@/components/partner-footprint-multi-stack-bar";
 import FacilityFootprintSimple from "@/components/facility-footprint-simple";
 import FacilityFootprintMultiStackBar from "@/components/facility-footprint-multi-stack-bar";
+import { DropdownMenu } from "@/components/ui/dropdown-menu";
 
 const DashboardPage = () => {
   return (
     <>
+      <DropdownMenu></DropdownMenu>
       <PlasticFootprintSimple />
       <PlasticFootprintMultiStackBar />
       <PartnerFootprintSimple />

@@ -115,7 +115,7 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
                   onClick={() => {
                     requestSort("processingLossRate");
                   }}
-                  className={` min-w-[60px] font-normal ${getHeaderClass("processingLossRate")}`}
+                  className={` min-w-[60px] text-right font-normal ${getHeaderClass("processingLossRate")}`}
                 >
                   P Loss
                 </th>
@@ -200,13 +200,13 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
                         </div>
                       </div>
                     </td>
-                    <td className=" max-w-[60px]">
+                    <td className=" max-w-[60px] ">
                       {item.recycleRate.toFixed(1)}%
                     </td>
-                    <td className=" max-w-[60px]">
+                    <td className=" max-w-[60px] ">
                       {item.recyclingLossRate.toFixed(1)}%
                     </td>
-                    <td className=" max-w-[60px]">
+                    <td className=" max-w-[60px] text-right">
                       {item.processingLossRate.toFixed(1)}%
                     </td>
                   </tr>

@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 95%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
@@ -95,21 +95,18 @@ body {
 }
 
 .responsive-padding {
-  padding: 50px;
-  padding-top: 0px;
+ padding: 25px;
 }
 
 @media (min-width: 768px) {
   .responsive-padding {
-    padding: 100px;
-    padding-top: 0px;
+    padding: 25px;
   }
 }
 
 @media (min-width: 1024px) {
   .responsive-padding {
-    padding: 200px;
-    padding-top: 0px;
+    padding: 25px;
   }
   .dashcomponent{
     padding: 0rem;
