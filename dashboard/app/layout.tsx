@@ -49,7 +49,7 @@ export default function RootLayout({
                 </div>
               </div>
             </nav>
-            <div className="responsive-padding min-h-screen flex flex-col gap-8">
+            <div className=" min-h-screen flex flex-col gap-8">
               {children}
             </div>
           </ThemeProvider>

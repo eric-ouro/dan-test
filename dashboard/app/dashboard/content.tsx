@@ -12,34 +12,51 @@ const DashboardContent = () => {
   const [activeTab, setActiveTab] = useState("plastics");
 
   return (
-    <>
-      <div className="tabs [&>*:not(:first-child)]:pl-6">
-        <button onClick={() => setActiveTab("plastics")}>Plastics</button>
-        <button onClick={() => setActiveTab("partners")}>Partners</button>
-        <button onClick={() => setActiveTab("facilities")}>Facilities</button>
-      </div>
+    <div>
+        <div className="border-b border-neutral-400 sticky top-0 bg-accent z-20">
+            <div className="tabs [&>*:not(:first-child)]:pl-6 responsive-padding">
+                <button 
+                    onClick={() => setActiveTab("plastics")} 
+                    className={activeTab === "plastics" ? "text-foreground" : "opacity-50"}
+                >
+                    Plastics
+                </button>
+                <button 
+                    onClick={() => setActiveTab("partners")} 
+                    className={activeTab === "partners" ? "text-foreground" : "opacity-50"}
+                >
+                    Partners
+                </button>
+                <button 
+                    onClick={() => setActiveTab("facilities")} 
+                    className={activeTab === "facilities" ? "text-foreground" : "opacity-50"}
+                >
+                    Facilities
+                </button>
+            </div>
+         </div>
 
       {activeTab === "plastics" && (
-        <>
+        <div className="responsive-padding">
           <PlasticFootprintSimple />
           <PlasticFootprintMultiStackBar />
-        </>
+        </div>
       )}
 
       {activeTab === "partners" && (
-        <>
+        <div className="responsive-padding">
           <PartnerFootprintSimple />
           <PartnerFootprintMultiStackBar />
-        </>
+        </div>
       )}
 
       {activeTab === "facilities" && (
-        <>
+        <div className="responsive-padding">
           <FacilityFootprintSimple />
           <FacilityFootprintMultiStackBar />
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 
