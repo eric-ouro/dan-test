@@ -44,7 +44,7 @@ export default function RootLayout({
                   <Link href={"/"}>OURO</Link>
                 </div>
                 <div className="flex gap-5 items-center">
-                  <ThemeSwitcher />
+                  {/* <ThemeSwitcher /> */}
                   <HeaderAuth />
                 </div>
               </div>

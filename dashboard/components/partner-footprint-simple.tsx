@@ -37,10 +37,14 @@ const PartnerFootprintSimple = () => {
 
   const colorForPartner = useCallback(
     (partner: Company) => {
-      return selectedPartners.some(
+      const baseColor = 56.83; // Base lightness value
+      const decrement = 20; // Decrement value for each consecutive partner
+      const partnerIndex = selectedPartners.findIndex(
         (selectedPartner) => selectedPartner.id === partner.id,
-      )
-        ? "#347136"
+      );
+      const lightness = baseColor - partnerIndex * decrement;
+      return partnerIndex !== -1
+        ? `oklch(${lightness}% 0.1812 267.38)`
         : "#d4d4d4";
     },
     [selectedPartners],

@@ -7,13 +7,14 @@ import PartnerFootprintSimple from "@/components/partner-footprint-simple";
 import PartnerFootprintMultiStackBar from "@/components/partner-footprint-multi-stack-bar";
 import FacilityFootprintSimple from "@/components/facility-footprint-simple";
 import FacilityFootprintMultiStackBar from "@/components/facility-footprint-multi-stack-bar";
+import DropdownFilter from "@/components/ui/dropdown-filter";
 
 const DashboardContent = () => {
   const [activeTab, setActiveTab] = useState("plastics");
 
   return (
     <div>
-        <div className="border-b border-neutral-400 sticky top-0 bg-accent z-20">
+        <div className="border-b border-neutral-400 sticky top-0 bg-accent z-20 flex justify-start items-center">
             <div className="tabs [&>*:not(:first-child)]:pl-6 responsive-padding">
                 <button 
                     onClick={() => setActiveTab("plastics")} 
@@ -34,6 +35,7 @@ const DashboardContent = () => {
                     Facilities
                 </button>
             </div>
+            <DropdownFilter />
          </div>
 
       {activeTab === "plastics" && (
