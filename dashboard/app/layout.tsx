@@ -39,14 +39,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-              <div className="w-full flex justify-between items-center py-3 px-[25px] text-sm">
-                {/* <div className="flex gap-5 items-center font-semibold">
+              <div className="w-full flex justify-between items-center py-3 px-5 text-sm">
+                <div className="flex gap-5 items-center font-semibold">
                   <Link href={"/"}>OURO</Link>
-                </div> */}
-                <div className="flex gap-5 items-center">
-                  <div>Facilities</div>
-                  <div>Partners</div>
-                  <div>Plastics</div>
                 </div>
                 <div className="flex gap-5 items-center">
                   <ThemeSwitcher />
