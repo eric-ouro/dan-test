@@ -48,11 +48,13 @@ const DropdownFilter: React.FC = () => {
   const renderDropdown = (title: string, items: any[], selectedItems: any[], type: string) => (
     <div className="dropdown">
       <button className="bg-white border-none p-2 cursor-pointer text-xs rounded-sm">
-        <div className="flex flex-col gap-0 text-left">   
+        <div className="flex flex-row gap-1 items-end text-left">   
+            <span>
+                {type === "wasteType" && <DiamondsFour color="#f0a500" size={12} weight="fill" />}
+                {type === "facility" && <House color="#a5b4fc" size={12} weight="fill" />}
+                {type === "partner" && <Recycle color="#9BD49B" size={12} weight="fill" />}
+            </span>
             <span className="text-[10px] text-neutral-400 uppercase leading-none tracking-[.03em]">
-            {type === "wasteType" && <DiamondsFour color="#f0a500" size={16} weight="fill" />}
-            {type === "facility" && <House color="#a5b4fc" size={16} weight="fill" />}
-            {type === "partner" && <Recycle color="#9BD49B" size={16} weight="fill" />}
             {title} {selectedItems.length}/{items.length}
             </span>
         </div>
@@ -60,19 +62,19 @@ const DropdownFilter: React.FC = () => {
       <div className="dropdown-content">
         {items.map((item) => (
           <div key={item.id} className="dropdown-item">
-            <label className="flex items-center justify-between gap-4">
-                <span className="flex items-start gap-1">
+            <label className="flex items-center justify-between gap-4 cursor-pointer ">
+                <span className="flex items-center gap-1">
                 {type === "wasteType" && (
                     <>
-                    {item.name === "LDPE" && <Triangle color="#f0a500" size={16} weight="fill" />}
-                    {item.name === "PET" && <Square color="#c084fc" size={16} weight="fill" />}
-                    {item.name === "HDPE" && <Circle color="#3b82f6" size={16} weight="fill" />}
-                    {item.name === "OTHER" && <Triangle color="#f87171" size={16} weight="fill" />}
+                    {item.name === "LDPE" && <Triangle color="#f0a500" size={12} weight="fill" />}
+                    {item.name === "PET" && <Square color="#c084fc" size={12} weight="fill" />}
+                    {item.name === "HDPE" && <Circle color="#3b82f6" size={12} weight="fill" />}
+                    {item.name === "OTHER" && <Triangle color="#f87171" size={12} weight="fill" />}
                     </>
                 )}
-                {type === "facility" && <House color="#a5b4fc" size={16} weight="fill" />}
-                {type === "partner" && <Recycle color="#9BD49B" size={16} weight="fill" />}
-                <span className="ml-1">{item.name}</span>
+                {type === "facility" && <House color="#a5b4fc" size={12} weight="fill" />}
+                {type === "partner" && <Recycle color="#9BD49B" size={12} weight="fill" />}
+                <span className="ml-1 font-xs">{item.name}</span>
               </span>
             
             <input
@@ -90,9 +92,9 @@ const DropdownFilter: React.FC = () => {
 
   return (
     <div className="dropdown-filters flex flex-row gap-[10px]">
-      {renderDropdown("Partners", partners.valid, partners.selected, "partner")}
-      {renderDropdown("Facilities", facilities.valid, facilities.selected, "facility")}
       {renderDropdown("Materials", wasteTypes.valid, wasteTypes.selected, "wasteType")}
+      {renderDropdown("Facilities", facilities.valid, facilities.selected, "facility")}
+      {renderDropdown("Partners", partners.valid, partners.selected, "partner")}
     </div>
   );
 };
