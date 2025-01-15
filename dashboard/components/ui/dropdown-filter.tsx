@@ -13,7 +13,7 @@ import {
   fetchWasteTypesIfEmpty,
   toggleWasteType,
 } from "@slices/selected-waste-types-slice";
-import { Triangle, Square, Circle, House, Recycle, DiamondsFour } from "phosphor-react";
+import { Triangle, Square, Circle, House, Recycle, DiamondsFour, CaretDown } from "phosphor-react";
 
 
 const DropdownFilter: React.FC = () => {
@@ -46,24 +46,30 @@ const DropdownFilter: React.FC = () => {
   };
 
   const renderDropdown = (title: string, items: any[], selectedItems: any[], type: string) => (
-    <div className="dropdown">
-      <button className="bg-white border-none p-2 cursor-pointer text-xs rounded-sm">
-        <div className="flex flex-row gap-1 items-end text-left">   
+    <div className="dropdown ">
+      <button className="flex flex-row justify-between bg-white border-none p-2 cursor-pointer text-xs rounded-sm w-full">
+        <div className="flex flex-row gap-2 items-end text-left">   
             <span>
                 {type === "wasteType" && <DiamondsFour color="#f0a500" size={12} weight="fill" />}
                 {type === "facility" && <House color="#a5b4fc" size={12} weight="fill" />}
                 {type === "partner" && <Recycle color="#9BD49B" size={12} weight="fill" />}
             </span>
             <span className="text-[10px] text-neutral-400 uppercase leading-none tracking-[.03em]">
-            {title} {selectedItems.length}/{items.length}
+            {title} 
+            </span>
+            <span className="text-[10px] text-neutral-400 uppercase leading-none tracking-[.03em]">
+            {selectedItems.length}/{items.length}
             </span>
         </div>
+        <span className="">
+                <CaretDown color="#1C1C1C" size={12} weight="regular" />
+            </span>
       </button>
       <div className="dropdown-content">
         {items.map((item) => (
           <div key={item.id} className="dropdown-item">
             <label className="flex items-center justify-between gap-4 cursor-pointer ">
-                <span className="flex items-center gap-1">
+                <span className="flex items-center gap-2">
                 {type === "wasteType" && (
                     <>
                     {item.name === "LDPE" && <Triangle color="#f0a500" size={12} weight="fill" />}
@@ -74,7 +80,7 @@ const DropdownFilter: React.FC = () => {
                 )}
                 {type === "facility" && <House color="#a5b4fc" size={12} weight="fill" />}
                 {type === "partner" && <Recycle color="#9BD49B" size={12} weight="fill" />}
-                <span className="ml-1 font-xs">{item.name}</span>
+                <span className=" text-[10px] uppercase leading-none tracking-[.03em]">{item.name}</span>
               </span>
             
             <input
