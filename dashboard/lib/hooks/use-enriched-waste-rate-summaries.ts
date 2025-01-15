@@ -95,7 +95,7 @@ export const useEnrichedWasteRateSummaries = ({
 
   // for each waste rate, add the processed, quantity, and recycled to the summaries
   data.forEach((wasteRate) => {
-    const { processed, recycled, wastetype } = wasteRate;
+    const { processed, recycled, wastetype, quantity } = wasteRate;
     const groupKey = getGroupKey(wasteRate);
     // initialize the waste type summary if it doesn't exist
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -117,7 +117,7 @@ export const useEnrichedWasteRateSummaries = ({
       processed: summaries[groupKey][wastetype.id].processed + processed,
       recycled: summaries[groupKey][wastetype.id].recycled + recycled,
       quantity:
-        summaries[groupKey][wastetype.id].quantity + processed + recycled,
+        summaries[groupKey][wastetype.id].quantity + quantity,
     };
   });
 

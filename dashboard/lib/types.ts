@@ -29,6 +29,16 @@ export interface WasteRate {
   recycled: number;
 }
 
+export interface WasteQuantity {
+  companyid: number;
+  partnercompanyid: number;
+  facilityid: number;
+  partnerfacilityid: number;
+  wastetype: number;
+  quantity: number | null;
+  timerange: string;
+}
+
 export interface EnrichedWasteRate {
   facility: Facility;
   company: Company;
@@ -37,6 +47,7 @@ export interface EnrichedWasteRate {
   timerange: string;
   parentwastetype: number;
   wastetype: WasteType;
+  quantity: number;
   processed: number;
   recycled: number;
 }

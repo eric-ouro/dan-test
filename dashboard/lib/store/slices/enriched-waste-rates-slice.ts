@@ -1,9 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createClient } from "@/utils/supabase/client";
 import { AppThunk } from "@store/configuration";
-import { EnrichedWasteRate, FetchableList } from "@/lib/types";
+import { EnrichedWasteRate, FetchableList, WasteQuantity } from "@/lib/types";
 
 type EnrichedWasteRatesState = FetchableList<EnrichedWasteRate>;
+
+const wasteQuantityForWasteRate = (wasteRate: EnrichedWasteRate, wasteQuantities: WasteQuantity[]) => {
+  const wasteQuantity = wasteQuantities.find(
+    (quantity) => 
+      quantity.wastetype === wasteRate.parentwastetype && 
+      quantity.timerange === wasteRate.timerange && 
+      quantity.companyid === wasteRate.company.id && 
+      quantity.facilityid === wasteRate.facility.id &&
+      quantity.partnercompanyid === wasteRate.partnercompany.id &&
+      quantity.partnerfacilityid === wasteRate.partnerfacility.id
+  );
+  return wasteQuantity ? wasteQuantity.quantity : 0;
+}
 
 export const fetchEnrichedWasteRates = createAsyncThunk(
   "enrichedWasteRates/fetchEnrichedWasteRates",
@@ -41,8 +54,20 @@ export const fetchEnrichedWasteRates = createAsyncThunk(
       `,
       );
 
-    if (error) {
-      throw new Error(error.message);
+    const { data: wasteQuantities, error: wasteQuantitiesError } = await supabase
+      .from("wastequantity_monthly_facilitypartner")
+      .select(`
+        companyid,
+        partnercompanyid,
+        facilityid,
+        partnerfacilityid,
+        wastetype,
+        quantity,
+        timerange
+      `)
+
+    if (error || wasteQuantitiesError) {
+      throw new Error(error?.message ?? wasteQuantitiesError?.message ?? "Failed to fetch waste quantities" );
     } else {
       // filter out null values
       return data.filter((value): value is EnrichedWasteRate => {
@@ -53,6 +78,11 @@ export const fetchEnrichedWasteRates = createAsyncThunk(
           value.partnerfacility !== null &&
           value.wastetype !== null
         );
+      }).map((value) => {
+        return {
+          ...value,
+          quantity: wasteQuantityForWasteRate(value, wasteQuantities),
+        };
       });
     }
   },
