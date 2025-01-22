@@ -132,47 +132,23 @@ const DropdownFilter: React.FC = () => {
     </div>
   );
 
-  const renderStartDatePicker = (validStart: string, validEnd: string, startDate: string) => (
+  const renderDatePicker = (type: "start" | "end", validStart: string, validEnd: string, date: string) => (
     <div className="date-picker dropdown">
       <button
         className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-xs rounded-sm w-full"
-        onClick={() => toggleDropdown("startDate")}
+        // onClick={() => toggleDropdown(type === "start" ? "startDate" : "endDate")}
       >
         <div className="flex items-center gap-2">
           <CalendarBlank className="text-neutral-800 dark:text-neutral-200" size={15} weight="fill" />
           <span className="text-sm text-neutral-400 uppercase leading-none tracking-[.03em]">
-            Start
+            {type === "start" ? "Start" : "End"}
           </span>
           <input
             type="month"
             min={validStart.slice(0, 7)}
             max={validEnd.slice(0, 7)}
-            value={startDate.slice(0, 7)}
-            onChange={(e) => handleDateChange("start", e.target.value)}
-            className="bg-white dark:bg-neutral-600"
-          />
-        </div>
-      </button>
-    </div>
-  );
-
-  const renderEndDatePicker = (validStart: string, validEnd: string, endDate: string) => (
-    <div className="date-picker dropdown">
-      <button
-        className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-xs rounded-sm w-full"
-        onClick={() => toggleDropdown("endDate")}
-      >
-        <div className="flex items-center gap-2">
-          <CalendarBlank className="text-neutral-800 dark:text-neutral-200" size={15} weight="fill" />
-          <span className="text-sm text-neutral-400 uppercase leading-none tracking-[.03em]">
-            End
-          </span>
-          <input
-            type="month"
-            min={validStart.slice(0, 7)}
-            max={validEnd.slice(0, 7)}
-            value={endDate.slice(0, 7)}
-            onChange={(e) => handleDateChange("end", e.target.value)}
+            value={date.slice(0, 7)}
+            onChange={(e) => handleDateChange(type, e.target.value)}
             className="bg-white dark:bg-neutral-600"
           />
         </div>
@@ -186,8 +162,8 @@ const DropdownFilter: React.FC = () => {
       {renderDropdown("Facilities", facilities.valid, facilities.selected, "facility")}
       {renderDropdown("Partners", partners.valid, partners.selected, "partner")}
       {renderDropdown("Partner Facilities", partnerFacilities.valid, partnerFacilities.selected, "partnerFacility")}
-      {renderStartDatePicker(validStart, validEnd, startDate)}
-      {renderEndDatePicker(validStart, validEnd, endDate)}
+      {renderDatePicker("start", validStart, validEnd, startDate)}
+      {renderDatePicker("end", validStart, validEnd, endDate)}
     </div>
   );
 };
