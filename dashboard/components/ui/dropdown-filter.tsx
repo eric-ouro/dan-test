@@ -16,6 +16,8 @@ import {
 import { Triangle, Square, Circle, House, Recycle, DiamondsFour, CaretDown, Calendar, CalendarBlank } from "phosphor-react";
 import { setEnd, setStart } from "@/lib/store/slices/selected-date-slice";
 import { togglePartnerFacility } from "@/lib/store/slices/selected-partner-facilities-slice";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 const DropdownFilter: React.FC = () => {
@@ -37,7 +39,7 @@ const DropdownFilter: React.FC = () => {
   const startDate = useAppSelector((state: RootState) => state.selectedDate.selected.start);
   const endDate = useAppSelector((state: RootState) => state.selectedDate.selected.end);
 
-  console.log(startDate, endDate);
+  console.log("start date", startDate, "end date", endDate);
 
   const handleToggle = (type: string, item: any) => {
     switch (type) {
@@ -62,11 +64,17 @@ const DropdownFilter: React.FC = () => {
     setOpenDropdown((prev) => (prev === type ? null : type));
   };
 
-  const handleDateChange = (type: string, date: string) => {
-    if (type === "start") {
-      dispatch(setStart(`${date}-01`));
-    } else if (type === "end") {
-      dispatch(setEnd(`${date}-01`));
+  const handleDateChange = (type: string, selectedDate: Date | null) => {
+    if (selectedDate) {
+      console.log(`Selected ${type} date (UTC):`, selectedDate.toISOString());
+      const formattedDate = selectedDate.toISOString().slice(0, 10);
+      if (type === "start") {
+        dispatch(setStart(formattedDate));
+      } else if (type === "end") {
+        dispatch(setEnd(formattedDate));
+      }
+    } else {
+      console.log(`No date selected for ${type}`);
     }
   };
 
@@ -132,29 +140,40 @@ const DropdownFilter: React.FC = () => {
     </div>
   );
 
-  const renderDatePicker = (type: "start" | "end", validStart: string, validEnd: string, date: string) => (
-    <div className="date-picker dropdown">
-      <button
-        className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-xs rounded-sm w-full"
-        // onClick={() => toggleDropdown(type === "start" ? "startDate" : "endDate")}
-      >
-        <div className="flex items-center gap-2">
-          <CalendarBlank className="text-neutral-800 dark:text-neutral-200" size={15} weight="fill" />
-          <span className="text-sm text-neutral-400 uppercase leading-none tracking-[.03em]">
-            {type === "start" ? "Start" : "End"}
-          </span>
-          <input
-            type="month"
-            min={validStart.slice(0, 7)}
-            max={validEnd.slice(0, 7)}
-            value={date.slice(0, 7)}
-            onChange={(e) => handleDateChange(type, e.target.value)}
-            className="bg-white dark:bg-neutral-600"
-          />
-        </div>
-      </button>
-    </div>
-  );
+  const renderDatePicker = (type: "start" | "end", validStart: string, validEnd: string, date: string) => {
+    const handleDateChangeWrapper = (selectedDate: Date | null) => handleDateChange(type, selectedDate);
+
+    console.log(`Initial ${type} date string:`, date);
+    const selectedDate = new Date();
+    selectedDate.setUTCFullYear(parseInt(date.slice(0, 4)), parseInt(date.slice(5, 7)) - 1, parseInt(date.slice(8, 10)));
+    // Set time to noon to avoid timezone issues
+    selectedDate.setHours(12, 0, 0, 0);
+    console.log(`Parsed ${type} date (UTC):`, selectedDate.toISOString());
+  
+    const minDate = new Date();
+    minDate.setUTCFullYear(parseInt(validStart.slice(0, 4)), parseInt(validStart.slice(5, 7)) - 1, parseInt(validStart.slice(8, 10)));
+    minDate.setHours(12, 0, 0, 0);
+
+    const maxDate = new Date();
+    maxDate.setUTCFullYear(parseInt(validEnd.slice(0, 4)), parseInt(validEnd.slice(5, 7)) - 1, parseInt(validEnd.slice(8, 10)));
+    maxDate.setHours(12, 0, 0, 0);
+
+    console.log(`Rendering ${type} date picker with date (UTC):`, selectedDate.toISOString());
+
+    return (
+      <div className="date-picker dropdown">
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChangeWrapper}
+          minDate={minDate}
+          maxDate={maxDate}
+          dateFormat="yyyy-MM"
+          showMonthYearPicker
+          className="bg-white dark:bg-neutral-600"
+        />
+      </div>
+    );
+  };
 
   return (
     <div className="dropdown-filters flex flex-row gap-[10px]">
