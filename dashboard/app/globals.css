@@ -201,7 +201,7 @@ body {
   right: 0;
   height: 16px; /* Adjust size as needed */
   width: 16px;
-  background-color: #1c1c1c;
+  background-color: #fff;
   border: 1px solid #1c1c1c; /* Border color */
   border-radius: 3px; /* Rounded corners */
 }
@@ -212,7 +212,7 @@ body {
 }
 .custom-checkbox input:checked + .checkmark {
   
-  background-color: #fff; /* Checked background color */
+  background-color: #1c1c1c; /* Checked background color */
 }
 .checkmark:after {
   content: "";
