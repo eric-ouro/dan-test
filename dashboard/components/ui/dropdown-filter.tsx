@@ -15,6 +15,7 @@ import {
 } from "@slices/selected-waste-types-slice";
 import { Triangle, Square, Circle, House, Recycle, DiamondsFour, CaretDown, Calendar } from "phosphor-react";
 import { setEnd, setStart } from "@/lib/store/slices/selected-date-slice";
+import { togglePartnerFacility } from "@/lib/store/slices/selected-partner-facilities-slice";
 
 
 const DropdownFilter: React.FC = () => {
@@ -29,6 +30,7 @@ const DropdownFilter: React.FC = () => {
 
   const partners = useAppSelector((state: RootState) => state.selectedPartners);
   const facilities = useAppSelector((state: RootState) => state.selectedFacilities);
+  const partnerFacilities = useAppSelector((state: RootState) => state.selectedPartnerFacilities);
   const wasteTypes = useAppSelector((state: RootState) => state.selectedWasteTypes);
   const validStart = useAppSelector((state: RootState) => state.selectedDate.valid.start);
   const validEnd = useAppSelector((state: RootState) => state.selectedDate.valid.end);
@@ -41,6 +43,9 @@ const DropdownFilter: React.FC = () => {
     switch (type) {
       case "partner":
         dispatch(togglePartner(item));
+        break;
+      case "partnerFacility":
+        dispatch(togglePartnerFacility(item));
         break;
       case "facility":
         dispatch(toggleFacility(item));
@@ -76,6 +81,7 @@ const DropdownFilter: React.FC = () => {
             {type === "wasteType" && <DiamondsFour color="#f0a500" size={15} weight="fill" />}
             {type === "facility" && <House color="#a5b4fc" size={15} weight="fill" />}
             {type === "partner" && <Recycle color="#9BD49B" size={15} weight="fill" />}
+            {type === "partnerFacility" && <House color="#9BD49B" size={15} weight="fill" />}
           </span>
           <span className="text-sm text-neutral-400 uppercase leading-none tracking-[.03em]">
             {title}
@@ -99,11 +105,15 @@ const DropdownFilter: React.FC = () => {
                     {item.name === "LDPE" && <Triangle color="#f0a500" size={15} weight="fill" />}
                     {item.name === "PET" && <Square color="#c084fc" size={15} weight="fill" />}
                     {item.name === "HDPE" && <Circle color="#3b82f6" size={15} weight="fill" />}
+                    {item.name === "PVC" && <Triangle color="#5AA65B" size={15} weight="fill" />}
                     {item.name === "OTHER" && <Triangle color="#f87171" size={15} weight="fill" />}
+                    {item.name !== "LDPE" && item.name !== "PET" && item.name !== "HDPE" && item.name !== "PVC" && item.name !== "OTHER" && (
+                      <Circle color="#a3a3a3" size={15} weight="fill" />
+                    )}
                     </>
                   )}
-                  {type === "facility" && <House color="#a5b4fc" size={15} weight="fill" />}
-                  {type === "partner" && <Recycle color="#9BD49B" size={15} weight="fill" />}
+                  {/* {type === "facility" && <House color="#a5b4fc" size={15} weight="fill" />} */}
+                  {/* {type === "partner" && <Recycle color="#9BD49B" size={15} weight="fill" />} */}
                   <span className="text-sm uppercase leading-none tracking-[.03em]">{item.name}</span>
                 </span>
                 <div className="custom-checkbox ">
@@ -180,6 +190,7 @@ const DropdownFilter: React.FC = () => {
       {renderDropdown("Materials", wasteTypes.valid, wasteTypes.selected, "wasteType")}
       {renderDropdown("Facilities", facilities.valid, facilities.selected, "facility")}
       {renderDropdown("Partners", partners.valid, partners.selected, "partner")}
+      {renderDropdown("Partner Facilities", partnerFacilities.valid, partnerFacilities.selected, "partnerFacility")}
       {renderDateRange("Date Range", validStart, validEnd, startDate, endDate, "dateRange")}
     </div>
   );
