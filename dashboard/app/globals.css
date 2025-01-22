@@ -157,7 +157,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  align-items: end;
+  align-items: flex-end;
   padding: 10px 0;
 }
 
@@ -166,9 +166,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
 }
-.dropdown-item:hover {
-  background: #f0f0f0;
-}
+
 
 .dropdown-item label {
   display: flex;

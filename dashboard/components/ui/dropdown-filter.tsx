@@ -47,7 +47,7 @@ const DropdownFilter: React.FC = () => {
 
   const renderDropdown = (title: string, items: any[], selectedItems: any[], type: string) => (
     <div className="dropdown ">
-      <button className="flex flex-row justify-between bg-white border-none p-2 cursor-pointer text-xs rounded-sm w-full">
+      <button className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-xs rounded-sm w-full">
         <div className="flex flex-row gap-2 items-end text-left">   
             <span>
                 {type === "wasteType" && <DiamondsFour color="#f0a500" size={12} weight="fill" />}
@@ -65,9 +65,9 @@ const DropdownFilter: React.FC = () => {
                 <CaretDown color="#1C1C1C" size={12} weight="regular" />
             </span>
       </button>
-      <div className="dropdown-content">
+      <div className="dropdown-content bg-white dark:bg-neutral-600 ">
         {items.map((item) => (
-          <div key={item.id} className="dropdown-item">
+          <div key={item.id} className="dropdown-item hover:bg-neutral-200 dark:hover:bg-neutral-500">
             <label className="flex items-center justify-between gap-4 cursor-pointer ">
                 <span className="flex items-center gap-2">
                 {type === "wasteType" && (
