@@ -129,15 +129,14 @@ body {
 
 .dropdown-content {
   display: none;
-  padding:4px;
-  gap:2px;
+  padding: 4px;
+  gap: 2px;
   position: absolute;
   background-color: #ffffff;
   min-width: 270px;
-  /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
   z-index: 1;
-  /* margin-left: 5px; */
-  border-radius: 0 0 4px 4px;
+  margin-top: 10px;
+  border-radius: 4px;
 }
 
 .dropdown-signout {
@@ -147,7 +146,7 @@ body {
   z-index: 1;
 }
 
-.dropdown:hover .dropdown-content {
+.dropdown.open .dropdown-content {
   display: flex;
   flex-direction: column;
 }

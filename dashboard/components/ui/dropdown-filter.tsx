@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "@hooks/store-hooks";
 import { RootState } from "@store/configuration";
 import {
@@ -18,6 +18,7 @@ import { Triangle, Square, Circle, House, Recycle, DiamondsFour, CaretDown } fro
 
 const DropdownFilter: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(fetchPartnersIfEmpty());
@@ -45,30 +46,38 @@ const DropdownFilter: React.FC = () => {
     }
   };
 
+  const toggleDropdown = (type: string) => {
+    setOpenDropdown((prev) => (prev === type ? null : type));
+  };
+
   const renderDropdown = (title: string, items: any[], selectedItems: any[], type: string) => (
-    <div className="dropdown ">
-      <button className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-xs rounded-sm w-full">
-        <div className="flex flex-row gap-2 items-end text-left">   
-            <span>
-                {type === "wasteType" && <DiamondsFour color="#f0a500" size={12} weight="fill" />}
-                {type === "facility" && <House color="#a5b4fc" size={12} weight="fill" />}
-                {type === "partner" && <Recycle color="#9BD49B" size={12} weight="fill" />}
-            </span>
-            <span className="text-[10px] text-neutral-400 uppercase leading-none tracking-[.03em]">
-            {title} 
-            </span>
-            <span className="text-[10px] text-neutral-400 uppercase leading-none tracking-[.03em]">
+    <div className={`dropdown ${openDropdown === type ? 'open' : ''}`}>
+      <button
+        className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-xs rounded-sm w-full"
+        onClick={() => toggleDropdown(type)}
+      >
+        <div className="flex flex-row gap-2 items-end text-left">
+          <span>
+            {type === "wasteType" && <DiamondsFour color="#f0a500" size={12} weight="fill" />}
+            {type === "facility" && <House color="#a5b4fc" size={12} weight="fill" />}
+            {type === "partner" && <Recycle color="#9BD49B" size={12} weight="fill" />}
+          </span>
+          <span className="text-[10px] text-neutral-400 uppercase leading-none tracking-[.03em]">
+            {title}
+          </span>
+          <span className="text-[10px] text-neutral-400 uppercase leading-none tracking-[.03em]">
             {selectedItems.length}/{items.length}
             </span>
         </div>
         <span className="">
-                <CaretDown color="#1C1C1C" size={12} weight="regular" />
-            </span>
+          <CaretDown className="text-neutral-800 dark:text-neutral-200" size={12} weight="regular" />
+        </span>
       </button>
-      <div className="dropdown-content bg-white dark:bg-neutral-600 ">
-        {items.map((item) => (
-          <div key={item.id} className="dropdown-item hover:bg-neutral-200 dark:hover:bg-neutral-500">
-            <label className="flex items-center justify-between gap-4 cursor-pointer ">
+      {openDropdown === type && (
+        <div className="dropdown-content bg-white dark:bg-neutral-600">
+          {items.map((item) => (
+            <div key={item.id} className="dropdown-item hover:bg-neutral-200 dark:hover:bg-neutral-500">
+              <label className="flex items-center justify-between gap-4 cursor-pointer">
                 <span className="flex items-center gap-2">
                 {type === "wasteType" && (
                     <>
@@ -77,22 +86,21 @@ const DropdownFilter: React.FC = () => {
                     {item.name === "HDPE" && <Circle color="#3b82f6" size={12} weight="fill" />}
                     {item.name === "OTHER" && <Triangle color="#f87171" size={12} weight="fill" />}
                     </>
-                )}
-                {type === "facility" && <House color="#a5b4fc" size={12} weight="fill" />}
-                {type === "partner" && <Recycle color="#9BD49B" size={12} weight="fill" />}
-                <span className=" text-[10px] uppercase leading-none tracking-[.03em]">{item.name}</span>
-              </span>
-            
-            <input
-                type="checkbox"
-                checked={selectedItems.some((selected) => selected.id === item.id)}
-                onChange={() => handleToggle(type, item)}
-                
-              />
+                  )}
+                  {type === "facility" && <House color="#a5b4fc" size={12} weight="fill" />}
+                  {type === "partner" && <Recycle color="#9BD49B" size={12} weight="fill" />}
+                  <span className="text-[10px] uppercase leading-none tracking-[.03em]">{item.name}</span>
+                </span>
+                <input
+                  type="checkbox"
+                  checked={selectedItems.some((selected) => selected.id === item.id)}
+                  onChange={() => handleToggle(type, item)}
+                />
               </label>
-          </div>
-        ))}
-      </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 
