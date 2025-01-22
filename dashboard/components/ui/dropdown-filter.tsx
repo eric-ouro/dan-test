@@ -58,19 +58,19 @@ const DropdownFilter: React.FC = () => {
       >
         <div className="flex flex-row gap-2 items-end text-left">
           <span>
-            {type === "wasteType" && <DiamondsFour color="#f0a500" size={12} weight="fill" />}
-            {type === "facility" && <House color="#a5b4fc" size={12} weight="fill" />}
-            {type === "partner" && <Recycle color="#9BD49B" size={12} weight="fill" />}
+            {type === "wasteType" && <DiamondsFour color="#f0a500" size={15} weight="fill" />}
+            {type === "facility" && <House color="#a5b4fc" size={15} weight="fill" />}
+            {type === "partner" && <Recycle color="#9BD49B" size={15} weight="fill" />}
           </span>
-          <span className="text-[10px] text-neutral-400 uppercase leading-none tracking-[.03em]">
+          <span className="text-sm text-neutral-400 uppercase leading-none tracking-[.03em]">
             {title}
           </span>
-          <span className="text-[10px] text-neutral-400 uppercase leading-none tracking-[.03em]">
+          <span className="text-sm text-neutral-400 uppercase leading-none tracking-[.03em]">
             {selectedItems.length}/{items.length}
             </span>
         </div>
         <span className="">
-          <CaretDown className="text-neutral-800 dark:text-neutral-200" size={12} weight="regular" />
+          <CaretDown className="text-neutral-800 dark:text-neutral-200" size={15} weight="regular" />
         </span>
       </button>
       {openDropdown === type && (
@@ -81,21 +81,24 @@ const DropdownFilter: React.FC = () => {
                 <span className="flex items-center gap-2">
                 {type === "wasteType" && (
                     <>
-                    {item.name === "LDPE" && <Triangle color="#f0a500" size={12} weight="fill" />}
-                    {item.name === "PET" && <Square color="#c084fc" size={12} weight="fill" />}
-                    {item.name === "HDPE" && <Circle color="#3b82f6" size={12} weight="fill" />}
-                    {item.name === "OTHER" && <Triangle color="#f87171" size={12} weight="fill" />}
+                    {item.name === "LDPE" && <Triangle color="#f0a500" size={15} weight="fill" />}
+                    {item.name === "PET" && <Square color="#c084fc" size={15} weight="fill" />}
+                    {item.name === "HDPE" && <Circle color="#3b82f6" size={15} weight="fill" />}
+                    {item.name === "OTHER" && <Triangle color="#f87171" size={15} weight="fill" />}
                     </>
                   )}
-                  {type === "facility" && <House color="#a5b4fc" size={12} weight="fill" />}
-                  {type === "partner" && <Recycle color="#9BD49B" size={12} weight="fill" />}
-                  <span className="text-[10px] uppercase leading-none tracking-[.03em]">{item.name}</span>
+                  {type === "facility" && <House color="#a5b4fc" size={15} weight="fill" />}
+                  {type === "partner" && <Recycle color="#9BD49B" size={15} weight="fill" />}
+                  <span className="text-sm uppercase leading-none tracking-[.03em]">{item.name}</span>
                 </span>
-                <input
-                  type="checkbox"
-                  checked={selectedItems.some((selected) => selected.id === item.id)}
-                  onChange={() => handleToggle(type, item)}
-                />
+                <div className="custom-checkbox ">
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.some((selected) => selected.id === item.id)}
+                    onChange={() => handleToggle(type, item)}                  
+                  />
+                  <span className="checkmark bg-neutral-500 dark:bg-neutral-600"></span>
+                </div>
               </label>
             </div>
           ))}
