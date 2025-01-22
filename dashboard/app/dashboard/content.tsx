@@ -14,7 +14,7 @@ const DashboardContent = () => {
 
   return (
     <div>
-        <div className="border-b border-neutral-400 sticky top-0 bg-accent z-20 flex flex-col justify-start items-left responsive-padding gap-4 text-xs ">
+        <div className="border-b border-neutral-400 sticky top-0 bg-accent z-20 flex flex-col justify-start items-left responsive-padding gap-4 ">
             <div className="  tabs [&>*:not(:first-child)]:pl-6 ">
                 <button 
                     onClick={() => setActiveTab("plastics")} 

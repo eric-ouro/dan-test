@@ -82,7 +82,6 @@ body {
 
 
 .dashcomponent{
-  padding: 1rem;
   margin-top:20px;
   font-size:small;
 
@@ -120,11 +119,7 @@ body {
 }
 
 .dropdown {
-  
-  min-width: 170px;
-  
   border-radius: 4px;
-  
 }
 
 .dropdown-content {
@@ -234,3 +229,5 @@ body {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg); */
 }
+
+

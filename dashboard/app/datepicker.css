@@ -1,0 +1,82 @@
+/* Date Picker */
+.react-datepicker {
+    font-family: "DM Sans", Helvetica Neue, helvetica, arial, sans-serif;
+    font-size: 1rem;
+    font-size: 13px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 0.3rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    position: relative;
+    line-height: initial;
+    left: 4px;
+    top: 4px;
+  }
+
+
+.react-datepicker__input-container {
+    display: flex;
+    align-items: flex-start;
+    
+}
+
+.react-datepicker__header {
+    background-color: #fff;
+    border-bottom: 1px solid #e4e4e4;
+    border-top-left-radius: 0.3rem;
+    padding: 8px 0;
+    position: relative;
+}
+
+.react-datepicker__navigation {
+    align-items: center;
+    background: none;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    top: 4px;
+    padding: 0;
+    border: none;
+    z-index: 1;
+    height: 32px;
+    width: 32px;
+    text-indent: -999em;
+    overflow: hidden;
+   
+}
+
+.react-datepicker__month .react-datepicker__month-text {
+    padding: 10px;
+    text-transform: uppercase;
+}
+.react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected, .react-datepicker__quarter-text--keyboard-selected, .react-datepicker__year-text--keyboard-selected {
+    border-radius: 0.3rem;
+    background-color:#e2e2e2;
+    color: rgb(0, 0, 0);
+}
+
+.react-datepicker__month-text--keyboard-selected:not([aria-disabled=true]):hover{
+    background-color: #ccc;
+}
+
+/* Navigation Icon */
+.react-datepicker__navigation-icon::before{
+    border-color: #1c1c1c;
+    top: 7px;
+    border-width: 1px 1px 0 0;
+}
+
+.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle {
+    display: none;
+}
+
+.react-datepicker__day--today,
+.react-datepicker__month-text--today,
+.react-datepicker__quarter-text--today,
+.react-datepicker__year-text--today {
+  font-weight: normal;
+}

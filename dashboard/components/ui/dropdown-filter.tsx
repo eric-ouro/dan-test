@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useAppSelector, useAppDispatch } from "@hooks/store-hooks";
 import { RootState } from "@store/configuration";
 import {
@@ -18,7 +18,7 @@ import { setEnd, setStart } from "@/lib/store/slices/selected-date-slice";
 import { togglePartnerFacility } from "@/lib/store/slices/selected-partner-facilities-slice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import "@/app/datepicker.css";
 
 const DropdownFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -81,10 +81,10 @@ const DropdownFilter: React.FC = () => {
   const renderDropdown = (title: string, items: any[], selectedItems: any[], type: string) => (
     <div className={`dropdown ${openDropdown === type ? 'open' : ''}`}>
       <button
-        className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-xs rounded-sm w-full"
+        className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-sm rounded-sm w-full"
         onClick={() => toggleDropdown(type)}
       >
-        <div className="flex flex-row gap-2 items-end text-left">
+        <div className="flex flex-row gap-2 items-center text-left">
           <span>
             {type === "wasteType" && <DiamondsFour color="#f0a500" size={15} weight="fill" />}
             {type === "facility" && <House color="#a5b4fc" size={15} weight="fill" />}
@@ -143,6 +143,8 @@ const DropdownFilter: React.FC = () => {
   const renderDatePicker = (type: "start" | "end", validStart: string, validEnd: string, date: string) => {
     const handleDateChangeWrapper = (selectedDate: Date | null) => handleDateChange(type, selectedDate);
 
+    const datePickerRef = useRef<any>(null);
+
     console.log(`Initial ${type} date string:`, date);
     const selectedDate = new Date();
     selectedDate.setUTCFullYear(parseInt(date.slice(0, 4)), parseInt(date.slice(5, 7)) - 1, parseInt(date.slice(8, 10)));
@@ -161,22 +163,37 @@ const DropdownFilter: React.FC = () => {
     console.log(`Rendering ${type} date picker with date (UTC):`, selectedDate.toISOString());
 
     return (
-      <div className="date-picker dropdown">
-        <DatePicker
-          selected={selectedDate}
-          onChange={handleDateChangeWrapper}
-          minDate={minDate}
-          maxDate={maxDate}
-          dateFormat="yyyy-MM"
-          showMonthYearPicker
-          className="bg-white dark:bg-neutral-600"
+      <div className="date-picker dropdown ">
+        <div className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer rounded-sm w-full"
+        onClick={() => datePickerRef.current.setFocus()}>
+        <span className="flex flex-row gap-2 items-center text-left">
+          <span className="text-neutral-400 dark:text-neutral-200 text-sm uppercase leading-none tracking-[.03em]">
+            {type === "start" ? "Start " : "End "}
+          </span>
+          <DatePicker
+            ref={datePickerRef}
+            selected={selectedDate}
+            onChange={handleDateChangeWrapper}
+            minDate={minDate}
+            maxDate={maxDate}
+            dateFormat="yyyy-MM"
+            showMonthYearPicker
+            className="bg-white dark:bg-neutral-600 focus:outline-none text-sm text-neutral-400 uppercase leading-none tracking-[.03em] h-[12px]"
+          />
+        </span>
+        <CaretDown
+          className="text-neutral-800 dark:text-neutral-200"
+          size={15}
+          weight="regular"
+          onClick={() => datePickerRef.current.setFocus()}
         />
+        </div>
       </div>
     );
   };
 
   return (
-    <div className="dropdown-filters flex flex-row gap-[10px]">
+    <div className="dropdown-filters flex flex-row flex-wrap gap-[10px]">
       {renderDropdown("Materials", wasteTypes.valid, wasteTypes.selected, "wasteType")}
       {renderDropdown("Facilities", facilities.valid, facilities.selected, "facility")}
       {renderDropdown("Partners", partners.valid, partners.selected, "partner")}
