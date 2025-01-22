@@ -17,7 +17,7 @@ const PlasticFootprintSimple = () => {
     loading: filteredSummariesLoading,
     error: filteredSummariesError,
   } = useEnrichedWasteRateSummaries({
-    filters: ["partner", "facility", "partnerFacility", "wasteType"],
+    filters: ["partner", "facility", "partnerFacility", "wasteType", "date"],
     groupConfig: {
       group: "none",
       aggregate: false,
@@ -28,7 +28,7 @@ const PlasticFootprintSimple = () => {
     loading: summariesLoading,
     error: summariesError,
   } = useEnrichedWasteRateSummaries({
-    filters: ["partner", "facility", "partnerFacility"],
+    filters: ["partner", "facility", "partnerFacility", "date"],
     groupConfig: {
       group: "none",
       aggregate: false,

@@ -68,7 +68,8 @@ const selectedDateSlice = createSlice({
       // if action payload is outside the valid interval, do nothing
       if (
         action.payload < state.valid.start ||
-        action.payload > state.valid.end
+        action.payload > state.valid.end || 
+        action.payload > state.selected.end
       ) {
         return;
       }
@@ -78,7 +79,8 @@ const selectedDateSlice = createSlice({
       // if action payload is outside the valid interval, do nothing
       if (
         action.payload < state.valid.start ||
-        action.payload > state.valid.end
+        action.payload > state.valid.end ||
+        action.payload < state.selected.start
       ) {
         return;
       }
