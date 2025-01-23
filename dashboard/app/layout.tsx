@@ -6,6 +6,7 @@ import Link from "next/link";
 import "./globals.css";
 import StoreProvider from "@/lib/store/provider";
 
+
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
@@ -50,8 +51,11 @@ export default function RootLayout({
                 </div>
                 
                 <div className="flex gap-5 items-center">
-                  <ThemeSwitcher />
+                  {/* <ThemeSwitcher /> */}
                   <HeaderAuth />
+                  <div>
+                   
+                  </div>
                 </div>
               </div>
             </nav>
