@@ -14,27 +14,29 @@ const DashboardContent = () => {
 
   return (
     <div>
-        <div className="border-b border-neutral-400 sticky top-0 bg-accent z-20 flex flex-col justify-start items-left responsive-padding gap-4 ">
-            <div className="  tabs [&>*:not(:first-child)]:pl-6 ">
-                <button 
-                    onClick={() => setActiveTab("plastics")} 
-                    className={activeTab === "plastics" ? "text-foreground" : "opacity-50"}
-                >
-                    Plastics
-                </button>
-                <button 
-                    onClick={() => setActiveTab("partners")} 
-                    className={activeTab === "partners" ? "text-foreground" : "opacity-50"}
-                >
-                    Partners
-                </button>
-                <button 
-                    onClick={() => setActiveTab("facilities")} 
-                    className={activeTab === "facilities" ? "text-foreground" : "opacity-50"}
-                >
-                    Facilities
-                </button>
+        <div className="border-b border-neutral-400 sticky top-0 bg-accent z-20 flex flex-col justify-start items-left responsive-padding gap-4 mt-[25px]">
+          <div className="flex flex-row items-center tabs gap-3 uppercase">
+            <div className="flex flex-row items-center tabs gap-3 ">
+              <button
+                onClick={() => setActiveTab("plastics")}
+                className={activeTab === "plastics" ? "text-foreground uppercase" : "opacity-50 uppercase" }
+              >
+                Plastics
+              </button>
+              <button
+                onClick={() => setActiveTab("partners")}
+                className={activeTab === "partners" ? "text-foreground uppercase" : "opacity-50 uppercase"}
+              >
+                Partners
+              </button>
+              <button
+                onClick={() => setActiveTab("facilities")}
+                className={activeTab === "facilities" ? "text-foreground uppercase" : "opacity-50 uppercase"}
+              >
+                Facilities
+              </button>
             </div>
+          </div>
             <DropdownFilter />
          </div>
 

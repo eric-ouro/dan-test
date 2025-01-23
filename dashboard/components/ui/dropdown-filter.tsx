@@ -146,21 +146,18 @@ const DropdownFilter: React.FC = () => {
     const datePickerRef = useRef<any>(null);
 
     console.log(`Initial ${type} date string:`, date);
-    const selectedDate = new Date();
-    selectedDate.setUTCFullYear(parseInt(date.slice(0, 4)), parseInt(date.slice(5, 7)) - 1, parseInt(date.slice(8, 10)));
-    // Set time to noon to avoid timezone issues
-    selectedDate.setHours(12, 0, 0, 0);
-    console.log(`Parsed ${type} date (UTC):`, selectedDate.toISOString());
-  
-    const minDate = new Date();
-    minDate.setUTCFullYear(parseInt(validStart.slice(0, 4)), parseInt(validStart.slice(5, 7)) - 1, parseInt(validStart.slice(8, 10)));
-    minDate.setHours(12, 0, 0, 0);
+    // parse date to local date, format yyyy-mm-dd, in the local timezone
+    const selectedDate = new Date(date);
+    selectedDate.setHours(selectedDate.getHours() + selectedDate.getTimezoneOffset() / 60);
 
-    const maxDate = new Date();
-    maxDate.setUTCFullYear(parseInt(validEnd.slice(0, 4)), parseInt(validEnd.slice(5, 7)) - 1, parseInt(validEnd.slice(8, 10)));
-    maxDate.setHours(12, 0, 0, 0);
+    const minDate = new Date(validStart);
+    minDate.setHours(minDate.getHours() + minDate.getTimezoneOffset() / 60);
+
+    const maxDate = new Date(validEnd);
+    maxDate.setHours(maxDate.getHours() + maxDate.getTimezoneOffset() / 60);
 
     console.log(`Rendering ${type} date picker with date (UTC):`, selectedDate.toISOString());
+    console.log({minDate, maxDate, selectedDate, validStart, validEnd, date});
 
     return (
       <div className="date-picker dropdown ">
