@@ -111,7 +111,7 @@ const DropdownFilter: React.FC = () => {
                 {type === "wasteType" && (
                     <>
                     {item.name === "LDPE" && <Triangle color="#f0a500" size={15} weight="fill" />}
-                    {item.name === "PET" && <Square color="#c084fc" size={15} weight="fill" />}
+                    {item.name === "PET" && <Square color="#ec715d" size={15} weight="fill" />}
                     {item.name === "HDPE" && <Circle color="#3b82f6" size={15} weight="fill" />}
                     {item.name === "PVC" && <Triangle color="#5AA65B" size={15} weight="fill" />}
                     {item.name === "OTHER" && <Triangle color="#f87171" size={15} weight="fill" />}
