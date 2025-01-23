@@ -23,12 +23,26 @@ import "@/app/datepicker.css";
 const DropdownFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     dispatch(fetchPartnersIfEmpty());
     dispatch(fetchFacilitiesIfEmpty());
     dispatch(fetchWasteTypesIfEmpty());
   }, [dispatch]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const partners = useAppSelector((state: RootState) => state.selectedPartners);
   const facilities = useAppSelector((state: RootState) => state.selectedFacilities);
@@ -79,7 +93,7 @@ const DropdownFilter: React.FC = () => {
   };
 
   const renderDropdown = (title: string, items: any[], selectedItems: any[], type: string) => (
-    <div className={`dropdown mono ${openDropdown === type ? 'open' : ''}`}>
+    <div ref={dropdownRef} className={`dropdown mono ${openDropdown === type ? 'open' : ''}`}>
       <button
         className={`flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-sm rounded-sm w-full gap-3 ${openDropdown === type ? 'activedropdown' : ''}`}
         onClick={() => toggleDropdown(type)}
