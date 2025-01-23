@@ -51,7 +51,6 @@ export default function RootLayout({
                 </div>
                 
                 <div className="flex gap-5 items-center">
-                  {/* <ThemeSwitcher /> */}
                   <HeaderAuth />
                   <div>
                    
