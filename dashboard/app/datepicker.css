@@ -7,19 +7,20 @@
     color: #000;
     border: none;
     border-radius: 0.3rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0.3613123810646357px 0.3613123810646357px -1.25px rgba(0, 0, 0, 0.18), 0px 1.3731199819460742px 1.3731199819460742px -2.5px rgba(0, 0, 0, 0.15889), 0px 6px 6px -3.75px rgba(0, 0, 0, 0.0625);
     display: inline-block;
     position: relative;
     line-height: initial;
     left: 4px;
     top: 4px;
+    
   }
 
 
 .react-datepicker__input-container {
     display: flex;
     align-items: flex-start;
-    width: 50px;
+    width: 53px;
     
 }
 

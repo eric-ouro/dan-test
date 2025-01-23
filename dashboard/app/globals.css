@@ -4,12 +4,12 @@
 
 @layer base {
   :root {
-    --background: 0 0% 95%;
-    --foreground: 0 0% 3.9%;
+    --background: 0 0% 94.9%;
+    --foreground: 0 0% 25.0%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 0 0% 25.0%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
+    --popover-foreground: 0 0% 25.0%;
     --primary: 0 0% 9%;
     --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 96.1%;
@@ -22,7 +22,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --ring: 0 0% 25.0%;
     --radius: 0.5rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
@@ -32,11 +32,11 @@
   }
 
   .dark {
-    --background: 0 0% 3.9%;
+    --background: 0 0% 11.0%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
+    --card: 0 0% 11.0%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
+    --popover: 0 0% 11.0%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 9%;
@@ -112,20 +112,53 @@
     font-weight: 900;
     font-style: normal;
   }
-  
+/* Mono */
+  @font-face {
+    font-family: 'DiatypeTrialMono';
+    src: url('../fonts/ABCDiatypeMono-Regular-Trial.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'DiatypeTrialMono';
+    src: url('../fonts/ABCDiatypeMono-Medium-Trial.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  /* semi-mono */
+  @font-face {
+    font-family: 'DiatypeTrialSemiMono';
+    src: url('../fonts/ABCDiatypeSemi-Mono-Regular-Trial.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'DiatypeTrialSemiMono';
+    src: url('../fonts/ABCDiatypeSemi-Mono-Medium-Trial.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
 
 body {
-  font-family:  'DiatypeTrial', 'DM Sans', sans-serif;
+  font-family:  'DiatypeTrialMono', 'DM Sans', sans-serif;
 }
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 }
-.dm-mono {
-  font-family: 'DM Mono', monospace;
+.mono {
+  font-family: 'DiatypeTrialMono', monospace;
 }
-
+.semi-mono {
+  font-family: 'DiatypeTrialSemiMono', monospace;
+}
+.sans{
+  font-family: 'DiatypeTrial', sans-serif;
+}
 
 
 .dashcomponent{
@@ -169,16 +202,21 @@ body {
   border-radius: 4px;
 }
 
+button.activedropdown{
+  box-shadow: 0px 0.3613123810646357px 0.3613123810646357px -1.25px rgba(0, 0, 0, 0.18), 0px 1.3731199819460742px 1.3731199819460742px -2.5px rgba(0, 0, 0, 0.15889), 0px 6px 6px -3.75px rgba(0, 0, 0, 0.0625);
+}
+
 .dropdown-content {
   display: none;
-  padding: 4px;
-  gap: 2px;
+  padding: 5px;
+  gap: 5px;
   position: absolute;
   background-color: #ffffff;
   min-width: 270px;
   z-index: 1;
   margin-top: 10px;
   border-radius: 4px;
+  box-shadow: 0px 0.3613123810646357px 0.3613123810646357px -1.25px rgba(0, 0, 0, 0.18), 0px 1.3731199819460742px 1.3731199819460742px -2.5px rgba(0, 0, 0, 0.15889), 0px 6px 6px -3.75px rgba(0, 0, 0, 0.0625);
 }
 
 .dropdown-signout {
@@ -206,8 +244,12 @@ body {
   padding: 0px 5px;
   border-radius: 4px;
   cursor: pointer;
+  margin-bottom: 5px;
 }
 
+.dropdown-item:last-child {
+  margin-bottom: 0px;
+}
 
 .dropdown-item label {
   display: flex;

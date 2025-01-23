@@ -79,9 +79,9 @@ const DropdownFilter: React.FC = () => {
   };
 
   const renderDropdown = (title: string, items: any[], selectedItems: any[], type: string) => (
-    <div className={`dropdown ${openDropdown === type ? 'open' : ''}`}>
+    <div className={`dropdown mono ${openDropdown === type ? 'open' : ''}`}>
       <button
-        className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-sm rounded-sm w-full gap-3"
+        className={`flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-sm rounded-sm w-full gap-3 ${openDropdown === type ? 'activedropdown' : ''}`}
         onClick={() => toggleDropdown(type)}
       >
         <div className="flex flex-row gap-2 items-center text-left">
@@ -91,48 +91,49 @@ const DropdownFilter: React.FC = () => {
             {type === "partner" && <Recycle color="#9BD49B" size={15} weight="fill" />}
             {type === "partnerFacility" && <House color="#9BD49B" size={15} weight="fill" />}
           </span>
-          <span className="text-sm text-neutral-400 uppercase leading-none tracking-[.03em]">
+          <span className="text-sm text-neutral-600 dark:text-neutral-200 uppercase leading-none tracking-[.03em]">
             {title}
           </span>
-          <span className="text-sm text-neutral-400 uppercase leading-none tracking-[.03em]">
+          <span className="text-sm text-neutral-400 dark:text-neutral-400 uppercase leading-none tracking-[.03em]">
             {selectedItems.length}/{items.length}
             </span>
         </div>
         <span className="">
-          <CaretDown className="text-neutral-800 dark:text-neutral-200" size={15} weight="regular" />
+          <CaretDown className="text-neutral-600 dark:text-neutral-200" size={15} weight="regular" />
         </span>
       </button>
       {openDropdown === type && (
         <div className="dropdown-content bg-white dark:bg-neutral-600">
-          {items.map((item) => (
-            <div key={item.id} className="dropdown-item hover:bg-neutral-200 dark:hover:bg-neutral-500">
-              <label className="flex items-center justify-between gap-4 cursor-pointer">
-                <span className="flex items-center gap-2">
-                {type === "wasteType" && (
-                    <>
-                    {item.name === "LDPE" && <Triangle color="#f0a500" size={15} weight="fill" />}
-                    {item.name === "PET" && <Square color="#ec715d" size={15} weight="fill" />}
-                    {item.name === "HDPE" && <Circle color="#3b82f6" size={15} weight="fill" />}
-                    {item.name === "PVC" && <Triangle color="#5AA65B" size={15} weight="fill" />}
-                    {item.name === "OTHER" && <Triangle color="#f87171" size={15} weight="fill" />}
-                    {item.name !== "LDPE" && item.name !== "PET" && item.name !== "HDPE" && item.name !== "PVC" && item.name !== "OTHER" && (
-                      <Circle color="#a3a3a3" size={15} weight="fill" />
+          {items.map((item, index) => (
+            <div key={item.id}>
+              <div className="dropdown-item  hover:bg-neutral-200 dark:hover:bg-neutral-500">
+                <label className="flex items-center justify-between gap-4 cursor-pointer">
+                  <span className="flex items-center gap-2">
+                    {type === "wasteType" && (
+                      <>
+                        {item.name === "LDPE" && <Triangle color="#f0a500" size={15} weight="fill" />}
+                        {item.name === "PET" && <Square color="#ec715d" size={15} weight="fill" />}
+                        {item.name === "HDPE" && <Circle color="#3b82f6" size={15} weight="fill" />}
+                        {item.name === "PVC" && <Triangle color="#5AA65B" size={15} weight="fill" />}
+                        {item.name === "OTHER" && <Triangle color="#f87171" size={15} weight="fill" />}
+                        {item.name !== "LDPE" && item.name !== "PET" && item.name !== "HDPE" && item.name !== "PVC" && item.name !== "OTHER" && (
+                          <Circle color="#a3a3a3" size={15} weight="fill" />
+                        )}
+                      </>
                     )}
-                    </>
-                  )}
-                  {/* {type === "facility" && <House color="#a5b4fc" size={15} weight="fill" />} */}
-                  {/* {type === "partner" && <Recycle color="#9BD49B" size={15} weight="fill" />} */}
-                  <span className="text-sm uppercase leading-none tracking-[.03em]">{item.name}</span>
-                </span>
-                <div className="custom-checkbox ">
-                  <input
-                    type="checkbox"
-                    checked={selectedItems.some((selected) => selected.id === item.id)}
-                    onChange={() => handleToggle(type, item)}                  
-                  />
-                  <span className="checkmark bg-neutral-500 dark:bg-neutral-600"></span>
-                </div>
-              </label>
+                    <span className="text-sm uppercase leading-none tracking-[.03em]">{item.name}</span>
+                  </span>
+                  <div className="custom-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={selectedItems.some((selected) => selected.id === item.id)}
+                      onChange={() => handleToggle(type, item)}                  
+                    />
+                    <span className="checkmark bg-neutral-500 dark:bg-neutral-600"></span>
+                  </div>
+                </label>
+              </div>
+              {index < items.length - 1 && <div className="border-t  border-neutral-200 dark:border-neutral-800"></div>}
             </div>
           ))}
         </div>
@@ -160,14 +161,14 @@ const DropdownFilter: React.FC = () => {
     console.log({minDate, maxDate, selectedDate, validStart, validEnd, date});
 
     return (
-      <div className="date-picker dropdown ">
+      <div className="mono date-picker dropdown ">
         <div className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer rounded-sm w-full gap-3"
         onClick={() => datePickerRef.current.setFocus()}>
         <span className="flex flex-row items-center text-left">
         <span className="mr-2">
           <CalendarBlank color="#A7A7A7FF" size={15} weight="fill" />
         </span>
-          <span className="text-neutral-400 dark:text-neutral-200 text-sm uppercase leading-none tracking-[.03em] mr-2">
+          <span className="text-neutral-600 dark:text-neutral-200 text-sm uppercase leading-none tracking-[.03em] mr-2">
             {type === "start" ? "Start " : "End "}
           </span>
           <DatePicker
@@ -178,11 +179,11 @@ const DropdownFilter: React.FC = () => {
             maxDate={maxDate}
             dateFormat="yyyy-MM"
             showMonthYearPicker
-            className="bg-transparent focus:outline-none text-sm text-neutral-400 uppercase leading-none tracking-[.03em] h-[12px] w-[50px]"
+            className="bg-transparent focus:outline-none text-sm text-neutral-400 uppercase leading-none tracking-[.03em] h-[12px] w-[53px]"
           />
         </span>
         <CaretDown
-          className="text-neutral-800 dark:text-neutral-200"
+          className="text-neutral-600 dark:text-neutral-200"
           size={15}
           weight="regular"
           onClick={() => datePickerRef.current.setFocus()}
@@ -197,7 +198,7 @@ const DropdownFilter: React.FC = () => {
       {renderDropdown("Materials", wasteTypes.valid, wasteTypes.selected, "wasteType")}
       {renderDropdown("Facilities", facilities.valid, facilities.selected, "facility")}
       {renderDropdown("Partners", partners.valid, partners.selected, "partner")}
-      {renderDropdown("Partner Facilities", partnerFacilities.valid, partnerFacilities.selected, "partnerFacility")}
+      {renderDropdown("Partner Fac.", partnerFacilities.valid, partnerFacilities.selected, "partnerFacility")}
       {renderDatePicker("start", validStart, validEnd, startDate)}
       {renderDatePicker("end", validStart, validEnd, endDate)}
     </div>

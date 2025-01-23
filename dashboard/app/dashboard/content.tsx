@@ -14,29 +14,27 @@ const DashboardContent = () => {
 
   return (
     <div>
-        <div className="border-b border-neutral-400 sticky top-0 bg-accent z-20 flex flex-col justify-start items-left responsive-padding gap-4 mt-[25px]">
-          <div className="flex flex-row items-center tabs gap-3 uppercase">
-            <div className="flex flex-row items-center tabs gap-3 ">
+        <div className="border-b border-b-foreground/20 sticky top-0 z-20 flex flex-col justify-start items-left responsive-padding gap-4">
+            <div className="flex flex-row items-center gap-4 sans text-3xl  ">
               <button
                 onClick={() => setActiveTab("plastics")}
-                className={activeTab === "plastics" ? "text-foreground uppercase" : "opacity-50 uppercase" }
+                className={`${activeTab === "plastics" ? "text-foreground" : "opacity-30"} tracking-tight`}
               >
                 Plastics
               </button>
               <button
                 onClick={() => setActiveTab("partners")}
-                className={activeTab === "partners" ? "text-foreground uppercase" : "opacity-50 uppercase"}
+                className={`${activeTab === "partners" ? "text-foreground" : "opacity-30"} tracking-tight`}
               >
                 Partners
               </button>
               <button
                 onClick={() => setActiveTab("facilities")}
-                className={activeTab === "facilities" ? "text-foreground uppercase" : "opacity-50 uppercase"}
+                className={`${activeTab === "facilities" ? "text-foreground" : "opacity-30"} tracking-tight`}
               >
                 Facilities
               </button>
             </div>
-          </div>
             <DropdownFilter />
          </div>
 

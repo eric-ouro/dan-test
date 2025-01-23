@@ -38,11 +38,17 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-              <div className="w-full flex justify-between items-center responsive-padding text-sm">
-                <div className="flex gap-5 items-center font-semibold">
+            <nav className="w-full flex justify-center border-b border-b-foreground/20 h-16">
+              <div className="w-full flex justify-between items-center responsive-padding sans">
+                <div className="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" className="text-foreground">
+                    <path d="M 10.969 1.513 L 9 0.422 L 6.469 1.828 L 9 3.234 L 10.372 2.469 C 13.624 3.111 16.087 5.985 16.087 9.422 C 16.087 13.331 12.909 16.509 9 16.509 C 5.091 16.509 1.912 13.331 1.912 9.422 C 1.912 7.279 2.874 5.361 4.382 4.061 L 5.625 2.391 L 3.662 3.268 C 1.869 4.81 0.84 7.058 0.844 9.422 C 0.844 13.928 4.494 17.578 9 17.578 C 13.506 17.578 17.156 13.928 17.156 9.422 C 17.156 5.597 14.518 2.396 10.969 1.513 Z" />
+                  </svg>
+                  <div className="flex gap-5 items-center font-medium">
                   <Link href={"/"}>OURO</Link>
                 </div>
+                </div>
+                
                 <div className="flex gap-5 items-center">
                   <ThemeSwitcher />
                   <HeaderAuth />
