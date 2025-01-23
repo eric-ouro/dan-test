@@ -19,6 +19,7 @@
 .react-datepicker__input-container {
     display: flex;
     align-items: flex-start;
+    width: 60px;
     
 }
 

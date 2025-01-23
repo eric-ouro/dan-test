@@ -81,7 +81,7 @@ const DropdownFilter: React.FC = () => {
   const renderDropdown = (title: string, items: any[], selectedItems: any[], type: string) => (
     <div className={`dropdown ${openDropdown === type ? 'open' : ''}`}>
       <button
-        className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-sm rounded-sm w-full"
+        className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-sm rounded-sm w-full gap-4"
         onClick={() => toggleDropdown(type)}
       >
         <div className="flex flex-row gap-2 items-center text-left">
@@ -161,10 +161,13 @@ const DropdownFilter: React.FC = () => {
 
     return (
       <div className="date-picker dropdown ">
-        <div className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer rounded-sm w-full"
+        <div className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer rounded-sm w-full gap-4"
         onClick={() => datePickerRef.current.setFocus()}>
-        <span className="flex flex-row gap-2 items-center text-left">
-          <span className="text-neutral-400 dark:text-neutral-200 text-sm uppercase leading-none tracking-[.03em]">
+        <span className="flex flex-row items-center text-left">
+        <span className="mr-2">
+          <CalendarBlank color="#A7A7A7FF" size={15} weight="fill" />
+        </span>
+          <span className="text-neutral-400 dark:text-neutral-200 text-sm uppercase leading-none tracking-[.03em] mr-2">
             {type === "start" ? "Start " : "End "}
           </span>
           <DatePicker
@@ -175,7 +178,7 @@ const DropdownFilter: React.FC = () => {
             maxDate={maxDate}
             dateFormat="yyyy-MM"
             showMonthYearPicker
-            className="bg-white dark:bg-neutral-600 focus:outline-none text-sm text-neutral-400 uppercase leading-none tracking-[.03em] h-[12px]"
+            className="bg-transparent focus:outline-none text-sm text-neutral-400 uppercase leading-none tracking-[.03em] h-[12px] w-[60px]"
           />
         </span>
         <CaretDown
