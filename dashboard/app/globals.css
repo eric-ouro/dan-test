@@ -197,8 +197,8 @@ body {
 
 @media (min-width: 1380px) {
   .responsive-padding {
-    padding-left: 200px;
-    padding-right: 200px;
+    /* padding-left: 200px; */
+    /* padding-right: 200px; */
   }
 }
 

@@ -33,6 +33,7 @@ const DropdownFilter: React.FC = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      console.log("event", event);
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setOpenDropdown(null);
       }
@@ -53,7 +54,7 @@ const DropdownFilter: React.FC = () => {
   const startDate = useAppSelector((state: RootState) => state.selectedDate.selected.start);
   const endDate = useAppSelector((state: RootState) => state.selectedDate.selected.end);
 
-  console.log("start date", startDate, "end date", endDate);
+  // console.log("start date", startDate, "end date", endDate);
 
   const handleToggle = (type: string, item: any) => {
     switch (type) {
@@ -80,7 +81,7 @@ const DropdownFilter: React.FC = () => {
 
   const handleDateChange = (type: string, selectedDate: Date | null) => {
     if (selectedDate) {
-      console.log(`Selected ${type} date (UTC):`, selectedDate.toISOString());
+      // console.log(`Selected ${type} date (UTC):`, selectedDate.toISOString());
       const formattedDate = selectedDate.toISOString().slice(0, 10);
       if (type === "start") {
         dispatch(setStart(formattedDate));
@@ -160,7 +161,7 @@ const DropdownFilter: React.FC = () => {
 
     const datePickerRef = useRef<any>(null);
 
-    console.log(`Initial ${type} date string:`, date);
+    // console.log(`Initial ${type} date string:`, date);
     // parse date to local date, format yyyy-mm-dd, in the local timezone
     const selectedDate = new Date(date);
     selectedDate.setHours(selectedDate.getHours() + selectedDate.getTimezoneOffset() / 60);
@@ -171,8 +172,8 @@ const DropdownFilter: React.FC = () => {
     const maxDate = new Date(validEnd);
     maxDate.setHours(maxDate.getHours() + maxDate.getTimezoneOffset() / 60);
 
-    console.log(`Rendering ${type} date picker with date (UTC):`, selectedDate.toISOString());
-    console.log({minDate, maxDate, selectedDate, validStart, validEnd, date});
+    // console.log(`Rendering ${type} date picker with date (UTC):`, selectedDate.toISOString());
+    // console.log({minDate, maxDate, selectedDate, validStart, validEnd, date});
 
     return (
       <div className="mono date-picker dropdown ">
