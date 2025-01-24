@@ -59,17 +59,21 @@ const selectedWasteTypesSlice = createSlice({
       state.selected.push(action.payload);
     },
     removeWasteTypeById: (state, action: PayloadAction<number>) => {
-      state.selected = state.selected.filter(
-        (wasteType) => wasteType.id !== action.payload,
-      );
+      if (state.selected.length > 1) {
+        state.selected = state.selected.filter(
+          (wasteType) => wasteType.id !== action.payload,
+        );
+      }
     },
     toggleWasteType: (state, action: PayloadAction<WasteType>) => {
       if (
         state.selected.some((wasteType) => wasteType.id === action.payload.id)
       ) {
-        state.selected = state.selected.filter(
-          (wasteType) => wasteType.id !== action.payload.id,
-        );
+        if (state.selected.length > 1) {
+          state.selected = state.selected.filter(
+            (wasteType) => wasteType.id !== action.payload.id,
+          );
+        }
       } else {
         state.selected.push(action.payload);
       }

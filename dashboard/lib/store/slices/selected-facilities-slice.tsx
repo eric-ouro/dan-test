@@ -57,17 +57,21 @@ const selectedFacilitiesSlice = createSlice({
       state.selected.push(action.payload);
     },
     removeFacilityById: (state, action: PayloadAction<number>) => {
-      state.selected = state.selected.filter(
-        (facility) => facility.id !== action.payload,
-      );
+      if (state.selected.length > 1) {
+        state.selected = state.selected.filter(
+          (facility) => facility.id !== action.payload,
+        );
+      }
     },
     toggleFacility: (state, action: PayloadAction<Facility>) => {
       if (
         state.selected.some((facility) => facility.id === action.payload.id)
       ) {
-        state.selected = state.selected.filter(
-          (facility) => facility.id !== action.payload.id,
-        );
+        if (state.selected.length > 1) {
+          state.selected = state.selected.filter(
+            (facility) => facility.id !== action.payload.id,
+          );
+        }
       } else {
         state.selected.push(action.payload);
       }

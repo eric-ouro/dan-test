@@ -59,17 +59,21 @@ const selectedPartnerFacilitiesSlice = createSlice({
       state.selected.push(action.payload);
     },
     removePartnerFacilityById: (state, action: PayloadAction<number>) => {
-      state.selected = state.selected.filter(
-        (facility) => facility.id !== action.payload,
-      );
+      if (state.selected.length > 1) {
+        state.selected = state.selected.filter(
+          (facility) => facility.id !== action.payload,
+        );
+      }
     },
     togglePartnerFacility: (state, action: PayloadAction<Facility>) => {
       if (
         state.selected.some((facility) => facility.id === action.payload.id)
       ) {
-        state.selected = state.selected.filter(
-          (facility) => facility.id !== action.payload.id,
-        );
+        if (state.selected.length > 1) {
+          state.selected = state.selected.filter(
+            (facility) => facility.id !== action.payload.id,
+          );
+        }
       } else {
         state.selected.push(action.payload);
       }

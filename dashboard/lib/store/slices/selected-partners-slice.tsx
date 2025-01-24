@@ -57,15 +57,19 @@ const selectedPartnersSlice = createSlice({
       state.selected.push(action.payload);
     },
     removePartnerById: (state, action: PayloadAction<number>) => {
-      state.selected = state.selected.filter(
-        (partner) => partner.id !== action.payload,
-      );
+      if (state.selected.length > 1) {
+        state.selected = state.selected.filter(
+          (partner) => partner.id !== action.payload,
+        );
+      }
     },
     togglePartner: (state, action: PayloadAction<Company>) => {
       if (state.selected.some((partner) => partner.id === action.payload.id)) {
-        state.selected = state.selected.filter(
-          (partner) => partner.id !== action.payload.id,
-        );
+        if (state.selected.length > 1) {
+          state.selected = state.selected.filter(
+            (partner) => partner.id !== action.payload.id,
+          );
+        }
       } else {
         state.selected.push(action.payload);
       }
