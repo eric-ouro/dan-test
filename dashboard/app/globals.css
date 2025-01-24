@@ -174,21 +174,31 @@ body {
 }
 
 .responsive-padding {
- padding: 25px;
+ padding-left: 25px;
+ padding-right: 25px;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .responsive-padding {
-    padding: 25px;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 }
 
 @media (min-width: 1024px) {
   .responsive-padding {
-    padding: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
   }
   .dashcomponent{
     padding: 0rem;
+  }
+}
+
+@media (min-width: 1380px) {
+  .responsive-padding {
+    padding-left: 200px;
+    padding-right: 200px;
   }
 }
 

@@ -69,7 +69,9 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
   return (
     <div className="dashcomponent">
       <div className="flex flex-col gap-3 overflow-hidden h-full">
-        {name && <DashboardDisplayHeader headerText={name} />}
+        <div className="sans text-xl">
+          {name && <DashboardDisplayHeader headerText={name} textSize="text-lg" />}
+        </div>
         <div className="overflow-x-auto">
           <table className="min-w-full table-auto">
             <thead className="cursor-pointer text-xs text-left ">
