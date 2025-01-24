@@ -96,7 +96,6 @@ export const useEnrichedWasteRateSummaries = ({
 
   // for each waste rate, add the processed, quantity, and recycled to the summaries
   data.forEach((wasteRate) => {
-    console.log(wasteRate);
     const { processed, recycled, wastetype, quantity, accounted } = wasteRate;
     const groupKey = getGroupKey(wasteRate);
     // initialize the waste type summary if it doesn't exist
