@@ -22,8 +22,7 @@ import "@/app/datepicker.css";
 
 const DropdownFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
     dispatch(fetchPartnersIfEmpty());
@@ -32,19 +31,22 @@ const DropdownFilter: React.FC = () => {
     dispatch(fetchPartnerFacilitiesIfEmpty());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     console.log("event", event);
-  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-  //       setOpenDropdown(null);
-  //     }
-  //   };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      Object.values(dropdownRefs.current).forEach((ref) => {
+        if (ref && !ref.contains(event.target as Node)) {
+          if (ref.classList.contains('open')) {
+            ref.classList.remove('open');
+          }
+        }
+      });
+    };
 
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const partners = useAppSelector((state: RootState) => state.selectedPartners);
   const facilities = useAppSelector((state: RootState) => state.selectedFacilities);
@@ -77,7 +79,18 @@ const DropdownFilter: React.FC = () => {
   };
 
   const toggleDropdown = (type: string) => {
-    setOpenDropdown((prev) => (prev === type ? null : type));
+    const currentDropdown = dropdownRefs.current[type];
+    if (currentDropdown) {
+      const isOpen = currentDropdown.classList.contains('open');
+      if (isOpen) {
+        currentDropdown.classList.remove('open');
+      } else {
+        Object.values(dropdownRefs.current).forEach((ref) => {
+          if (ref) ref.classList.remove('open');
+        });
+        currentDropdown.classList.add('open');
+      }
+    }
   };
 
   const handleDateChange = (type: string, selectedDate: Date | null) => {
@@ -95,9 +108,9 @@ const DropdownFilter: React.FC = () => {
   };
 
   const renderDropdown = (title: string, items: any[], selectedItems: any[], type: string) => (
-    <div ref={dropdownRef} className={`dropdown mono ${openDropdown === type ? 'open' : ''}`}>
+    <div ref={(el) => (dropdownRefs.current[type] = el)} className={`dropdown mono`}>
       <button
-        className={`flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-sm rounded-sm w-full gap-3 ${openDropdown === type ? 'activedropdown' : ''}`}
+        className={`flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-sm rounded-sm w-full gap-3`}
         onClick={() => toggleDropdown(type)}
       >
         <div className="flex flex-row gap-2 items-center text-left">
@@ -112,48 +125,46 @@ const DropdownFilter: React.FC = () => {
           </span>
           <span className="text-sm text-neutral-400 dark:text-neutral-400 uppercase leading-none tracking-[.03em]">
             {selectedItems.length}/{items.length}
-            </span>
+          </span>
         </div>
         <span className="">
           <CaretDown className="text-neutral-600 dark:text-neutral-200" size={15} weight="regular" />
         </span>
       </button>
-      {openDropdown === type && (
-        <div className="dropdown-content bg-white dark:bg-neutral-600">
-          {items.map((item, index) => (
-            <div key={item.id}>
-              <div className="dropdown-item  hover:bg-neutral-200 dark:hover:bg-neutral-500">
-                <label className="flex items-center justify-between gap-4 cursor-pointer">
-                  <span className="flex items-center gap-2">
-                    {type === "wasteType" && (
-                      <>
-                        {item.name === "LDPE" && <Triangle color="#f0a500" size={15} weight="fill" />}
-                        {item.name === "PET" && <Square color="#ec715d" size={15} weight="fill" />}
-                        {item.name === "HDPE" && <Circle color="#3b82f6" size={15} weight="fill" />}
-                        {item.name === "PVC" && <Triangle color="#5AA65B" size={15} weight="fill" />}
-                        {item.name === "OTHER" && <Triangle color="#f87171" size={15} weight="fill" />}
-                        {item.name !== "LDPE" && item.name !== "PET" && item.name !== "HDPE" && item.name !== "PVC" && item.name !== "OTHER" && (
-                          <Circle color="#a3a3a3" size={15} weight="fill" />
-                        )}
-                      </>
-                    )}
-                    <span className="text-sm uppercase leading-none tracking-[.03em]">{item.name}</span>
-                  </span>
-                  <div className="custom-checkbox">
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.some((selected) => selected.id === item.id)}
-                      onChange={() => handleToggle(type, item)}                  
-                    />
-                    <span className="checkmark bg-neutral-500 dark:bg-neutral-600"></span>
-                  </div>
-                </label>
-              </div>
-              {index < items.length - 1 && <div className="border-t  border-neutral-200 dark:border-neutral-800"></div>}
+      <div className="dropdown-content bg-white dark:bg-neutral-600">
+        {items.map((item, index) => (
+          <div key={item.id}>
+            <div className="dropdown-item hover:bg-neutral-200 dark:hover:bg-neutral-500">
+              <label className="flex items-center justify-between gap-4 cursor-pointer">
+                <span className="flex items-center gap-2">
+                  {type === "wasteType" && (
+                    <>
+                      {item.name === "LDPE" && <Triangle color="#f0a500" size={15} weight="fill" />}
+                      {item.name === "PET" && <Square color="#ec715d" size={15} weight="fill" />}
+                      {item.name === "HDPE" && <Circle color="#3b82f6" size={15} weight="fill" />}
+                      {item.name === "PVC" && <Triangle color="#5AA65B" size={15} weight="fill" />}
+                      {item.name === "OTHER" && <Triangle color="#f87171" size={15} weight="fill" />}
+                      {item.name !== "LDPE" && item.name !== "PET" && item.name !== "HDPE" && item.name !== "PVC" && item.name !== "OTHER" && (
+                        <Circle color="#a3a3a3" size={15} weight="fill" />
+                      )}
+                    </>
+                  )}
+                  <span className="text-sm uppercase leading-none tracking-[.03em]">{item.name}</span>
+                </span>
+                <div className="custom-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.some((selected) => selected.id === item.id)}
+                    onChange={() => handleToggle(type, item)}
+                  />
+                  <span className="checkmark bg-neutral-500 dark:bg-neutral-600"></span>
+                </div>
+              </label>
             </div>
-          ))}
-        </div>
-      )}
+            {index < items.length - 1 && <div className="border-t border-neutral-200 dark:border-neutral-800"></div>}
+          </div>
+        ))}
+      </div>
     </div>
   );
 

@@ -291,18 +291,19 @@ button.activedropdown{
   right: 0;
   height: 16px; /* Adjust size as needed */
   width: 16px;
-  background-color: #fff;
-  border: 1px solid #1c1c1c; /* Border color */
+  /* @apply bg-white border border-neutral-400 dark:border-neutral-800; */
   border-radius: 3px; /* Rounded corners */
+  @apply bg-neutral-300 dark:bg-neutral-500;
 }
 
 .checkmark:hover {
    
-  border: 1px solid #000; /* Border color */
+  /* border: 1px solid #000; Border color */
 }
 .custom-checkbox input:checked + .checkmark {
-  
-  background-color: #1c1c1c; /* Checked background color */
+  /* @apply border border-[#1c1c1c] dark:border-white;
+   */
+  @apply bg-neutral-300 dark:bg-neutral-500;
 }
 .checkmark:after {
   content: "";
@@ -316,13 +317,14 @@ button.activedropdown{
 }
 
 .custom-checkbox .checkmark:after {
-  /* right: 8px;
-  top: 4px;
-  width: 6px;
-  height: 11px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg); */
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  /* background-color: #1c1c1c; */
+  @apply bg-[#1c1c1c] dark:bg-[#fff];
+  border-radius: 1px;
+  transform: translate(-50%, -50%);
 }
 
 
