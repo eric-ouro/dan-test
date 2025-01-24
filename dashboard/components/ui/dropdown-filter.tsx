@@ -15,7 +15,7 @@ import {
 } from "@slices/selected-waste-types-slice";
 import { Triangle, Square, Circle, House, Recycle, DiamondsFour, CaretDown, Calendar, CalendarBlank } from "phosphor-react";
 import { setEnd, setStart } from "@/lib/store/slices/selected-date-slice";
-import { togglePartnerFacility } from "@/lib/store/slices/selected-partner-facilities-slice";
+import { fetchPartnerFacilitiesIfEmpty, togglePartnerFacility } from "@/lib/store/slices/selected-partner-facilities-slice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/app/datepicker.css";
@@ -29,21 +29,22 @@ const DropdownFilter: React.FC = () => {
     dispatch(fetchPartnersIfEmpty());
     dispatch(fetchFacilitiesIfEmpty());
     dispatch(fetchWasteTypesIfEmpty());
+    dispatch(fetchPartnerFacilitiesIfEmpty());
   }, [dispatch]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      console.log("event", event);
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setOpenDropdown(null);
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     console.log("event", event);
+  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+  //       setOpenDropdown(null);
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
 
   const partners = useAppSelector((state: RootState) => state.selectedPartners);
   const facilities = useAppSelector((state: RootState) => state.selectedFacilities);
