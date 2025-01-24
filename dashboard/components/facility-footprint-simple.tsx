@@ -72,7 +72,7 @@ const FacilityFootprintSimple = () => {
 
   return (
     <WasteRateSummary
-      name="Facility Footprint"
+      name=""
       summaries={summaries}
       filteredSummaries={filteredSummaries}
       onSelectItem={(item) => dispatch(toggleFacility(item))}

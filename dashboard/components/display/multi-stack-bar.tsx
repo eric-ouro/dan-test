@@ -76,7 +76,7 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
   return (
     <div className="dashcomponent">
       {/* Main container for the component */}
-      <div className="flex flex-col gap-3 overflow-hidden h-full">
+      <div className="flex flex-col ga overflow-hidden h-full">
         {/* Flex container for the header and table */}
         <div className="sans text-xl">
           {/* Header section */}
@@ -84,29 +84,29 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
         </div>
         <div className="overflow-x-auto">
           {/* Table container with horizontal overflow */}
-          <table className="min-w-full table-auto">
+          <table className="min-w-full table-auto border-collapse">
             {/* Table element */}
-            <thead className="cursor-pointer text-xs text-left ">
+            <thead className="cursor-pointer text-xs text-left uppercase ">
               {/* Table header */}
-              <tr className="h-12">
-                <th className="text-neutral-400 text-xs text-left min-w-[80px] font-normal ">
+              <tr className="h-12 border-b border-foreground/20 font-normal">
+                <th className="text-neutral-400 font-normal min-w-[80px] border-foreground/20 ">
                   Plastic
                 </th>
                 <th
                   onClick={() => {
                     requestSort("quantity");
                   }}
-                  className={` text-left min-w-[60px] font-normal ${getHeaderClass("quantity")}`}
+                  className={` min-w-[60px] font-normal  border-foreground/20 ${getHeaderClass("quantity")} `}
                 >
                   Footprint
                 </th>
                 <th
-                  className={` min-w-[60px] font-normal cursor-default ${getHeaderClass("percentage")}`}
+                  className={` min-w-[60px] cursor-default font-normal border-foreground/20 ${getHeaderClass("percentage")} `}
                 >
                   {" "}
                 </th>
                 <th
-                  className={`text-left font-normal  cursor-default ${getHeaderClass("percentage")}`}
+                  className={`cursor-default font-normal border-foreground/20 ${getHeaderClass("percentage")} `}
                 >
                   {" "}
                 </th>
@@ -114,7 +114,7 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
                   onClick={() => {
                     requestSort("recycled");
                   }}
-                  className={` text-left min-w-[80px] font-normal ${getHeaderClass("recycled")}`}
+                  className={` text-left min-w-[80px] text-left font-normal border-foreground/20 ${getHeaderClass("recycled")} `}
                 >
                   Recycled
                 </th>
@@ -122,17 +122,17 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
                   onClick={() => {
                     requestSort("recyclingLossRate");
                   }}
-                  className={` min-w-[60px] font-normal ${getHeaderClass("recyclingLossRate")}`}
+                  className={` min-w-[60px] font-normal text-left border-foreground/20 ${getHeaderClass("recyclingLossRate")} `}
                 >
-                  R Loss
+                  R&nbsp;Loss
                 </th>
                 <th
                   onClick={() => {
                     requestSort("processingLossRate");
                   }}
-                  className={` min-w-[60px] text-right font-normal ${getHeaderClass("processingLossRate")}`}
+                  className={` min-w-[60px] font-normal text-right ${getHeaderClass("processingLossRate")} `}
                 >
-                  P Loss
+                  P&nbsp;Loss
                 </th>
               </tr>
             </thead>
@@ -151,9 +151,16 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
                     : item.label.name;
 
                 return (
-                  <tr className="align-middle h-[44px]" key={index}>
+                  <tr
+                    className={`align-middle h-[34px] ${
+                      index === sortedSummaries.length - 1
+                        ? ""
+                        : "border-b border-foreground/20"
+                    }`}
+                    key={index}
+                  >
                     {/* Table row */}
-                    <td>
+                    <td className="border-foreground/20 ">
                       <span className="flex items-center ">
                         <span
                           className={`inline-block w-3 h-3 rounded-full mr-2`}
@@ -164,15 +171,15 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
                         {displayLabel}
                       </span>
                     </td>
-                    <td className="text-left max-w-[60px]">
+                    <td className="text-left border-foreground/20 ">
                       {item.quantity.toFixed(1).padStart(4, "0")}&nbsp;Tn
                     </td>
-                    <td className=" text-right max-w-[60px]">
+                    <td className="text-right border-foreground/20 ">
                       {footprintPercentage.toFixed(1)}%
                     </td>
-                    <td className="w-[100%] px-[20px]">
+                    <td className="w-[100%] px-[20px] border-foreground/20 ">
                       <div
-                        className="h-[34px]  text-left overflow-hidden rounded-sm  flex ]"
+                        className="h-[17px] text-left overflow-hidden rounded-sm flex"
                         style={{
                           width: `${Math.max(normalizedWidth, 10)}%`,
                           minWidth,
@@ -214,13 +221,13 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
                         </div>
                       </div>
                     </td>
-                    <td className=" max-w-[60px] ">
+                    <td className="border-foreground/20 ">
                       {item.recycleRate.toFixed(1)}%
                     </td>
-                    <td className=" max-w-[60px] ">
+                    <td className="border-foreground/20 ">
                       {item.recyclingLossRate.toFixed(1)}%
                     </td>
-                    <td className=" max-w-[60px] text-right">
+                    <td className="text-right  border-foreground/20 ">
                       {item.processingLossRate.toFixed(1)}%
                     </td>
                   </tr>

@@ -53,7 +53,7 @@ const PlasticFootprintSimple = () => {
 
   return (
     <WasteRateSummary
-      name="Plastic Footprint"
+      name=""
       summaries={summaries}
       filteredSummaries={filteredSummaries}
       onSelectItem={(item) => dispatch(toggleWasteType(item))}

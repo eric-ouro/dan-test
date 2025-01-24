@@ -10,17 +10,17 @@ import FacilityFootprintMultiStackBar from "@/components/facility-footprint-mult
 import DropdownFilter from "@/components/ui/dropdown-filter";
 
 const DashboardContent = () => {
-  const [activeTab, setActiveTab] = useState("plastics");
+  const [activeTab, setActiveTab] = useState("materials");
 
   return (
     <div>
         <div className="responsive-padding border-b border-b-foreground/20 bg-background sticky pt-[37px] pb-[15px] top-0 z-20 flex flex-col justify-start items-left  gap-4">
             <div className="flex flex-row items-center gap-4 sans text-3xl  ">
               <button
-                onClick={() => setActiveTab("plastics")}
-                className={`${activeTab === "plastics" ? "text-foreground" : "opacity-30"} tracking-tight`}
+                onClick={() => setActiveTab("materials")}
+                className={`${activeTab === "materials" ? "text-foreground" : "opacity-30"} tracking-tight`}
               >
-                Plastics
+                Materials
               </button>
               <button
                 onClick={() => setActiveTab("partners")}
@@ -38,7 +38,7 @@ const DashboardContent = () => {
             <DropdownFilter />
          </div>
 
-      {activeTab === "plastics" && (
+      {activeTab === "materials" && (
         <div className="responsive-padding">
           <PlasticFootprintSimple />
           <PlasticFootprintMultiStackBar />

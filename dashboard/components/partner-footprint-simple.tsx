@@ -57,7 +57,7 @@ const PartnerFootprintSimple = () => {
 
   return (
     <WasteRateSummary
-      name="Partner Footprint"
+      name=""
       summaries={summaries}
       filteredSummaries={filteredSummaries}
       onSelectItem={(item) => dispatch(togglePartner(item))}

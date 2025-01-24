@@ -12,12 +12,8 @@ const DashboardDisplayHeader: React.FC<DashboardDisplayHeaderProps> = ({
   textSize = "text-2xl",
 }) => {
   return (
-    <div className="flex items-baseline mb-4 ">
+    <div className="flex items-baseline ">
       <h2 className={`tracking-tight mr-4 sans ${textSize}`}>{headerText}</h2>
-      <div
-        className="flex-grow border-t border-neutral-400"
-        style={{ height: "1px" }}
-      ></div>
     </div>
   );
 };

@@ -79,6 +79,7 @@ const WasteRateSummary = <T extends DbObject>({
                   width: `${footprintPercentage}%`,
                   transition: "background-color 200ms ease",
                   background: colorForItem(item.label as T),
+                  opacity: 0.9
                 }}
               >
                 <div className="p-2 w-0 ">
