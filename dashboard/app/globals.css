@@ -162,7 +162,7 @@ body {
 
 
 .dashcomponent{
-  margin-top:20px;
+  margin-top:52px;
   font-size:small;
 
 }
@@ -234,7 +234,7 @@ button.activedropdown{
   position: absolute;
   border-radius: 0 0 4px 4px;
   z-index: 1;
-  margin-left: 8px;
+  right: 25px;
   box-shadow: 0px 0.3613123810646357px 0.3613123810646357px -1.25px rgba(0, 0, 0, 0.18), 0px 1.3731199819460742px 1.3731199819460742px -2.5px rgba(0, 0, 0, 0.15889), 0px 6px 6px -3.75px rgba(0, 0, 0, 0.0625);
 }
 

@@ -13,7 +13,7 @@ export default async function AuthButton() {
     <div className="flex items-center gap-4 z-30">
      
       <div className="dropdown">
-        <button className=" border-none p-2 cursor-pointer text-xs rounded-sm">
+        <button className=" border-none py-2 cursor-pointer text-xs rounded-sm px-0">
           <div className="flex flex-col gap-0 text-left">
             <span className="text-[10px] text-neutral-400 uppercase leading-none tracking-[.03em]">
             {user.email}
