@@ -13,7 +13,7 @@ import {
 const withPercentage = (data: EnrichedWasteRateSummary) => {
   // calculate percentage
   const percentage =
-    data.quantity > 0 ? (data.recycled / data.quantity) * 100 : 0;
+    data.quantity > 0 ? (data.recycled / data.accounted) * 100 : 0;
 
   return {
     ...data,
@@ -22,12 +22,12 @@ const withPercentage = (data: EnrichedWasteRateSummary) => {
 };
 
 const mergeSummaries = (summaries: EnrichedWasteRateSummary[]) => {
-  console.log(summaries);
   return summaries.reduce(
     (acc, curr) => {
       acc.processed += curr.processed;
       acc.recycled += curr.recycled;
       acc.quantity += curr.quantity;
+      acc.accounted += curr.accounted;
       return acc;
     },
     {
@@ -39,6 +39,7 @@ const mergeSummaries = (summaries: EnrichedWasteRateSummary[]) => {
       groupName: summaries[0].groupName,
       processed: 0,
       quantity: 0,
+      accounted: 0,
       recycled: 0,
       percentage: 0,
     },
@@ -95,7 +96,8 @@ export const useEnrichedWasteRateSummaries = ({
 
   // for each waste rate, add the processed, quantity, and recycled to the summaries
   data.forEach((wasteRate) => {
-    const { processed, recycled, wastetype, quantity } = wasteRate;
+    console.log(wasteRate);
+    const { processed, recycled, wastetype, quantity, accounted } = wasteRate;
     const groupKey = getGroupKey(wasteRate);
     // initialize the waste type summary if it doesn't exist
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -107,6 +109,7 @@ export const useEnrichedWasteRateSummaries = ({
       groupName: getGroupName(wasteRate),
       processed: 0,
       quantity: 0,
+      accounted: 0,
       recycled: 0,
       percentage: 0,
     };
@@ -118,6 +121,8 @@ export const useEnrichedWasteRateSummaries = ({
       recycled: summaries[groupKey][wastetype.id].recycled + recycled,
       quantity:
         summaries[groupKey][wastetype.id].quantity + quantity,
+      accounted:
+        summaries[groupKey][wastetype.id].accounted + accounted,
     };
   });
 
@@ -162,12 +167,15 @@ export const useEnrichedWasteRateSummariesWithRatios = ({
     item: EnrichedWasteRateSummary,
   ): EnrichedWasteRateSummaryWithRatios => {
     const recycleRate = item.recycled
-      ? (item.recycled / item.quantity) * 100
+      ? (item.recycled / item.accounted) * 100
       : 0;
     const recyclingLossQuantity = item.processed - item.recycled;
-    const recyclingLossRate = (recyclingLossQuantity / item.quantity) * 100;
-    const processingLoss = item.quantity - item.processed;
-    const processingLossRate = (processingLoss / item.quantity) * 100;
+    const recyclingLossRate = (recyclingLossQuantity / item.accounted) * 100;
+    const processingLoss = item.accounted - item.processed;
+    const processingLossRate = (processingLoss / item.accounted) * 100;
+    const accountedRate = item.accounted
+      ? (item.accounted / item.quantity) * 100
+      : 0;
 
     return {
       ...item,
@@ -176,6 +184,7 @@ export const useEnrichedWasteRateSummariesWithRatios = ({
       recyclingLossRate,
       processingLoss,
       processingLossRate,
+      accountedRate,
     };
   };
 

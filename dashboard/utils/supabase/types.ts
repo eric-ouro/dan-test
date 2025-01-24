@@ -254,237 +254,51 @@ export type Database = {
         }
         Relationships: []
       }
-      health: {
+      processes: {
         Row: {
-          healthy: string
+          companyid: number
+          createdat: string
+          facilityid: number
           id: number
-        }
-        Insert: {
-          healthy?: string
-          id?: number
-        }
-        Update: {
-          healthy?: string
-          id?: number
-        }
-        Relationships: []
-      }
-      mixedplasticrates_monthly_facilitypartner: {
-        Row: {
-          companyid: number
-          facilityid: number
-          hdpeprocessed: number | null
-          hdperecycled: number | null
-          ldpeprocessed: number | null
-          ldperecycled: number | null
-          mixedplasticprocessed: number | null
-          mixedplasticquantity: number | null
-          mixedplasticrecycled: number | null
-          month: number
-          partnercompanyid: number
-          partnerfacilityid: number
-          petprocessed: number | null
-          petrecycled: number | null
-          ppprocessed: number | null
-          pprecycled: number | null
-          psprocessed: number | null
-          psrecycled: number | null
-          pvcprocessed: number | null
-          pvcrecycled: number | null
-          year: number
+          processtype: number
+          terminatedat: string | null
         }
         Insert: {
           companyid: number
+          createdat: string
           facilityid: number
-          hdpeprocessed?: number | null
-          hdperecycled?: number | null
-          ldpeprocessed?: number | null
-          ldperecycled?: number | null
-          mixedplasticprocessed?: number | null
-          mixedplasticquantity?: number | null
-          mixedplasticrecycled?: number | null
-          month: number
-          partnercompanyid: number
-          partnerfacilityid: number
-          petprocessed?: number | null
-          petrecycled?: number | null
-          ppprocessed?: number | null
-          pprecycled?: number | null
-          psprocessed?: number | null
-          psrecycled?: number | null
-          pvcprocessed?: number | null
-          pvcrecycled?: number | null
-          year: number
+          id?: number
+          processtype: number
+          terminatedat?: string | null
         }
         Update: {
           companyid?: number
+          createdat?: string
           facilityid?: number
-          hdpeprocessed?: number | null
-          hdperecycled?: number | null
-          ldpeprocessed?: number | null
-          ldperecycled?: number | null
-          mixedplasticprocessed?: number | null
-          mixedplasticquantity?: number | null
-          mixedplasticrecycled?: number | null
-          month?: number
-          partnercompanyid?: number
-          partnerfacilityid?: number
-          petprocessed?: number | null
-          petrecycled?: number | null
-          ppprocessed?: number | null
-          pprecycled?: number | null
-          psprocessed?: number | null
-          psrecycled?: number | null
-          pvcprocessed?: number | null
-          pvcrecycled?: number | null
-          year?: number
+          id?: number
+          processtype?: number
+          terminatedat?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "mixedplasticrates_monthly_facilitypartne_partnerfacilityid_fkey"
-            columns: ["partnerfacilityid"]
-            isOneToOne: false
-            referencedRelation: "facilities"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "mixedplasticrates_monthly_facilitypartner_companyid_fkey"
+            foreignKeyName: "processes_companyid_fkey"
             columns: ["companyid"]
             isOneToOne: false
             referencedRelation: "companies"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "mixedplasticrates_monthly_facilitypartner_facilityid_fkey"
+            foreignKeyName: "processes_facilityid_fkey"
             columns: ["facilityid"]
             isOneToOne: false
             referencedRelation: "facilities"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "mixedplasticrates_monthly_facilitypartner_partnercompanyid_fkey"
-            columns: ["partnercompanyid"]
+            foreignKeyName: "processes_processtype_fkey"
+            columns: ["processtype"]
             isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      plasticrates_monthly_facilitypartner: {
-        Row: {
-          companyid: number
-          facilityid: number
-          hdpeprocessed: number | null
-          hdpequantity: number | null
-          hdperecycled: number | null
-          ldpeprocessed: number | null
-          ldpequantity: number | null
-          ldperecycled: number | null
-          month: number
-          partnercompanyid: number
-          partnerfacilityid: number
-          petprocessed: number | null
-          petquantity: number | null
-          petrecycled: number | null
-          plasticprocessed: number | null
-          plasticquantity: number | null
-          plasticrecycled: number | null
-          ppprocessed: number | null
-          ppquantity: number | null
-          pprecycled: number | null
-          psprocessed: number | null
-          psquantity: number | null
-          psrecycled: number | null
-          pvcprocessed: number | null
-          pvcquantity: number | null
-          pvcrecycled: number | null
-          year: number
-        }
-        Insert: {
-          companyid: number
-          facilityid: number
-          hdpeprocessed?: number | null
-          hdpequantity?: number | null
-          hdperecycled?: number | null
-          ldpeprocessed?: number | null
-          ldpequantity?: number | null
-          ldperecycled?: number | null
-          month: number
-          partnercompanyid: number
-          partnerfacilityid: number
-          petprocessed?: number | null
-          petquantity?: number | null
-          petrecycled?: number | null
-          plasticprocessed?: number | null
-          plasticquantity?: number | null
-          plasticrecycled?: number | null
-          ppprocessed?: number | null
-          ppquantity?: number | null
-          pprecycled?: number | null
-          psprocessed?: number | null
-          psquantity?: number | null
-          psrecycled?: number | null
-          pvcprocessed?: number | null
-          pvcquantity?: number | null
-          pvcrecycled?: number | null
-          year: number
-        }
-        Update: {
-          companyid?: number
-          facilityid?: number
-          hdpeprocessed?: number | null
-          hdpequantity?: number | null
-          hdperecycled?: number | null
-          ldpeprocessed?: number | null
-          ldpequantity?: number | null
-          ldperecycled?: number | null
-          month?: number
-          partnercompanyid?: number
-          partnerfacilityid?: number
-          petprocessed?: number | null
-          petquantity?: number | null
-          petrecycled?: number | null
-          plasticprocessed?: number | null
-          plasticquantity?: number | null
-          plasticrecycled?: number | null
-          ppprocessed?: number | null
-          ppquantity?: number | null
-          pprecycled?: number | null
-          psprocessed?: number | null
-          psquantity?: number | null
-          psrecycled?: number | null
-          pvcprocessed?: number | null
-          pvcquantity?: number | null
-          pvcrecycled?: number | null
-          year?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "plasticrates_monthly_facilitypartner_companyid_fkey"
-            columns: ["companyid"]
-            isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "plasticrates_monthly_facilitypartner_facilityid_fkey"
-            columns: ["facilityid"]
-            isOneToOne: false
-            referencedRelation: "facilities"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "plasticrates_monthly_facilitypartner_partnercompanyid_fkey"
-            columns: ["partnercompanyid"]
-            isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "plasticrates_monthly_facilitypartner_partnerfacilityid_fkey"
-            columns: ["partnerfacilityid"]
-            isOneToOne: false
-            referencedRelation: "facilities"
+            referencedRelation: "processtypes"
             referencedColumns: ["id"]
           },
         ]
@@ -501,6 +315,82 @@ export type Database = {
         Update: {
           id?: number
           name?: string | null
+        }
+        Relationships: []
+      }
+      processrelations: {
+        Row: {
+          addedat: string
+          baleid: number
+          endedat: string | null
+          processid: number
+          processrelationshiptype: number
+        }
+        Insert: {
+          addedat: string
+          baleid: number
+          endedat?: string | null
+          processid: number
+          processrelationshiptype: number
+        }
+        Update: {
+          addedat?: string
+          baleid?: number
+          endedat?: string | null
+          processid?: number
+          processrelationshiptype?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "processrelations_baleid_fkey"
+            columns: ["baleid"]
+            isOneToOne: false
+            referencedRelation: "bales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processrelations_processid_fkey"
+            columns: ["processid"]
+            isOneToOne: false
+            referencedRelation: "processes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processrelations_processrelationshiptype_fkey"
+            columns: ["processrelationshiptype"]
+            isOneToOne: false
+            referencedRelation: "processrelationshiptypes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      processrelationshiptypes: {
+        Row: {
+          id: number
+          processrelationshiptype: string
+        }
+        Insert: {
+          id?: number
+          processrelationshiptype: string
+        }
+        Update: {
+          id?: number
+          processrelationshiptype?: string
+        }
+        Relationships: []
+      }
+      processtypes: {
+        Row: {
+          id: number
+          processtype: string
+        }
+        Insert: {
+          id?: number
+          processtype: string
+        }
+        Update: {
+          id?: number
+          processtype?: string
         }
         Relationships: []
       }
@@ -679,29 +569,32 @@ export type Database = {
       }
       wastequantity_monthly_facilitypartner: {
         Row: {
+          accounted: number
           companyid: number
           facilityid: number
           partnercompanyid: number
           partnerfacilityid: number
-          quantity: number | null
+          quantity: number
           timerange: string
           wastetype: number
         }
         Insert: {
+          accounted?: number
           companyid: number
           facilityid: number
           partnercompanyid: number
           partnerfacilityid: number
-          quantity?: number | null
+          quantity?: number
           timerange: string
           wastetype: number
         }
         Update: {
+          accounted?: number
           companyid?: number
           facilityid?: number
           partnercompanyid?: number
           partnerfacilityid?: number
-          quantity?: number | null
+          quantity?: number
           timerange?: string
           wastetype?: number
         }
@@ -750,8 +643,8 @@ export type Database = {
           parentwastetype: number
           partnercompanyid: number
           partnerfacilityid: number
-          processed: number | null
-          recycled: number | null
+          processed: number
+          recycled: number
           timerange: string
           wastetype: number
         }
@@ -761,8 +654,8 @@ export type Database = {
           parentwastetype: number
           partnercompanyid: number
           partnerfacilityid: number
-          processed?: number | null
-          recycled?: number | null
+          processed?: number
+          recycled?: number
           timerange: string
           wastetype: number
         }
@@ -772,8 +665,8 @@ export type Database = {
           parentwastetype?: number
           partnercompanyid?: number
           partnerfacilityid?: number
-          processed?: number | null
-          recycled?: number | null
+          processed?: number
+          recycled?: number
           timerange?: string
           wastetype?: number
         }

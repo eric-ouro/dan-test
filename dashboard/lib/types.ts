@@ -35,7 +35,8 @@ export interface WasteQuantity {
   facilityid: number;
   partnerfacilityid: number;
   wastetype: number;
-  quantity: number | null;
+  quantity: number;
+  accounted: number;
   timerange: string;
 }
 
@@ -48,6 +49,7 @@ export interface EnrichedWasteRate {
   parentwastetype: number;
   wastetype: WasteType;
   quantity: number;
+  accounted: number;
   processed: number;
   recycled: number;
 }
@@ -152,6 +154,7 @@ export interface SummaryData {
   processed: number;
   quantity: number;
   recycled: number;
+  accounted: number;
 }
 
 export interface SummaryRatios {
@@ -160,6 +163,7 @@ export interface SummaryRatios {
   recyclingLossRate: number;
   processingLoss: number;
   processingLossRate: number;
+  accountedRate: number;
 }
 
 export interface WasteRateSummary extends SummaryData {

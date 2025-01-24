@@ -5,7 +5,7 @@ import { EnrichedWasteRate, FetchableList, WasteQuantity } from "@/lib/types";
 
 type EnrichedWasteRatesState = FetchableList<EnrichedWasteRate>;
 
-const wasteQuantityForWasteRate = (wasteRate: EnrichedWasteRate, wasteQuantities: WasteQuantity[]) => {
+const wasteDetailsForWasteRate = (wasteRate: EnrichedWasteRate, wasteQuantities: WasteQuantity[]) => {
   const wasteQuantity = wasteQuantities.find(
     (quantity) => 
       quantity.wastetype === wasteRate.parentwastetype && 
@@ -15,7 +15,7 @@ const wasteQuantityForWasteRate = (wasteRate: EnrichedWasteRate, wasteQuantities
       quantity.partnercompanyid === wasteRate.partnercompany.id &&
       quantity.partnerfacilityid === wasteRate.partnerfacility.id
   );
-  return wasteQuantity ? wasteQuantity.quantity : 0;
+  return wasteQuantity ? { quantity: wasteQuantity.quantity, accounted: wasteQuantity.accounted } : { quantity: 0, accounted: 0 };
 }
 
 export const fetchEnrichedWasteRates = createAsyncThunk(
@@ -63,6 +63,7 @@ export const fetchEnrichedWasteRates = createAsyncThunk(
         partnerfacilityid,
         wastetype,
         quantity,
+        accounted,
         timerange
       `)
 
@@ -79,9 +80,11 @@ export const fetchEnrichedWasteRates = createAsyncThunk(
           value.wastetype !== null
         );
       }).map((value) => {
+        const { quantity, accounted } = wasteDetailsForWasteRate(value, wasteQuantities);
         return {
           ...value,
-          quantity: wasteQuantityForWasteRate(value, wasteQuantities),
+          quantity,
+          accounted,
         };
       });
     }
