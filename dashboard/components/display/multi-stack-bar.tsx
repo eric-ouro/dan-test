@@ -10,7 +10,7 @@ import {
 
 type SortKey =
   | "percentage"
-  | "quantity"
+  | "accounted"
   | "recycled"
   | "recyclingLossRate"
   | "processingLossRate"; 
@@ -25,7 +25,7 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
   const [sortConfig, setSortConfig] = useState<
     SortConfig<EnrichedWasteRateSummaryWithRatios, SortKey>
   >({
-    key: "quantity",
+    key: "accounted",
     direction: "descending",
   }); // Initializing state for sorting configuration with default values.
 
@@ -55,17 +55,17 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
     setSortConfig({ key, direction });
   };
 
-  const totalQuantity = useMemo(() => {
+  const totalAccounted = useMemo(() => {
     // Calculating the total quantity of all summaries.
-    return summaries.reduce((acc, curr) => acc + curr.quantity, 0);
+    return summaries.reduce((acc, curr) => acc + curr.accounted, 0);
   }, [summaries]);
 
   const largestFootprintPercentage = useMemo(
     () =>
       Math.max(
-        ...summaries.map((item) => (item.quantity / totalQuantity) * 100),
+        ...summaries.map((item) => (item.accounted / totalAccounted) * 100),
       ),
-    [summaries, totalQuantity],
+    [summaries, totalAccounted],
   ); // Calculating the largest footprint percentage for normalization.
 
   const getHeaderClass = (key: SortKey) => {
@@ -94,9 +94,9 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
                 </th>
                 <th
                   onClick={() => {
-                    requestSort("quantity");
+                    requestSort("accounted");
                   }}
-                  className={` min-w-[60px] font-normal  border-foreground/20 ${getHeaderClass("quantity")} `}
+                  className={` min-w-[60px] font-normal  border-foreground/20 ${getHeaderClass("accounted")} `}
                 >
                   Footprint
                 </th>
@@ -140,9 +140,9 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
               {/* Table body */}
               {sortedSummaries.map((item, index) => {
                 // Mapping over sorted summaries to create table rows.
-                const minWidth = item.quantity > 0 ? "10%" : "0";
+                const minWidth = item.accounted > 0 ? "10%" : "0";
                 const footprintPercentage =
-                  totalQuantity > 0 ? (item.quantity / totalQuantity) * 100 : 0;
+                  totalAccounted > 0 ? (item.accounted / totalAccounted) * 100 : 0;
                 const normalizedWidth =
                   (footprintPercentage / largestFootprintPercentage) * 100;
                 const displayLabel =
@@ -172,7 +172,7 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
                       </span>
                     </td>
                     <td className="text-left border-foreground/20 ">
-                      {item.quantity.toFixed(1).padStart(4, "0")}&nbsp;Tn
+                      {item.accounted.toFixed(1).padStart(4, "0")}&nbsp;Tn
                     </td>
                     <td className="text-right border-foreground/20 ">
                       {footprintPercentage.toFixed(1)}%
