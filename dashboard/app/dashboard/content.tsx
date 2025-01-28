@@ -8,6 +8,7 @@ import PartnerFootprintMultiStackBar from "@/components/partner-footprint-multi-
 import FacilityFootprintSimple from "@/components/facility-footprint-simple";
 import FacilityFootprintMultiStackBar from "@/components/facility-footprint-multi-stack-bar";
 import DropdownFilter from "@/components/ui/dropdown-filter";
+import TotalAccountedSummary from "@/components/total-accounted-summary";
 
 const DashboardContent = () => {
   const [activeTab, setActiveTab] = useState("materials");
@@ -37,29 +38,46 @@ const DashboardContent = () => {
             </div>
             <DropdownFilter />
          </div>
-
-      {activeTab === "materials" && (
-        <div className="responsive-padding">
-          <PlasticFootprintSimple />
-          <PlasticFootprintMultiStackBar />
+      <div className="flex flex-col gap-5 mt-5 responsive-padding">
+        <div>
+          <TotalAccountedSummary />
         </div>
-      )}
+        {activeTab === "materials" && (
+          <>
+            <div>
+              <PlasticFootprintSimple />
+            </div>
+            <div>
+              <PlasticFootprintMultiStackBar />
+            </div>
+          </>
+        )}
 
-      {activeTab === "partners" && (
-        <div className="responsive-padding">
-          <PartnerFootprintSimple />
-          <PartnerFootprintMultiStackBar />
-        </div>
-      )}
+        {activeTab === "partners" && (
+          <>
+            <div>
+              <PartnerFootprintSimple />
+            </div>
+            <div>
+              <PartnerFootprintMultiStackBar />
+            </div>
+          </>
+        )}
 
-      {activeTab === "facilities" && (
-        <div className="responsive-padding">
-          <FacilityFootprintSimple />
-          <FacilityFootprintMultiStackBar />
-        </div>
-      )}
-    <div className="h-[100px]"></div>
+        {activeTab === "facilities" && (
+          <>
+            <div>
+              <FacilityFootprintSimple />
+            </div>
+            <div>
+              <FacilityFootprintMultiStackBar />
+            </div>
+          </>
+        )}
+        <div className="h-[100px]"></div>
+      </div>
     </div>
+    
   );
 };
 
