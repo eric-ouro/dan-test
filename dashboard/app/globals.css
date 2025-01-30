@@ -148,6 +148,8 @@ html {
 
 body {
   font-family:  'DiatypeTrialMono', 'DM Sans', sans-serif;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 @layer utilities {
   .text-balance {
@@ -167,6 +169,11 @@ th {
 }
 .sans{
   font-family: 'DiatypeTrial', sans-serif;
+}
+
+.sans-medium{
+  font-family: 'DiatypeTrial', sans-serif;
+  font-weight: 500;
 }
 
 

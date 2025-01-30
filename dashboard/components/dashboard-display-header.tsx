@@ -9,7 +9,7 @@ interface DashboardDisplayHeaderProps {
 
 const DashboardDisplayHeader: React.FC<DashboardDisplayHeaderProps> = ({
   headerText,
-  textSize = "text-2xl",
+  textSize = "text-lg",
 }) => {
   return (
     <div className="flex items-baseline ">

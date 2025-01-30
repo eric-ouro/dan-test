@@ -81,19 +81,19 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
   return (
     <div className="dashcomponent">
       {/* Main container for the component */}
-      <div className="flex flex-col gap-2 overflow-hidden h-full">
+      <div className="flex flex-col gap-4 overflow-hidden h-full">
         {/* Flex container for the header and table */}
         <div className="sans text-xl">
           {/* Header section */}
-          {name && <DashboardDisplayHeader headerText={name} textSize="text-lg" />}
+          {name && <DashboardDisplayHeader headerText={name} textSize="text-xl" />}
         </div>
         <div className="overflow-x-auto">
-          <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2">
+          <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2 ">
             <div className="text-foreground/50">Material</div>
-            <div onClick={() => requestSort("accounted")} className={` ${getHeaderClass("accounted")}`}>Accounted</div>
-            <div onClick={() => requestSort("recycled")} className={`text-right ${getHeaderClass("recycled")}`}>Recycled</div>
-            <div onClick={() => requestSort("recyclingLossRate")} className={`text-right  ${getHeaderClass("recyclingLossRate")}`}>R&nbsp;Loss</div>
-            <div onClick={() => requestSort("processingLossRate")} className={`text-right ${getHeaderClass("processingLossRate")}`}>P&nbsp;Loss</div>
+            <div onClick={() => requestSort("accounted")} className={`cursor-pointer ${getHeaderClass("accounted")}`}>Accounted</div>
+            <div onClick={() => requestSort("recycled")} className={`text-right cursor-pointer ${getHeaderClass("recycled")}`}>Recycled</div>
+            <div onClick={() => requestSort("recyclingLossRate")} className={` text-right cursor-pointer ${getHeaderClass("recyclingLossRate")}`}>R&nbsp;Loss</div>
+            <div onClick={() => requestSort("processingLossRate")} className={`text-right cursor-pointer ${getHeaderClass("processingLossRate")}`}>P&nbsp;Loss</div>
           </div>
           <div>
             {sortedSummaries.map((item, index) => {
@@ -103,10 +103,10 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
               const displayLabel = item.label.name === "MixedPlastic" ? "Mixed" : item.label.name;
 
               return (
-                <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)_minmax(80px,auto)] gap-2 align-middle py-2 border-t border-foreground/20" key={index}>
+                <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)_minmax(80px,auto)] gap-2 align-middle py-3 border-t border-foreground/20" key={index}>
                   <div className="text-foreground flex-none">
-                    <span className="flex items-center">
-                      <span className="inline-block w-[17.34px] h-[17.34px] flex-shrink-0 rounded-full mr-2" style={{ background: `#${item.label.display_color}` }}></span>
+                    <span className="flex items-center sans-medium">
+                      <span className="inline-block w-[1em] h-[1em] flex-shrink-0 rounded-full mr-2" style={{ background: `#${item.label.display_color}` }}></span>
                       {displayLabel}
                     </span>
                   </div>
@@ -114,7 +114,7 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
                   <div className={`text-left ${getHeaderClass("accounted")} flex-none`}>{footprintPercentage.toFixed(1)}%</div>
                   <div className="w-full flex items-center">
                     {/* Recycling bar */}
-                    <div className="h-[17.34px] text-left overflow-hidden flex items-center" style={{ width: `${Math.max(normalizedWidth, 10)}%` }}>
+                    <div className="h-[1em] text-left overflow-hidden flex items-center" style={{ width: `${Math.max(normalizedWidth, 10)}%` }}>
                       <div className={`h-full flex items-center justify-start`} style={{ width: `${Math.max(item.recycleRate, 10)}%`, background: `#${item.label.display_color}` }}></div>
                       <div className={`h-full flex items-center justify-start bg-neutral-400`} style={{ width: `${Math.max(item.recyclingLossRate, 10)}%` }}></div>
                       <div className={`h-full flex items-center justify-start bg-neutral-500`} style={{ width: `${Math.max(item.processingLossRate, 10)}%` }}></div>
@@ -174,26 +174,26 @@ const MultiStackBarVariant = ({ name, summaries }: MultiStackBarProps) => {
 
   return (
     <div className="dashcomponent">
-      <div className="flex flex-col overflow-hidden h-full gap-2">
+      <div className="flex flex-col overflow-hidden h-full gap-4">
         <div className="sans text-xl">
-          {name && <DashboardDisplayHeader headerText={name} textSize="text-lg" />}
+          {name && <DashboardDisplayHeader headerText={name} textSize="text-xl" />}
         </div>
         <div className="overflow-x-auto">
           <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2 text-xs">
-            <div className="text-foreground/50">Material</div>
-            <div onClick={() => requestSort("quantity")} className={`${getHeaderClass("quantity")}`}>Quantity</div>
-            <div onClick={() => requestSort("accounted")} className={`${getHeaderClass("accounted")}`}>Accounted</div>
-            <div onClick={() => requestSort("percentage")} className={`text-right ${getHeaderClass("percentage")}`}>Accounted %</div>
+            <div className="text-foreground/50 ">Material</div>
+            <div onClick={() => requestSort("quantity")} className={`cursor-pointer ${getHeaderClass("quantity")}`}>Quantity</div>
+            <div onClick={() => requestSort("accounted")} className={`cursor-pointer ${getHeaderClass("accounted")}`}>Accounted</div>
+            <div onClick={() => requestSort("percentage")} className={`text-right cursor-pointer ${getHeaderClass("percentage")}`}>Accounted %</div>
           </div>
           <div>
             {sortedSummaries.map((item, index) => {
               const accountedPercentage = totalQuantity > 0 ? (item.accounted / totalQuantity) * 100 : 0;
 
               return (
-                <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 align-middle py-2 border-t border-foreground/20" key={index}>
+                <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 align-middle py-3 border-t border-foreground/20" key={index}>
                   <div className="text-foreground">
-                    <span className="flex items-center">
-                      <span className={`inline-block w-[17.34px] h-[17.34px] flex-shrink-0 rounded-full mr-2`} style={{ background: `#${item.label.display_color}` }}></span>
+                    <span className="flex items-center sans-medium">
+                      <span className={`inline-block w-[1em] h-[1em] flex-shrink-0 rounded-full mr-2`} style={{ background: `#${item.label.display_color}` }}></span>
                       {item.label.name}
                     </span>
                   </div>
@@ -204,7 +204,7 @@ const MultiStackBarVariant = ({ name, summaries }: MultiStackBarProps) => {
                     {item.accounted.toFixed(1).padStart(4, "0")}t
                   </div>
                   <div className="w-full flex items-center">
-                    <div className="h-[17.34px] text-left overflow-hidden flex bg-foreground/50" style={{ width: `${(item.quantity / Math.max(...sortedSummaries.map(s => s.quantity))) * 100}%` }}>
+                    <div className="h-[1em] text-left overflow-hidden flex bg-foreground/50" style={{ width: `${(item.quantity / Math.max(...sortedSummaries.map(s => s.quantity))) * 100}%` }}>
                       <div className={`h-full flex items-center justify-start`} style={{ width: `${accountedPercentage}%`, background: `#${item.label.display_color}` }}></div>
                     </div>
                   </div>
@@ -231,14 +231,14 @@ const MultiStackBarWithToggle = ({ name, summaries }: MultiStackBarProps) => {
       onClick={() => setShowVariant(!showVariant)}
       >
         <button
-          className={`px-4 py-2 rounded-md transition-colors duration-300 ${
+          className={`px-4 py-3 rounded-md transition-colors duration-300 ${
             !showVariant ? "bg-white text-black" : "text-gray-500"
           }`}
         >
           Tracked
         </button>
         <button
-          className={`px-4 py-2 rounded-md transition-colors duration-300 ${
+          className={`px-4 py-3 rounded-md transition-colors duration-300 ${
             showVariant ? "bg-white text-black" : "text-gray-500"
           }`}
         >
