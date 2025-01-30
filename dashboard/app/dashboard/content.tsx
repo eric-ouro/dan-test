@@ -15,8 +15,9 @@ const DashboardContent = () => {
 
   return (
     <div>
-        <div className="responsive-padding border-b border-b-foreground/20 bg-background sticky pt-[37px] pb-[15px] top-0 z-20 flex flex-col justify-start items-left  gap-4">
-            <div className="flex flex-row items-center gap-4 sans text-3xl  ">
+        <div className="responsive-padding bg-background sticky pt-3 pb-2 top-0 z-20 flex flex-col justify-start items-left gap-4">
+       
+            <div className="flex flex-row items-center gap-3 sans text-lg mt-2  ">
               <button
                 onClick={() => setActiveTab("materials")}
                 className={`${activeTab === "materials" ? "text-foreground" : "opacity-30"} tracking-tight`}

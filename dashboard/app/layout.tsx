@@ -39,7 +39,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <nav className="w-full flex justify-center border-b border-b-foreground/20 py-2">
+            <nav className="w-full flex justify-center py-4">
               <div className="w-full flex justify-between items-center responsive-padding sans">
                 <div className="flex items-center gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" className="text-foreground">

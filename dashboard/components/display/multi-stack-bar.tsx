@@ -85,7 +85,7 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
         {/* Flex container for the header and table */}
         <div className="sans text-xl">
           {/* Header section */}
-          {name && <DashboardDisplayHeader headerText={name} textSize="text-xl" />}
+          {name && <DashboardDisplayHeader headerText={name} textSize="text-xxl" lineHeight="leading-xxxxl" />}
         </div>
         <div className="overflow-x-auto">
           <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2 ">
@@ -176,7 +176,7 @@ const MultiStackBarVariant = ({ name, summaries }: MultiStackBarProps) => {
     <div className="dashcomponent">
       <div className="flex flex-col overflow-hidden h-full gap-4">
         <div className="sans text-xl">
-          {name && <DashboardDisplayHeader headerText={name} textSize="text-xl" />}
+          {name && <DashboardDisplayHeader headerText={name} textSize="text-xxl" />}
         </div>
         <div className="overflow-x-auto">
           <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2 text-xs">

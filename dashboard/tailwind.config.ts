@@ -29,6 +29,17 @@ const config = {
         sm: "13.87px",
         xs: "11px",
       },
+      lineHeight: {
+        base: "1.4",    // A comfortable line height for body text
+        xxxxl: "0.8",   // Even tighter line height for very large text
+        xxxl: "0.9",    // Tighter for large headings
+        xxl: "1",     // More moderate line height for medium headings
+        xl: "1.1",      // Slightly looser for smaller headings
+        lg: "1.2",      // Comfortable for larger body text
+        normal: "1.4",  // Standard line height for normal text
+        sm: "1.4",      // standart for small text
+        xs: "1",      // tight for extra small text
+      },
       
       colors: {
         border: "hsl(var(--border))",
