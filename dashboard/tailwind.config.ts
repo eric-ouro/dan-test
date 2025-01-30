@@ -20,7 +20,8 @@ const config = {
     extend: {
       fontSize: {
         base: "17.34px",
-        sm: "11px",
+        sm: "13px",
+        xs: "11px",
       },
       
       colors: {

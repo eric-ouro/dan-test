@@ -179,11 +179,10 @@ const MultiStackBarVariant = ({ name, summaries }: MultiStackBarProps) => {
           {name && <DashboardDisplayHeader headerText={name} textSize="text-lg" />}
         </div>
         <div className="overflow-x-auto">
-          <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2">
+          <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2 text-xs">
             <div className="text-foreground/50">Material</div>
             <div onClick={() => requestSort("quantity")} className={`${getHeaderClass("quantity")}`}>Quantity</div>
             <div onClick={() => requestSort("accounted")} className={`${getHeaderClass("accounted")}`}>Accounted</div>
-            <div className="cursor-default"></div>
             <div onClick={() => requestSort("percentage")} className={`text-right ${getHeaderClass("percentage")}`}>Accounted %</div>
           </div>
           <div>
@@ -193,23 +192,23 @@ const MultiStackBarVariant = ({ name, summaries }: MultiStackBarProps) => {
               return (
                 <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 align-middle py-2 border-t border-foreground/20" key={index}>
                   <div className="text-foreground">
-                    <span className="flex items-center ">
+                    <span className="flex items-center">
                       <span className={`inline-block w-[17.34px] h-[17.34px] flex-shrink-0 rounded-full mr-2`} style={{ background: `#${item.label.display_color}` }}></span>
                       {item.label.name}
                     </span>
                   </div>
-                  <div className="text-left">
+                  <div className={`text-left ${getHeaderClass("quantity")}`}>
                     {item.quantity.toFixed(1).padStart(4, "0")}t
                   </div>
-                  <div className="text-left">
+                  <div className={`text-left ${getHeaderClass("accounted")}`}>
                     {item.accounted.toFixed(1).padStart(4, "0")}t
                   </div>
-                  <div className="w-[100%] ">
+                  <div className="w-full flex items-center">
                     <div className="h-[17.34px] text-left overflow-hidden flex bg-foreground/50" style={{ width: `${(item.quantity / Math.max(...sortedSummaries.map(s => s.quantity))) * 100}%` }}>
                       <div className={`h-full flex items-center justify-start`} style={{ width: `${accountedPercentage}%`, background: `#${item.label.display_color}` }}></div>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className={`text-right ${getHeaderClass("percentage")}`}>
                     {accountedPercentage.toFixed(1)}%
                   </div>
                 </div>

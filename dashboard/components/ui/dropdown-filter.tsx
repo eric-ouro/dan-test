@@ -206,7 +206,7 @@ const DropdownFilter: React.FC = () => {
             maxDate={maxDate}
             dateFormat="yyyy-MM"
             showMonthYearPicker
-            className="bg-transparent focus:outline-none text-sm text-neutral-400 uppercase leading-none tracking-[.03em] h-[12px] w-[53px]"
+            className="bg-transparent focus:outline-none text-sm text-neutral-400 uppercase leading-none tracking-[.03em] h-[12px] w-auto"
           />
         </span>
         <CaretDown
