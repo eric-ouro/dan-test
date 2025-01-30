@@ -32,7 +32,7 @@ const WasteRateSummary = <T extends DbObject>({
 
   return (
     <div className="dashcomponent">
-      <div className="flex flex-col gap-3 overflow-hidden h-full">
+      <div className="flex flex-col gap-1 overflow-hidden h-full">
         {name && <DashboardDisplayHeader headerText={name} />}
         <div className="flex-grow flex gap-1 h-[128px]">
           {filteredSummaries.map((item, index) => {
@@ -82,7 +82,7 @@ const WasteRateSummary = <T extends DbObject>({
                   opacity: 0.9
                 }}
               >
-                <div className="p-2 w-0 ">
+                <div className="p-2 w-0 flex flex-row">
                   {item.label.name} {footprintPercentage.toFixed(1)}%
                 </div>
               </div>
