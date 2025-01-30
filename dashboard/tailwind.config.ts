@@ -19,8 +19,10 @@ const config = {
     },
     extend: {
       fontSize: {
-        sm: "12px",
+        base: "17.34px",
+        sm: "11px",
       },
+      
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -142,6 +142,10 @@
     font-style: normal;
   }
 
+html {
+  font-size: 17.34px; /* Set the base font size to 17.25px */
+}
+
 body {
   font-family:  'DiatypeTrialMono', 'DM Sans', sans-serif;
 }
@@ -150,6 +154,11 @@ body {
     text-wrap: balance;
   }
 }
+
+th {
+  font-weight: 400
+}
+
 .mono {
   font-family: 'DiatypeTrialMono', monospace;
 }
@@ -163,7 +172,7 @@ body {
 
 .dashcomponent{
   /* margin-top:37px; */
-  font-size:small;
+  /* font-size:small; */
 
 }
 
