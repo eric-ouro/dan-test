@@ -11,7 +11,7 @@ import {
 type SortKey =
   | "percentage"
   | "accounted"
-  | "recycled"
+  | "recycleRate"
   | "recyclingLossRate"
   | "processingLossRate"
   | "quantity"
@@ -59,6 +59,7 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
       direction = "descending";
     }
     setSortConfig({ key, direction });
+    console.log(key, sortConfig);
   };
 
   const totalAccounted = useMemo(() => {
@@ -91,7 +92,7 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
           <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2 ">
             <div className="text-foreground/50">Material</div>
             <div onClick={() => requestSort("accounted")} className={`cursor-pointer ${getHeaderClass("accounted")}`}>Accounted</div>
-            <div onClick={() => requestSort("recycled")} className={`text-right cursor-pointer ${getHeaderClass("recycled")}`}>Recycled</div>
+            <div onClick={() => requestSort("recycleRate")} className={`text-right cursor-pointer ${getHeaderClass("recycleRate")}`}>Recycled</div>
             <div onClick={() => requestSort("recyclingLossRate")} className={` text-right cursor-pointer ${getHeaderClass("recyclingLossRate")}`}>R&nbsp;Loss</div>
             <div onClick={() => requestSort("processingLossRate")} className={`text-right cursor-pointer ${getHeaderClass("processingLossRate")}`}>P&nbsp;Loss</div>
           </div>
@@ -120,7 +121,7 @@ const MultiStackBar = ({ name, summaries }: MultiStackBarProps) => {
                       <div className={`h-full flex items-center justify-start bg-neutral-500`} style={{ width: `${Math.max(item.processingLossRate, 10)}%` }}></div>
                     </div>
                   </div>
-                  <div className={`text-right ${getHeaderClass("recycled")} flex-none`}>{item.recycleRate.toFixed(1)}%</div>
+                  <div className={`text-right ${getHeaderClass("recycleRate")} flex-none`}>{item.recycleRate.toFixed(1)}%</div>
                   <div className={`text-right ${getHeaderClass("recyclingLossRate")} flex-none`}>{item.recyclingLossRate.toFixed(1)}%</div>
                   <div className={`text-right ${getHeaderClass("processingLossRate")} flex-none`}>{item.processingLossRate.toFixed(1)}%</div>
                 </div>
