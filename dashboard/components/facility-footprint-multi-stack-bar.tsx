@@ -1,8 +1,10 @@
 "use client";
 
 import { useEnrichedWasteRateSummariesWithRatios } from "@/lib/hooks/use-enriched-waste-rate-summaries";
-import { EnrichedWasteRateSummaryWithRatios } from "@/lib/types";
+import { EnrichedWasteRateSummaryWithRatios, SortConfig } from "@/lib/types";
 import MultiStackBar from "@components/display/multi-stack-bar";
+import MultiStackBarWithToggle from "@components/display/multi-stack-bar";
+import { useState } from "react";
 
 const FacilityFootprintMultiStackBar = () => {
   const {
@@ -20,19 +22,43 @@ const FacilityFootprintMultiStackBar = () => {
   if (summariesLoading) return <div>Loading...</div>;
   if (summariesError) return <div>Error: {summariesError}</div>;
 
-  // group summaries by facility and render a multi stack bar for each facility
+  const totalAccountedForAllSummaries = summaries.reduce(
+    (acc, curr) => acc + curr.accounted,
+    0
+  );
+
   const facilitySummaries = summaries.reduce<
-    Record<string, EnrichedWasteRateSummaryWithRatios[]>
+    Record<string, { summaries: EnrichedWasteRateSummaryWithRatios[]; percentage: number }>
   >((acc, curr) => {
-    acc[curr.group] ??= [];
-    acc[curr.group].push(curr);
+    acc[curr.group] ??= { summaries: [], percentage: 0 };
+    acc[curr.group].summaries.push(curr);
     return acc;
   }, {});
 
+  Object.keys(facilitySummaries).forEach((group) => {
+    const groupTotalAccounted = facilitySummaries[group].summaries.reduce(
+      (acc, curr) => acc + curr.accounted,
+      0
+    );
+    facilitySummaries[group].percentage = (groupTotalAccounted / totalAccountedForAllSummaries) * 100;
+  });
+
+  const largestPercentage = Math.max(
+    ...Object.values(facilitySummaries).map(item => item.percentage)
+  );
+
   return (
     <>
-      {Object.values(facilitySummaries).map((summaries) => (
-        <MultiStackBar name={summaries[0].groupName} summaries={summaries} />
+    
+      {Object.values(facilitySummaries).map((item) => (
+        console.log("item", item),
+          <MultiStackBarWithToggle
+            name={item.summaries[0].groupName}
+            percentage={item.percentage}
+            summaries={item.summaries}
+            largestPercentage={largestPercentage}
+            testprop={1}
+          />
       ))}
     </>
   );
