@@ -7,6 +7,7 @@ import {
   SortConfig,
   SortDirection,
 } from "@/lib/types";
+import { useAppSelector } from '@/lib/hooks/store-hooks';
 
 type SortKey =
   | "percentage"
@@ -269,34 +270,15 @@ const MultiStackBarVariant = ({ name, summaries, percentage }: MultiStackBarProp
 };
 
 // Add a toggle button to switch between variants
-const MultiStackBarWithToggle = ({ name, summaries, percentage, largestPercentage, testprop }: MultiStackBarProps) => {
-  
-  const [showVariant, setShowVariant] = useState(false);
+const MultiStackBarWithToggle = ({ name, summaries, percentage, largestPercentage }: MultiStackBarProps) => {
+  const showVariant = useAppSelector((state) => state.accountedToggle.showVariant);
 
   return (
     <div>
-      <div className="flex items-center bg-gray-200 rounded-md p-1 text-xs tracking-tight w-fit "
-      onClick={() => setShowVariant(!showVariant)}
-      >
-        <button
-          className={`px-4 py-3 rounded-md transition-colors duration-300 ${
-            !showVariant ? "bg-white text-black" : "text-gray-500"
-          }`}
-        >
-          Tracked
-        </button>
-        <button
-          className={`px-4 py-3 rounded-md transition-colors duration-300 ${
-            showVariant ? "bg-white text-black" : "text-gray-500"
-          }`}
-        >
-          All
-        </button>
-      </div>
       {showVariant ? (
-        <MultiStackBarVariant name={name} summaries={summaries} percentage={percentage} testprop={testprop} />
+        <MultiStackBarVariant name={name} summaries={summaries} percentage={percentage} />
       ) : (
-        <MultiStackBar name={name} summaries={summaries} percentage={percentage} largestPercentage={largestPercentage} testprop={testprop} />
+        <MultiStackBar name={name} summaries={summaries} percentage={percentage} largestPercentage={largestPercentage} />
       )}
     </div>
   );

@@ -1,5 +1,7 @@
 'use client'
 import { useState } from "react";
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/store-hooks';
+import { toggleAccountedVariant } from '@/lib/store/slices/toggle-slice';
 
 import PlasticFootprintSimple from "@/components/plastic-footprint-simple";
 import PlasticFootprintMultiStackBar from "@/components/plastic-footprint-multi-stack-bar";
@@ -12,6 +14,9 @@ import TotalAccountedSummary from "@/components/total-accounted-summary";
 
 const DashboardContent = () => {
   const [activeTab, setActiveTab] = useState("materials");
+
+  const dispatch = useAppDispatch();
+  const showVariant = useAppSelector((state) => state.accountedToggle.showVariant);
 
   return (
     <div>
@@ -38,8 +43,25 @@ const DashboardContent = () => {
               </button>
             </div>
             <DropdownFilter />
-         </div>
-      <div className="flex flex-col gap-5 mt-5 responsive-padding">
+            <div className="flex items-center bg-gray-200 rounded-md p-1 text-xs tracking-tight w-fit "
+              onClick={() => dispatch(toggleAccountedVariant())}
+            >
+              <button
+                className={`px-4 py-3 rounded-md transition-colors duration-300 ${
+                  !showVariant ? "bg-white text-black" : "text-gray-500"
+                }`}
+              >
+                Tracked
+              </button>
+              <button
+                className={`px-4 py-3 rounded-md transition-colors duration-300 ${
+                  showVariant ? "bg-white text-black" : "text-gray-500"
+                }`}
+              >
+                All
+              </button>
+            </div>
+            <div className="flex flex-col gap-5 mt-5 responsive-padding">
         <div>
           <TotalAccountedSummary />
         </div>
@@ -77,9 +99,10 @@ const DashboardContent = () => {
         )}
         <div className="h-[100px]"></div>
       </div>
-    </div>
     
+        </div>
+    </div>
   );
 };
 
-export default (DashboardContent);
+export default DashboardContent;
