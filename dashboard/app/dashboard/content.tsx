@@ -43,24 +43,6 @@ const DashboardContent = () => {
               </button>
             </div>
             <DropdownFilter />
-            <div className="flex items-center bg-gray-200 rounded-md p-1 text-xs tracking-tight w-fit "
-              onClick={() => dispatch(toggleAccountedVariant())}
-            >
-              <button
-                className={`px-4 py-3 rounded-md transition-colors duration-300 ${
-                  !showVariant ? "bg-white text-black" : "text-gray-500"
-                }`}
-              >
-                Tracked
-              </button>
-              <button
-                className={`px-4 py-3 rounded-md transition-colors duration-300 ${
-                  showVariant ? "bg-white text-black" : "text-gray-500"
-                }`}
-              >
-                All
-              </button>
-            </div>
             <div className="flex flex-col gap-5 mt-5 responsive-padding">
         <div>
           <TotalAccountedSummary />

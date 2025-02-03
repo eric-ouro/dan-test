@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useAppSelector, useAppDispatch } from "@hooks/store-hooks";
 import { RootState } from "@store/configuration";
 import {
@@ -19,6 +19,8 @@ import { fetchPartnerFacilitiesIfEmpty, togglePartnerFacility } from "@/lib/stor
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/app/datepicker.css";
+import { toggleAccountedVariant } from "@/lib/store/slices/toggle-slice";
+import ToggleVariant from "./toggle";
 
 const DropdownFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -56,6 +58,7 @@ const DropdownFilter: React.FC = () => {
   const validEnd = useAppSelector((state: RootState) => state.selectedDate.valid.end);
   const startDate = useAppSelector((state: RootState) => state.selectedDate.selected.start);
   const endDate = useAppSelector((state: RootState) => state.selectedDate.selected.end);
+  const showVariant = useAppSelector((state: RootState) => state.accountedToggle.showVariant);
 
   // console.log("start date", startDate, "end date", endDate);
 
@@ -110,7 +113,7 @@ const DropdownFilter: React.FC = () => {
   const renderDropdown = (title: string, items: any[], selectedItems: any[], type: string) => (
     <div ref={(el) => (dropdownRefs.current[type] = el)} className={`dropdown mono`}>
       <button
-        className={`flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer text-sm rounded-sm w-full gap-3`}
+        className={`flex flex-row justify-between items-center bg-white dark:bg-foreground/20 border-none p-2 cursor-pointer text-sm rounded-sm h-full w-full gap-3`}
         onClick={() => toggleDropdown(type)}
       >
         <div className="flex flex-row gap-2 items-center text-left">
@@ -189,7 +192,7 @@ const DropdownFilter: React.FC = () => {
 
     return (
       <div className="mono date-picker dropdown ">
-        <div className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer rounded-sm w-full gap-3"
+        <div className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer rounded-sm w-full gap-3 overflow-hidden"
         onClick={() => datePickerRef.current.setFocus()}>
         <span className="flex flex-row items-center text-left">
         <span className="mr-2">
@@ -221,13 +224,14 @@ const DropdownFilter: React.FC = () => {
   };
 
   return (
-    <div className="dropdown-filters flex flex-row flex-wrap gap-1">
+    <div className="dropdown-filters grid grid-cols-4 gap-1 w-full">
       {renderDropdown("Materials", wasteTypes.valid, wasteTypes.selected, "wasteType")}
       {renderDropdown("Facilities", facilities.valid, facilities.selected, "facility")}
       {renderDropdown("Partners", partners.valid, partners.selected, "partner")}
       {renderDropdown("Partner Fac.", partnerFacilities.valid, partnerFacilities.selected, "partnerFacility")}
       {renderDatePicker("start", validStart, validEnd, startDate)}
       {renderDatePicker("end", validStart, validEnd, endDate)}
+      <ToggleVariant />
     </div>
   );
 };
