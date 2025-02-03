@@ -19,7 +19,6 @@ import { fetchPartnerFacilitiesIfEmpty, togglePartnerFacility } from "@/lib/stor
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/app/datepicker.css";
-import { toggleAccountedVariant } from "@/lib/store/slices/toggle-slice";
 import ToggleVariant from "./toggle";
 
 const DropdownFilter: React.FC = () => {
@@ -126,13 +125,15 @@ const DropdownFilter: React.FC = () => {
           <span className="text-sm text-neutral-600 dark:text-neutral-200 uppercase leading-none tracking-[.03em]">
             {title}
           </span>
+        </div>
+        <div className="flex flex-row gap-1 items-center text-right">
           <span className="text-sm text-neutral-400 dark:text-neutral-400 uppercase leading-none tracking-[.03em]">
-            {selectedItems.length}/{items.length}
+              {selectedItems.length}/{items.length}
+          </span>
+          <span className="">
+            <CaretDown className="text-neutral-600 dark:text-neutral-200" size={15} weight="regular" />
           </span>
         </div>
-        <span className="">
-          <CaretDown className="text-neutral-600 dark:text-neutral-200" size={15} weight="regular" />
-        </span>
       </button>
       <div className="dropdown-content bg-white dark:bg-neutral-600">
         {items.map((item, index) => (
@@ -194,30 +195,34 @@ const DropdownFilter: React.FC = () => {
       <div className="mono date-picker dropdown ">
         <div className="flex flex-row justify-between bg-white dark:bg-neutral-600 border-none p-2 cursor-pointer rounded-sm w-full gap-3 overflow-hidden"
         onClick={() => datePickerRef.current.setFocus()}>
-        <span className="flex flex-row items-center text-left">
-        <span className="mr-2">
-          <CalendarBlank color="#A7A7A7FF" size={15} weight="fill" />
-        </span>
-          <span className="text-neutral-600 dark:text-neutral-200 text-sm uppercase leading-none tracking-[.03em] mr-2">
-            {type === "start" ? "Start " : "End "}
+        <div className="flex flex-row items-center text-left">
+          <span className="mr-2">
+            <CalendarBlank color="#A7A7A7FF" size={15} weight="fill" />
           </span>
-          <DatePicker
-            ref={datePickerRef}
-            selected={selectedDate}
-            onChange={handleDateChangeWrapper}
-            minDate={minDate}
-            maxDate={maxDate}
-            dateFormat="yyyy-MM"
-            showMonthYearPicker
-            className="bg-transparent focus:outline-none text-sm text-neutral-400 uppercase leading-none tracking-[.03em] h-[12px] w-auto"
-          />
-        </span>
-        <CaretDown
-          className="text-neutral-600 dark:text-neutral-200"
-          size={15}
-          weight="regular"
-          onClick={() => datePickerRef.current.setFocus()}
-        />
+          <span className="text-neutral-600 dark:text-neutral-200 text-sm uppercase leading-none tracking-[.03em] mr-2">
+              {type === "start" ? "Start " : "End "}
+            </span>
+        </div>
+        <div className="flex flex-row items-center text-right gap-3">
+       
+            <DatePicker
+              ref={datePickerRef}
+              selected={selectedDate}
+              onChange={handleDateChangeWrapper}
+              minDate={minDate}
+              maxDate={maxDate}
+              dateFormat="yyyy-MM"
+              showMonthYearPicker
+              className="bg-transparent focus:outline-none text-sm text-neutral-400 uppercase leading-none tracking-[.03em] h-[12px] w-auto"
+            />
+            <CaretDown
+              className="text-neutral-600 dark:text-neutral-200"
+              size={15}
+              weight="regular"
+              onClick={() => datePickerRef.current.setFocus()}
+            />
+        </div>
+       
         </div>
       </div>
     );
@@ -229,8 +234,10 @@ const DropdownFilter: React.FC = () => {
       {renderDropdown("Facilities", facilities.valid, facilities.selected, "facility")}
       {renderDropdown("Partners", partners.valid, partners.selected, "partner")}
       {renderDropdown("Partner Fac.", partnerFacilities.valid, partnerFacilities.selected, "partnerFacility")}
-      {renderDatePicker("start", validStart, validEnd, startDate)}
-      {renderDatePicker("end", validStart, validEnd, endDate)}
+      <div className="flex flex-row gap-1">
+        {renderDatePicker("start", validStart, validEnd, startDate)}
+        {renderDatePicker("end", validStart, validEnd, endDate)}
+      </div>
       <ToggleVariant />
     </div>
   );

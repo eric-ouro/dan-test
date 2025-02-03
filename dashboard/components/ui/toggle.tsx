@@ -12,7 +12,7 @@ const ToggleVariant: React.FC = () => {
   };
 
   return (
-    <div className="flex gap-1 items-center justify-between dark:bg-foreground/20 bg-white rounded-sm text-sm tracking-tight min-w-[184px] uppercase h-full p-0.5 px-1"
+    <div className="flex gap-1 items-center justify-between dark:bg-foreground/20 bg-white rounded-sm text-sm tracking-tight dropdown uppercase h-full p-0.5 px-1"
       onClick={handleToggleVariant}
     >
       <button
