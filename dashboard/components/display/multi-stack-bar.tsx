@@ -111,7 +111,7 @@ const MultiStackBar = ({
       );
     } else {
       return (
-        <div className={`dashcomponent ${isTableDataVisible ? '' : ''} hover:bg-neutral-200`}>
+        <div className={`dashcomponent ${isTableDataVisible ? '' : ''} hover:bg-foreground/5`}>
           {/* Main container for the component */}
           <div className="flex flex-col overflow-hidden h-full border-b border-foreground/20 ">
             {showTableHeader && (
