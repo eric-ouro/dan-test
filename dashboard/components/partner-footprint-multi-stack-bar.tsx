@@ -32,7 +32,11 @@ const PartnerFootprintMultiStackBar = () => {
   return (
     <>
       {Object.values(partnerSummaries).map((summaries) => (
-        <MultiStackBar name={summaries[0].groupName} summaries={summaries} />
+        <MultiStackBar
+        name={summaries[0].groupName}
+        summaries={summaries}
+        showTableHeader={true}
+        />
       ))}
     </>
   );

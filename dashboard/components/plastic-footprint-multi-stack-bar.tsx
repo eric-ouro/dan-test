@@ -19,7 +19,11 @@ const PartnerFootprintMultiStackBar = () => {
   if (summariesLoading) return <div>Loading...</div>;
   if (summariesError) return <div>Error: {summariesError}</div>;
 
-  return <MultiStackBar summaries={summaries} />;
+  return <MultiStackBar
+  summaries={summaries}
+  defaultTableDataVisible={true}
+  showTableHeader={false}
+  />;
 };
 
 export default PartnerFootprintMultiStackBar;

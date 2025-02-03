@@ -2,8 +2,8 @@
 
 import { useEnrichedWasteRateSummariesWithRatios } from "@/lib/hooks/use-enriched-waste-rate-summaries";
 import { EnrichedWasteRateSummaryWithRatios, SortConfig } from "@/lib/types";
-import MultiStackBar from "@components/display/multi-stack-bar";
 import MultiStackBarWithToggle from "@components/display/multi-stack-bar";
+import MultiStackBar from "@components/display/multi-stack-bar";
 import { useState } from "react";
 
 const FacilityFootprintMultiStackBar = () => {
@@ -52,12 +52,13 @@ const FacilityFootprintMultiStackBar = () => {
     
       {Object.values(facilitySummaries).map((item) => (
         console.log("item", item),
-          <MultiStackBarWithToggle
+          <MultiStackBar
             name={item.summaries[0].groupName}
             percentage={item.percentage}
             summaries={item.summaries}
             largestPercentage={largestPercentage}
-            testprop={1}
+            showTableHeader={true}
+            // defaultTableDataVisible={true}
           />
       ))}
     </>
