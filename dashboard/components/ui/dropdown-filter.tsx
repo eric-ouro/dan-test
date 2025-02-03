@@ -224,7 +224,7 @@ const DropdownFilter: React.FC = () => {
   };
 
   return (
-    <div className="dropdown-filters grid grid-cols-4 gap-1 w-full">
+    <div className="dropdown-filters flex flex-wrap gap-1 w-full">
       {renderDropdown("Materials", wasteTypes.valid, wasteTypes.selected, "wasteType")}
       {renderDropdown("Facilities", facilities.valid, facilities.selected, "facility")}
       {renderDropdown("Partners", partners.valid, partners.selected, "partner")}

@@ -12,19 +12,19 @@ const ToggleVariant: React.FC = () => {
   };
 
   return (
-    <div className="flex  items-center dark:bg-foreground/20 bg-foreground/10 rounded-sm text-sm tracking-tight w-fit uppercase h-full p-0.5 px-1"
+    <div className="flex gap-1 items-center justify-between dark:bg-foreground/20 bg-white rounded-sm text-sm tracking-tight min-w-[184px] uppercase h-full p-0.5 px-1"
       onClick={handleToggleVariant}
     >
       <button
-          className={`duration-300 uppercase tracking-tight p-0.5 rounded-sm ${
-          !showVariant ? "dark:bg-background/80 bg-white text-foreground" : "text-foreground/50"
+          className={`duration-300 uppercase tracking-tight p-0.5 rounded-sm  w-full ${
+          !showVariant ? "dark:bg-background/80 bg-foreground text-white" : "text-foreground/50"
         }`}
       >
         <span className="p-1 ">Tracked</span>
       </button>
       <button
-        className={`duration-300 uppercase tracking-tight p-0.5 rounded-sm ${
-          showVariant ? "dark:bg-background/80 bg-white text-foreground" : "text-foreground/50"
+        className={`duration-300 uppercase tracking-tight p-0.5 rounded-sm  w-full ${
+          showVariant ? "dark:bg-background/80 bg-foreground text-white" : "text-foreground/50"
         }`}
       >
         <span className="p-1 ">All</span>

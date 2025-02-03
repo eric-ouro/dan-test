@@ -1,7 +1,5 @@
 'use client'
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from '@/lib/hooks/store-hooks';
-import { toggleAccountedVariant } from '@/lib/store/slices/toggle-slice';
 
 import PlasticFootprintSimple from "@/components/plastic-footprint-simple";
 import PlasticFootprintMultiStackBar from "@/components/plastic-footprint-multi-stack-bar";
@@ -15,14 +13,11 @@ import TotalAccountedSummary from "@/components/total-accounted-summary";
 const DashboardContent = () => {
   const [activeTab, setActiveTab] = useState("materials");
 
-  const dispatch = useAppDispatch();
-  const showVariant = useAppSelector((state) => state.accountedToggle.showVariant);
-
   return (
     <div>
-        <div className="responsive-padding bg-background sticky pt-3 pb-2 top-0 z-20 flex flex-col justify-start items-left gap-4">
-       
-            <div className="flex flex-row items-center gap-3 sans text-lg mt-2  ">
+        <div className="bg-background sticky pt-1 pb-2 top-0 z-20 flex flex-col justify-start items-left gap-5">
+        <DropdownFilter />
+            <div className="flex flex-row items-center gap-3 sans text-lg mt-3 ">
               <button
                 onClick={() => setActiveTab("materials")}
                 className={`${activeTab === "materials" ? "text-foreground" : "opacity-30"} tracking-tight`}
@@ -42,8 +37,8 @@ const DashboardContent = () => {
                 Facilities
               </button>
             </div>
-            <DropdownFilter />
-            <div className="flex flex-col gap-5 mt-5 responsive-padding">
+            
+            <div className="flex flex-col gap-5 mt-3">
         <div>
           <TotalAccountedSummary />
         </div>

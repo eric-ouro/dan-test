@@ -148,8 +148,10 @@ html {
 
 body {
   font-family:  'DiatypeTrialMono', 'DM Sans', sans-serif;
-  max-width: 1400px;
+  /* max-width: 1400px; */
   margin: 0 auto;
+  padding: 10px 40px;
+  /* border:20px solid #1c1c1c; */
 }
 @layer utilities {
   .text-balance {
@@ -226,6 +228,7 @@ th {
 
 .dropdown {
   border-radius: 4px;
+  min-width: 184px;
 }
 
 button.activedropdown{
