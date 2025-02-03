@@ -58,7 +58,7 @@ const FacilityFootprintMultiStackBar = () => {
             summaries={item.summaries}
             largestPercentage={largestPercentage}
             showTableHeader={true}
-            // defaultTableDataVisible={true}
+            defaultTableDataVisible={Object.values(facilitySummaries).length === 1}
           />
       ))}
     </>

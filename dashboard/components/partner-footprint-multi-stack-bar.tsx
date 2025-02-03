@@ -20,22 +20,45 @@ const PartnerFootprintMultiStackBar = () => {
   if (summariesLoading) return <div>Loading...</div>;
   if (summariesError) return <div>Error: {summariesError}</div>;
 
-  // group summaries by partner and render a multi stack bar for each partner
+  // Calculate total accounted for all summaries
+  const totalAccountedForAllSummaries = summaries.reduce(
+    (acc, curr) => acc + curr.accounted,
+    0
+  );
+
+  // Group summaries by partner and calculate percentage
   const partnerSummaries = summaries.reduce<
-    Record<string, EnrichedWasteRateSummaryWithRatios[]>
+    Record<string, { summaries: EnrichedWasteRateSummaryWithRatios[]; percentage: number }>
   >((acc, curr) => {
-    acc[curr.group] ??= [];
-    acc[curr.group].push(curr);
+    acc[curr.group] ??= { summaries: [], percentage: 0 };
+    acc[curr.group].summaries.push(curr);
     return acc;
   }, {});
 
+  // Calculate percentage for each partner group
+  Object.keys(partnerSummaries).forEach((group) => {
+    const groupTotalAccounted = partnerSummaries[group].summaries.reduce(
+      (acc, curr) => acc + curr.accounted,
+      0
+    );
+    partnerSummaries[group].percentage = (groupTotalAccounted / totalAccountedForAllSummaries) * 100;
+  });
+
+  // Find the largest percentage
+  const largestPercentage = Math.max(
+    ...Object.values(partnerSummaries).map(item => item.percentage)
+  );
+
   return (
     <>
-      {Object.values(partnerSummaries).map((summaries) => (
+      {Object.values(partnerSummaries).map((item) => (
         <MultiStackBar
-        name={summaries[0].groupName}
-        summaries={summaries}
-        showTableHeader={true}
+          name={item.summaries[0].groupName}
+          percentage={item.percentage}
+          summaries={item.summaries}
+          largestPercentage={largestPercentage}
+          showTableHeader={true}
+          defaultTableDataVisible={Object.values(partnerSummaries).length === 1}
         />
       ))}
     </>
