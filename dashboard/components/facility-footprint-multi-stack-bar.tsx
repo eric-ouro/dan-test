@@ -2,9 +2,9 @@
 
 import { useEnrichedWasteRateSummariesWithRatios } from "@/lib/hooks/use-enriched-waste-rate-summaries";
 import { EnrichedWasteRateSummaryWithRatios, SortConfig } from "@/lib/types";
-import MultiStackBarWithToggle from "@components/display/multi-stack-bar";
+
 import MultiStackBar from "@components/display/multi-stack-bar";
-import { useState } from "react";
+
 
 const FacilityFootprintMultiStackBar = () => {
   const {
@@ -28,9 +28,9 @@ const FacilityFootprintMultiStackBar = () => {
   );
 
   const facilitySummaries = summaries.reduce<
-    Record<string, { summaries: EnrichedWasteRateSummaryWithRatios[]; percentage: number }>
+    Record<string, { summaries: EnrichedWasteRateSummaryWithRatios[]; accountedPercentage: number; quantityPercentage: number }>
   >((acc, curr) => {
-    acc[curr.group] ??= { summaries: [], percentage: 0 };
+    acc[curr.group] ??= { summaries: [], accountedPercentage: 0, quantityPercentage: 0 };
     acc[curr.group].summaries.push(curr);
     return acc;
   }, {});
@@ -40,23 +40,34 @@ const FacilityFootprintMultiStackBar = () => {
       (acc, curr) => acc + curr.accounted,
       0
     );
-    facilitySummaries[group].percentage = (groupTotalAccounted / totalAccountedForAllSummaries) * 100;
+    facilitySummaries[group].accountedPercentage = (groupTotalAccounted / totalAccountedForAllSummaries) * 100;
+
+    const groupTotalQuantity = facilitySummaries[group].summaries.reduce(
+      (acc, curr) => acc + curr.quantity,
+      0
+    );
+    facilitySummaries[group].quantityPercentage = (groupTotalQuantity / totalAccountedForAllSummaries) * 100;
   });
 
-  const largestPercentage = Math.max(
-    ...Object.values(facilitySummaries).map(item => item.percentage)
+  const accountedPercentageLargest = Math.max(
+    ...Object.values(facilitySummaries).map(item => item.accountedPercentage)
+  );
+
+  const quantityPercentageLargest = Math.max(
+    ...Object.values(facilitySummaries).map(item => item.quantityPercentage)
   );
 
   return (
     <>
-    
       {Object.values(facilitySummaries).map((item) => (
         console.log("item", item),
           <MultiStackBar
             name={item.summaries[0].groupName}
-            percentage={item.percentage}
+            accountedPercentage={item.accountedPercentage}
+            quantityPercentage={item.quantityPercentage}
             summaries={item.summaries}
-            largestPercentage={largestPercentage}
+            accountedPercentageLargest={accountedPercentageLargest}
+            quantityPercentageLargest={quantityPercentageLargest}
             showTableHeader={true}
             defaultTableDataVisible={Object.values(facilitySummaries).length === 1}
           />

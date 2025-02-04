@@ -21,8 +21,10 @@ type SortKey =
 interface MultiStackBarProps {
   summaries: EnrichedWasteRateSummaryWithRatios[];
   name?: string;
-  percentage?: number;
-  largestPercentage?: number;
+  accountedPercentage?: number;
+  quantityPercentage?: number;
+  accountedPercentageLargest?: number;
+  quantityPercentageLargest?: number;
   showTableHeader?: boolean;
   defaultTableDataVisible?: boolean;
 } // Defining the props interface for the MultiStackBar component.
@@ -30,8 +32,10 @@ interface MultiStackBarProps {
 const MultiStackBar = ({
   name,
   summaries,
-  percentage,
-  largestPercentage,
+  accountedPercentage,
+  quantityPercentage,
+  accountedPercentageLargest,
+  quantityPercentageLargest,
   showTableHeader = true,
   defaultTableDataVisible = false,
 }: MultiStackBarProps) => {
@@ -93,8 +97,8 @@ const MultiStackBar = ({
     [summaries, totalAccounted],
   ); // Calculating the largest footprint percentage for normalization.
 
-  const normalizedWidthGroup = ((percentage ?? 0) / (largestPercentage ?? 1)) * 100;
-  console.log(percentage, largestPercentage, normalizedWidthGroup);
+  const normalizedWidthGroup = ((accountedPercentage ?? 0) / (accountedPercentageLargest ?? 1)) * 100;
+  console.log(accountedPercentage, accountedPercentageLargest, normalizedWidthGroup);
 
   const getHeaderClass = (key: SortKey) => {
     return sortConfig.key === key ? "text-foreground" : "text-foreground/50";
@@ -106,7 +110,10 @@ const MultiStackBar = ({
         <MultiStackBarVariant
           name={name}
           summaries={summaries}
-          percentage={percentage}
+          quantityPercentage={quantityPercentage}
+          quantityPercentageLargest={quantityPercentageLargest} 
+          defaultTableDataVisible={defaultTableDataVisible}
+          showTableHeader={showTableHeader}
         />
       );
     } else {
@@ -126,7 +133,7 @@ const MultiStackBar = ({
                 </div>
                 <div className="text-foreground/50">
                   {/* % of accounted for all groups */}
-                  {percentage !== undefined ? percentage.toFixed(1) : "undefined"}%
+                  {quantityPercentage !== undefined ? quantityPercentage.toFixed(1) : "undefined"}%
                 </div>
                 <div className="w-full flex">
                   {/* Total averages recycling bar */}
@@ -154,7 +161,7 @@ const MultiStackBar = ({
             >
               {isTableDataVisible && (
                 <div>
-                  <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)] gap-2 text-xs text-left uppercase my-2 ">
+                  <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2 ">
                     <div className="text-foreground/50">Material</div>
                     <div onClick={() => requestSort("accounted")} className={`cursor-pointer ${getHeaderClass("accounted")}`}>Accounted</div>
                     <div onClick={() => requestSort("recycleRate")} className={`text-right cursor-pointer ${getHeaderClass("recycleRate")}`}>Recycled</div>
@@ -165,16 +172,16 @@ const MultiStackBar = ({
                     {sortedSummaries
                       .filter(item => item.accounted > 0)
                       .map((item, index) => {
-                        const minWidth = item.accounted > 0 ? "10%" : "0";
                         const footprintPercentage = totalAccounted > 0 ? (item.accounted / totalAccounted) * 100 : 0;
                         const normalizedWidth = (footprintPercentage / largestFootprintPercentage) * 100;
                         const displayLabel = item.label.name === "MixedPlastic" ? "Mixed" : item.label.name;
+                        const displayColor = item.label.display_color || 'defaultColor';
 
                         return (
                           <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)_minmax(80px,auto)] gap-2 align-middle py-3 border-t border-foreground/20" key={index}>
                             <div className="text-foreground flex-none">
                               <span className="flex items-center sans-medium">
-                                <span className="inline-block w-[1em] h-[1em] flex-shrink-0 rounded-full mr-2" style={{ background: `#${item.label.display_color}` }}></span>
+                                <span className="inline-block w-[1em] h-[1em] flex-shrink-0 rounded-full mr-2" style={{ background: `#${displayColor}` }}></span>
                                 {displayLabel}
                               </span>
                             </div>
@@ -183,7 +190,7 @@ const MultiStackBar = ({
                             <div className="w-full flex items-center">
                               {/* Recycling bar */}
                               <div className="h-[1em] text-left overflow-hidden flex items-center" style={{ width: `${Math.max(normalizedWidth, 10)}%` }}>
-                                <div className={`h-full flex items-center justify-start`} style={{ width: `${Math.max(item.recycleRate, 10)}%`, background: `#${item.label.display_color}` }}></div>
+                                <div className={`h-full flex items-center justify-start`} style={{ width: `${Math.max(item.recycleRate, 10)}%`, background: `#${displayColor}` }}></div>
                                 <div className={`h-full flex items-center justify-start bg-neutral-400`} style={{ width: `${Math.max(item.recyclingLossRate, 10)}%` }}></div>
                                 <div className={`h-full flex items-center justify-start bg-neutral-500`} style={{ width: `${Math.max(item.processingLossRate, 10)}%` }}></div>
                               </div>
@@ -208,7 +215,7 @@ const MultiStackBar = ({
 };
 
 // Define a new component variant
-const MultiStackBarVariant = ({ name, summaries, percentage }: MultiStackBarProps) => {
+const MultiStackBarVariant = ({ name, summaries, quantityPercentage, quantityPercentageLargest, defaultTableDataVisible, showTableHeader }: MultiStackBarProps) => {
   const [sortConfig, setSortConfig] = useState<
     SortConfig<EnrichedWasteRateSummaryWithRatios, SortKey>
   >({
@@ -230,8 +237,13 @@ const MultiStackBarVariant = ({ name, summaries, percentage }: MultiStackBarProp
     [summaries, sortConfig],
   );
 
+
   const totalQuantity = useMemo(() => {
     return summaries.reduce((acc, curr) => acc + curr.quantity, 0);
+  }, [summaries]);
+
+  const totalAccounted = useMemo(() => {
+    return summaries.reduce((acc, curr) => acc + curr.accounted, 0);
   }, [summaries]);
 
   const getHeaderClass = (key: SortKey) => {
@@ -246,55 +258,93 @@ const MultiStackBarVariant = ({ name, summaries, percentage }: MultiStackBarProp
     setSortConfig({ key, direction });
   };
 
-  return (
-    <div className="dashcomponent">
-      <div className="flex flex-col overflow-hidden h-full gap-4">
-        <div className="sans text-xl">
-          {name && <DashboardDisplayHeader headerText={name} textSize="text-xxl" />}
-        </div>
-        <div className="overflow-x-auto">
-          <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2 text-xs">
-            <div className="text-foreground/50 ">Material</div>
-            <div onClick={() => requestSort("quantity")} className={`cursor-pointer ${getHeaderClass("quantity")}`}>Quantity</div>
-            <div onClick={() => requestSort("accounted")} className={`cursor-pointer ${getHeaderClass("accounted")}`}>Accounted</div>
-            <div onClick={() => requestSort("percentage")} className={`text-right cursor-pointer ${getHeaderClass("percentage")}`}>Accounted %</div>
-          </div>
-          <div>
-            {sortedSummaries.map((item, index) => {
-              const accountedPercentage = totalQuantity > 0 ? (item.accounted / totalQuantity) * 100 : 0;
+  const [isTableDataVisible, setIsTableDataVisible] = useState(defaultTableDataVisible);
 
-              return (
-                <div className="grid grid-cols-[minmax(100px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 align-middle py-3 border-t border-foreground/20" key={index}>
-                  <div className="text-foreground">
-                    <span className="flex items-center sans-medium">
-                      <span className={`inline-block w-[1em] h-[1em] flex-shrink-0 rounded-full mr-2`} style={{ background: `#${item.label.display_color}` }}></span>
-                      {item.label.name}
-                    </span>
-                  </div>
-                  <div className={`text-left ${getHeaderClass("quantity")}`}>
-                    {item.quantity.toFixed(1).padStart(4, "0")}t
-                  </div>
-                  <div className={`text-left ${getHeaderClass("accounted")}`}>
-                    {item.accounted.toFixed(1).padStart(4, "0")}t
-                  </div>
-                  <div className="w-full flex items-center">
-                    <div className="h-[1em] text-left overflow-hidden flex bg-foreground/50" style={{ width: `${(item.quantity / Math.max(...sortedSummaries.map(s => s.quantity))) * 100}%` }}>
-                      <div className={`h-full flex items-center justify-start`} style={{ width: `${accountedPercentage}%`, background: `#${item.label.display_color}` }}></div>
-                    </div>
-                  </div>
-                  <div className={`text-right ${getHeaderClass("percentage")}`}>
-                    {accountedPercentage.toFixed(1)}%
-                  </div>
+  const toggleTableDataVisibility = () => {
+    setIsTableDataVisible(!isTableDataVisible);
+  };
+  
+  const normalizedWidthGroup = ((quantityPercentage ?? 0) / (quantityPercentageLargest ?? 1)) * 100;
+  
+
+  return (
+    <div className={`dashcomponent ${isTableDataVisible ? '' : ''} hover:bg-foreground/5`}>
+      <div className="flex flex-col overflow-hidden h-full gap-4">
+        {showTableHeader && (
+        <div className={`grid grid-cols-[minmax(200px,200px)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)]
+            gap-2 align-middle py-3s cursor-pointer min-h-[56px] items-center ${!isTableDataVisible ? '' : 'border-b border-foreground/20'}`}
+          onClick={toggleTableDataVisibility}
+        >
+              <div>{name && <div className="uppercase text-sm pr-2">{name}</div>}</div>
+              <div className="text-foreground/50">
+                {totalQuantity.toFixed(1)}t
+              </div>
+              <div className="text-foreground/50">
+                {/* % of accounted for all groups */}
+                {totalAccounted.toFixed(1)}t
+              </div>
+              <div className="w-full flex">
+                {/* Total averages recycling bar */}
+                <div className="h-[1em] text-left overflow-hidden flex items-center bg-foreground/50" style={{ width: `${normalizedWidthGroup}%` }}>
+                    <div className={`h-full flex items-center justify-start bg-foreground`} style={{ width: `${(totalAccounted / totalQuantity) * 100}%` }}></div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+              <div className="text-foreground/50 text-right">
+                {((totalAccounted / totalQuantity) * 100).toFixed(1)}%
+              </div>
+        </div>
+        )}
+         <div
+              className={`overflow-x-auto transition-max-height duration-300 ease-in-out  ${isTableDataVisible ? 'max-h-screen' : 'max-h-0'}`}
+              style={{ overflow: 'hidden' }}
+            >
+              
+          {isTableDataVisible && (
+            <>
+              <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2 text-xs">
+                <div className="text-foreground/50 ">Material</div>
+                <div onClick={() => requestSort("quantity")} className={`cursor-pointer ${getHeaderClass("quantity")}`}>Quantity</div>
+                <div onClick={() => requestSort("accounted")} className={`cursor-pointer ${getHeaderClass("accounted")}`}>Accounted</div>
+                <div onClick={() => requestSort("percentage")} className={`text-right cursor-pointer ${getHeaderClass("percentage")}`}>Accounted %</div>
+              </div>
+              <div>
+                {sortedSummaries.map((item, index) => {
+                  const accountedPercentage = totalQuantity > 0 ? (item.accounted / totalQuantity) * 100 : 0;
+                  const displayColor = item.label.display_color || 'defaultColor';
+
+                  return (
+                    <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 align-middle py-3 border-t border-foreground/20" key={index}>
+                      <div className="text-foreground">
+                        <span className="flex items-center sans-medium">
+                          <span className={`inline-block w-[1em] h-[1em] flex-shrink-0 rounded-full mr-2`} style={{ background: `#${displayColor}` }}></span>
+                          {item.label.name}
+                        </span>
+                      </div>
+                      <div className={`text-left ${getHeaderClass("quantity")}`}>
+                        {item.quantity.toFixed(1).padStart(4, "0")}t
+                      </div>
+                      <div className={`text-left ${getHeaderClass("accounted")}`}>
+                        {item.accounted.toFixed(1).padStart(4, "0")}t
+                      </div>
+                      <div className="w-full flex items-center">
+                        <div className="h-[1em] text-left overflow-hidden flex bg-foreground/50" style={{ width: `${(item.quantity / Math.max(...sortedSummaries.map(s => s.quantity))) * 100}%` }}>
+                          <div className={`h-full flex items-center justify-start`} style={{ width: `${accountedPercentage}%`, background: `#${displayColor}` }}></div>
+                        </div>
+                      </div>
+                      <div className={`text-right ${getHeaderClass("percentage")}`}>
+                        {accountedPercentage.toFixed(1)}%
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-
-
-export default MultiStackBar; // Exporting the MultiStackBar component as the default export.
+// This line exports the MultiStackBar component as the default export of the module
+export default MultiStackBar;

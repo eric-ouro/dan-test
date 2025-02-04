@@ -28,9 +28,9 @@ const PartnerFootprintMultiStackBar = () => {
 
   // Group summaries by partner and calculate percentage
   const partnerSummaries = summaries.reduce<
-    Record<string, { summaries: EnrichedWasteRateSummaryWithRatios[]; percentage: number }>
+    Record<string, { summaries: EnrichedWasteRateSummaryWithRatios[]; accountedPercentage: number; quantityPercentage: number }>
   >((acc, curr) => {
-    acc[curr.group] ??= { summaries: [], percentage: 0 };
+    acc[curr.group] ??= { summaries: [], accountedPercentage: 0, quantityPercentage: 0 };
     acc[curr.group].summaries.push(curr);
     return acc;
   }, {});
@@ -41,12 +41,22 @@ const PartnerFootprintMultiStackBar = () => {
       (acc, curr) => acc + curr.accounted,
       0
     );
-    partnerSummaries[group].percentage = (groupTotalAccounted / totalAccountedForAllSummaries) * 100;
+    partnerSummaries[group].accountedPercentage = (groupTotalAccounted / totalAccountedForAllSummaries) * 100;
+
+    const groupTotalQuantity = partnerSummaries[group].summaries.reduce(
+      (acc, curr) => acc + curr.quantity,
+      0
+    );
+    partnerSummaries[group].quantityPercentage = (groupTotalQuantity / totalAccountedForAllSummaries) * 100;
   });
 
   // Find the largest percentage
-  const largestPercentage = Math.max(
-    ...Object.values(partnerSummaries).map(item => item.percentage)
+  const accountedPercentageLargest = Math.max(
+    ...Object.values(partnerSummaries).map(item => item.accountedPercentage)
+  );
+
+  const quantityPercentageLargest = Math.max(
+    ...Object.values(partnerSummaries).map(item => item.quantityPercentage)
   );
 
   return (
@@ -54,9 +64,11 @@ const PartnerFootprintMultiStackBar = () => {
       {Object.values(partnerSummaries).map((item) => (
         <MultiStackBar
           name={item.summaries[0].groupName}
-          percentage={item.percentage}
+          accountedPercentage={item.accountedPercentage}
+          quantityPercentage={item.quantityPercentage}
           summaries={item.summaries}
-          largestPercentage={largestPercentage}
+          accountedPercentageLargest={accountedPercentageLargest}
+          quantityPercentageLargest={quantityPercentageLargest}
           showTableHeader={true}
           defaultTableDataVisible={Object.values(partnerSummaries).length === 1}
         />
