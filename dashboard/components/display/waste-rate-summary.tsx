@@ -3,6 +3,8 @@
 import { useMemo } from "react";
 import DashboardDisplayHeader from "@components/dashboard-display-header";
 import { DbObject, EnrichedWasteRateSummary } from "@/lib/types";
+import { useAppSelector } from "@/lib/hooks/store-hooks";
+import { RootState } from "@/lib/store/configuration";
 
 interface WasteRateSummaryProps<T extends DbObject> {
   name: string | null;
@@ -11,6 +13,7 @@ interface WasteRateSummaryProps<T extends DbObject> {
   onSelectItem: (item: T) => void;
   colorForItem: (item: T) => string;
 }
+
 const WasteRateSummary = <T extends DbObject>({
   name,
   summaries,
@@ -18,17 +21,29 @@ const WasteRateSummary = <T extends DbObject>({
   onSelectItem,
   colorForItem,
 }: WasteRateSummaryProps<T>) => {
+  const showVariant = useAppSelector((state: RootState) => state.accountedToggle.showVariant);
+
   const totalQuantity = useMemo(() => {
     return summaries.reduce((acc, curr) => acc + curr.quantity, 0);
+  }, [summaries]);
+
+  const totalAccountedQuantity = useMemo(() => {
+    return summaries.reduce((acc, curr) => acc + curr.accounted, 0);
   }, [summaries]);
 
   const totalFilteredQuantity = useMemo(() => {
     return filteredSummaries.reduce((acc, curr) => acc + curr.quantity, 0);
   }, [filteredSummaries]);
 
+  const totalFilteredAccountedQuantity = useMemo(() => {
+    return filteredSummaries.reduce((acc, curr) => acc + curr.accounted, 0);
+  }, [filteredSummaries]);
+
   const clickableSummaries = useMemo(() => {
     return summaries.filter((item) => item.quantity > 0);
   }, [summaries]);
+  
+  
 
   return (
     <div className="dashcomponent">
@@ -36,8 +51,9 @@ const WasteRateSummary = <T extends DbObject>({
         {name && <DashboardDisplayHeader headerText={name} />}
         <div className="flex-grow flex gap-1 h-[128px]">
           {filteredSummaries.map((item, index) => {
-            const totalWidthPercentage =
-              (item.quantity / totalFilteredQuantity) * 100;
+            const totalWidthPercentage = showVariant
+              ? (item.quantity / totalFilteredQuantity) * 100
+              : (item.accounted / totalFilteredAccountedQuantity) * 100;
             const processingLossRate = item.percentage;
             // TODO: include whether a waste type is mixed, and pull from db into data layer
             return (
@@ -65,8 +81,9 @@ const WasteRateSummary = <T extends DbObject>({
         </div>
         <div className="flex gap-1 overflow-hidden">
           {clickableSummaries.map((item, index) => {
-            const footprintPercentage =
-              totalQuantity > 0 ? (item.quantity / totalQuantity) * 100 : 0;
+            const footprintPercentage = showVariant
+              ? (item.quantity / totalQuantity) * 100
+              : (item.accounted / totalAccountedQuantity) * 100;
             // TODO: include whether a waste type is mixed, and pull from db into data layer
             return (
               <div
