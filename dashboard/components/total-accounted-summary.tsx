@@ -31,54 +31,54 @@ const TotalAccountedSummary = () => {
     return totalQuantity ? (accountedQuantity / totalQuantity) * 100 : 0;
   }, [totalQuantity, accountedQuantity]);
 
-  if (filteredSummariesLoading) return <div>Loading...</div>;
-  if (filteredSummariesError)
-    return <div>Error: {filteredSummariesError}</div>;
-
   const accountedPercentage = calculateAccountedPercentage();
 
   const showVariant = useAppSelector((state) => state.accountedToggle.showVariant);
 
-    return (
+  if (filteredSummariesLoading) return <div>Loading...</div>;
+  if (filteredSummariesError)
+    return <div>Error: {filteredSummariesError}</div>;
+
+  return (
     <div>
       {showVariant ? (
-        <>
-           <div className="tracking-tight text-xs uppercase opacity-50">
-           {totalQuantity}kg tracked
+        <div>
+          <div className="tracking-tight text-xs uppercase opacity-50">
+          {totalQuantity}kg tracked
+          </div>
+          <div className="flex w-full rounded-sm overflow-hidden ">
+            <div
+              className="bg-foreground/80 dark:bg-foreground/80"
+              style={{
+              width: "100%",
+              height: "3px",
+            }}
+            />
+          </div>
         </div>
-        <div className="flex w-full rounded-sm overflow-hidden ">
-          {/* <div
-            className="bg-foreground/80 dark:bg-foreground/80"
-            style={{
-            width: "100%",
-            height: "11px",
-          }}
-        /> */}
-        </div>
-        </>
       ) : (
-        <>
-        <div className="tracking-tight text-xs uppercase opacity-50">
+        <div>
+          <div className="tracking-tight text-xs uppercase opacity-50">
             {accountedPercentage.toFixed(2)}% Accounted •&nbsp;
             {accountedQuantity}kg / {totalQuantity}kg tracked
           </div>
           <div className="flex w-full rounded-sm overflow-hidden ">
-            {/* <div
+            <div
               className="bg-foreground/80 dark:bg-foreground/80"
               style={{
                 width: `${accountedPercentage}%`,
-                height: "11px",
+                height: "3px",
               }}
             />
             <div
               className="bg-foreground/20 dark:bg-foreground/20"
               style={{
                 width: `${100 - accountedPercentage}%`,
-                height: "11px",
+                height: "3px",
                 }}
-            /> */}
+            />
           </div>
-       </>
+          </div>
       )}
     </div>
   );

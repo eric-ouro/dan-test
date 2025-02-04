@@ -1,5 +1,7 @@
 'use client'
 import { useState } from "react";
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/store-hooks';
+import { toggleAccountedVariant } from '@/lib/store/slices/toggle-slice';
 
 import PlasticFootprintSimple from "@/components/plastic-footprint-simple";
 import PlasticFootprintMultiStackBar from "@/components/plastic-footprint-multi-stack-bar";
