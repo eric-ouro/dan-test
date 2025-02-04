@@ -27,7 +27,7 @@ const ToggleVariant: React.FC = () => {
           showVariant ? "dark:bg-background/80 bg-foreground text-white" : "text-foreground/50"
         }`}
       >
-        <span className="p-1 ">Tracked</span>
+        <span className="p-1 ">Total</span>
       </button>
     </div>
   );

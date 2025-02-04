@@ -44,7 +44,7 @@ const TotalAccountedSummary = () => {
       {showVariant ? (
         <div>
           <div className="tracking-tight text-xs uppercase opacity-50">
-          {totalQuantity}kg tracked
+          {totalQuantity}kg total
           </div>
           <div className="flex w-full rounded-sm overflow-hidden ">
             <div
@@ -60,7 +60,7 @@ const TotalAccountedSummary = () => {
         <div>
           <div className="tracking-tight text-xs uppercase opacity-50">
             {accountedPercentage.toFixed(2)}% Accounted •&nbsp;
-            {accountedQuantity}kg / {totalQuantity}kg tracked
+            {accountedQuantity}kg / {totalQuantity}kg total
           </div>
           <div className="flex w-full rounded-sm overflow-hidden ">
             <div
