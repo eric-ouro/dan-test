@@ -12,7 +12,7 @@ export default async function AuthButton() {
   return user ? (
     <div className="flex items-center gap-4 z-30">
      
-      <div className="dropdown">
+      <div className="dropdown flex justify-end">
         <button className=" border-none py-2 cursor-pointer text-xs rounded-sm px-0">
           <div className="flex flex-col gap-0 text-left">
             <span className="text-[10px] text-neutral-400 uppercase leading-none tracking-[.03em]">
@@ -20,7 +20,7 @@ export default async function AuthButton() {
             </span>
           </div>
         </button>
-        <div className="dropdown-signout flex flex-col justify-between">
+        <div className="dropdown-signout flex flex-col justify-between mt-7">
             <div className="p-2 bg-white dark:bg-neutral-600 rounded-sm">
             <div>
               <ThemeSwitcher/>

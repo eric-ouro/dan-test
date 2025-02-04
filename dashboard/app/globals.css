@@ -228,7 +228,6 @@ th {
 
 .dropdown {
   border-radius: 4px;
-  min-width: 184px;
   width: 210px;
   height: 33px;
 }
@@ -243,9 +242,9 @@ button.activedropdown{
   gap: 5px;
   position: absolute;
   background-color: #ffffff;
-  min-width: 270px;
+  min-width: 210px;
   z-index: 1;
-  margin-top: 10px;
+  margin-top: 4px;
   border-radius: 4px;
   box-shadow: 0px 0.3613123810646357px 0.3613123810646357px -1.25px rgba(0, 0, 0, 0.18), 0px 1.3731199819460742px 1.3731199819460742px -2.5px rgba(0, 0, 0, 0.15889), 0px 6px 6px -3.75px rgba(0, 0, 0, 0.0625);
 }
