@@ -179,7 +179,7 @@ const MultiStackBar = ({
                         return (
                           <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)_minmax(80px,auto)] gap-2 align-middle py-3 border-t border-foreground/20" key={index}>
                             <div className="text-foreground flex-none">
-                              <span className="flex items-center sans-medium">
+                              <span className="flex items-center">
                                 <span className="inline-block w-[1em] h-[1em] flex-shrink-0 rounded-full mr-2" style={{ background: `#${displayColor}` }}></span>
                                 {displayLabel}
                               </span>
@@ -268,7 +268,7 @@ const MultiStackBarVariant = ({ name, summaries, quantityPercentage, quantityPer
 
   return (
     <div className={`dashcomponent ${isTableDataVisible ? '' : ''} hover:bg-foreground/5`}>
-      <div className="flex flex-col overflow-hidden h-full ">
+      <div className="flex flex-col overflow-hidden h-full border-b border-foreground/20 ">
         {showTableHeader && (
         <div className={`grid grid-cols-[minmax(200px,200px)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)]
             gap-2 align-middle py-3s cursor-pointer min-h-[56px] items-center ${!isTableDataVisible ? '' : 'border-b border-foreground/20'}`}
@@ -314,7 +314,7 @@ const MultiStackBarVariant = ({ name, summaries, quantityPercentage, quantityPer
                   return (
                     <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 align-middle py-3 border-t border-foreground/20" key={index}>
                       <div className="text-foreground">
-                        <span className="flex items-center sans-medium">
+                        <span className="flex items-center ">
                           <span className={`inline-block w-[1em] h-[1em] flex-shrink-0 rounded-full mr-2`} style={{ background: `#${displayColor}` }}></span>
                           {item.label.name}
                         </span>
