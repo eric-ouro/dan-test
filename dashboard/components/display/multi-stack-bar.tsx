@@ -1,7 +1,6 @@
 "use client"; 
 
 import { useMemo, useState } from "react"; 
-import DashboardDisplayHeader from "@components/dashboard-display-header"; 
 import {
   EnrichedWasteRateSummaryWithRatios,
   SortConfig,
@@ -161,7 +160,7 @@ const MultiStackBar = ({
             >
               {isTableDataVisible && (
                 <div>
-                  <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2 ">
+                  <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)] gap-2 text-xs text-left uppercase my-2 ">
                     <div className="text-foreground/50">Material</div>
                     <div onClick={() => requestSort("accounted")} className={`cursor-pointer ${getHeaderClass("accounted")}`}>Accounted</div>
                     <div onClick={() => requestSort("recycleRate")} className={`text-right cursor-pointer ${getHeaderClass("recycleRate")}`}>Recycled</div>
@@ -269,7 +268,7 @@ const MultiStackBarVariant = ({ name, summaries, quantityPercentage, quantityPer
 
   return (
     <div className={`dashcomponent ${isTableDataVisible ? '' : ''} hover:bg-foreground/5`}>
-      <div className="flex flex-col overflow-hidden h-full gap-4">
+      <div className="flex flex-col overflow-hidden h-full ">
         {showTableHeader && (
         <div className={`grid grid-cols-[minmax(200px,200px)_minmax(80px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)]
             gap-2 align-middle py-3s cursor-pointer min-h-[56px] items-center ${!isTableDataVisible ? '' : 'border-b border-foreground/20'}`}
@@ -301,7 +300,7 @@ const MultiStackBarVariant = ({ name, summaries, quantityPercentage, quantityPer
               
           {isTableDataVisible && (
             <>
-              <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 text-xs text-left uppercase mb-2 text-xs">
+              <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 text-xs text-left uppercase my-2 text-xs">
                 <div className="text-foreground/50 ">Material</div>
                 <div onClick={() => requestSort("quantity")} className={`cursor-pointer ${getHeaderClass("quantity")}`}>Quantity</div>
                 <div onClick={() => requestSort("accounted")} className={`cursor-pointer ${getHeaderClass("accounted")}`}>Accounted</div>

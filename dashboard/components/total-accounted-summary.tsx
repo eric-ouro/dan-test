@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppSelector } from "@/lib/hooks/store-hooks";
 import { useEnrichedWasteRateSummaries } from "@/lib/hooks/use-enriched-waste-rate-summaries";
 import { useCallback } from "react";
 
@@ -36,28 +37,49 @@ const TotalAccountedSummary = () => {
 
   const accountedPercentage = calculateAccountedPercentage();
 
-  return (
+  const showVariant = useAppSelector((state) => state.accountedToggle.showVariant);
+
+    return (
     <div>
-      <div className="tracking-tight text-xs uppercase opacity-50">
-        {accountedPercentage.toFixed(2)}% Accounted •&nbsp;
-        {accountedQuantity}kg / {totalQuantity}kg tracked
-      </div>
-      <div className="flex w-full rounded-sm overflow-hidden ">
-        <div
-          className="bg-foreground"
-          style={{
-            width: `${accountedPercentage}%`,
-            height: "8px",
+      {showVariant ? (
+        <>
+           <div className="tracking-tight text-xs uppercase opacity-50">
+           {totalQuantity}kg tracked
+        </div>
+        <div className="flex w-full rounded-sm overflow-hidden ">
+          {/* <div
+            className="bg-foreground/80 dark:bg-foreground/80"
+            style={{
+            width: "100%",
+            height: "11px",
           }}
-        />
-        <div
-          className="bg-neutral-300 dark:bg-neutral-700"
-          style={{
-            width: `${100 - accountedPercentage}%`,
-            height: "8px",
-          }}
-        />
-      </div>
+        /> */}
+        </div>
+        </>
+      ) : (
+        <>
+        <div className="tracking-tight text-xs uppercase opacity-50">
+            {accountedPercentage.toFixed(2)}% Accounted •&nbsp;
+            {accountedQuantity}kg / {totalQuantity}kg tracked
+          </div>
+          <div className="flex w-full rounded-sm overflow-hidden ">
+            {/* <div
+              className="bg-foreground/80 dark:bg-foreground/80"
+              style={{
+                width: `${accountedPercentage}%`,
+                height: "11px",
+              }}
+            />
+            <div
+              className="bg-foreground/20 dark:bg-foreground/20"
+              style={{
+                width: `${100 - accountedPercentage}%`,
+                height: "11px",
+                }}
+            /> */}
+          </div>
+       </>
+      )}
     </div>
   );
 };

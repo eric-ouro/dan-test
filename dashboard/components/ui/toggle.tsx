@@ -20,14 +20,14 @@ const ToggleVariant: React.FC = () => {
           !showVariant ? "dark:bg-background/80 bg-foreground text-white" : "text-foreground/50"
         }`}
       >
-        <span className="p-1 ">Tracked</span>
+        <span className="p-1 ">Accounted</span>
       </button>
       <button
         className={`duration-300 uppercase tracking-tight p-0.5 rounded-sm  w-full ${
           showVariant ? "dark:bg-background/80 bg-foreground text-white" : "text-foreground/50"
         }`}
       >
-        <span className="p-1 ">All</span>
+        <span className="p-1 ">Tracked</span>
       </button>
     </div>
   );
