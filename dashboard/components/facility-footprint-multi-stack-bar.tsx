@@ -46,8 +46,10 @@ const FacilityFootprintMultiStackBar = () => {
       (acc, curr) => acc + curr.quantity,
       0
     );
-    facilitySummaries[group].quantityPercentage = (groupTotalQuantity / totalAccountedForAllSummaries) * 100;
+    facilitySummaries[group].quantityPercentage = (groupTotalQuantity / totalAccountedForAllSummaries ) * 100;
+    console.log("groupTotalaccounted", groupTotalAccounted, "totalAccountedForAllSummaries", totalAccountedForAllSummaries, "facilitySummaries[group].accountedPercentage", facilitySummaries[group].accountedPercentage);
   });
+  
 
   const accountedPercentageLargest = Math.max(
     ...Object.values(facilitySummaries).map(item => item.accountedPercentage)

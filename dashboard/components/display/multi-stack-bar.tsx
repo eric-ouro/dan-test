@@ -132,7 +132,7 @@ const MultiStackBar = ({
                 </div>
                 <div className="text-foreground/50">
                   {/* % of accounted for all groups */}
-                  {quantityPercentage !== undefined ? quantityPercentage.toFixed(1) : "undefined"}%
+                  {accountedPercentage !== undefined ? accountedPercentage.toFixed(1) : "undefined"}%
                 </div>
                 <div className="w-full flex">
                   {/* Total averages recycling bar */}
