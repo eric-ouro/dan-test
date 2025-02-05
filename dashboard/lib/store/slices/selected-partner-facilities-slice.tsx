@@ -17,7 +17,13 @@ export const fetchPartnerFacilities = createAsyncThunk(
         `
         facilities!wasterates_monthly_facilitypartner_partnerfacilityid_fkey (
           id,
-          name
+          companyid,
+          name,
+          city,
+          country,
+          state,
+          locationx,
+          locationy
         )
       `,
       );

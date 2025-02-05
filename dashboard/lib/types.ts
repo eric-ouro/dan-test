@@ -15,7 +15,14 @@ export interface WasteType extends DbObject {
 export interface Company extends DbObject {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface Facility extends DbObject {}
+export interface Facility extends DbObject {
+  city: string | null;
+  country: string | null;
+  state: string | null;
+  locationx: number | null;
+  locationy: number | null;
+  companyid: number | null;
+}
 
 export interface WasteRate {
   facilityid: number;

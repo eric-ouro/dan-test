@@ -15,7 +15,13 @@ export const fetchFacilities = createAsyncThunk(
         `
         facilities!wasterates_monthly_facilitypartner_facilityid_fkey (
           id,
-          name
+          companyid,
+          name,
+          city,
+          country,
+          state,
+          locationx,
+          locationy
         )
       `,
       );
@@ -29,7 +35,6 @@ export const fetchFacilities = createAsyncThunk(
         (value, index, self) =>
           index === self.findIndex((t) => t.id === value.id),
       );
-
     return uniqueData;
   },
 );
