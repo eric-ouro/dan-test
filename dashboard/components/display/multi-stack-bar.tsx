@@ -7,6 +7,7 @@ import {
   SortDirection,
 } from "@/lib/types";
 import { useAppSelector } from '@/lib/hooks/store-hooks';
+import { CaretUp, CaretDown } from "phosphor-react";
 
 type SortKey =
   | "percentage"
@@ -102,6 +103,13 @@ const MultiStackBar = ({
     return sortConfig.key === key ? "text-foreground" : "text-foreground/50";
   };
 
+  const getHeaderIcon = (key: SortKey) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === "ascending" ? <CaretUp size={10} /> : <CaretDown size={10} />;
+    }
+    return null;
+  };
+
   const renderComponent = () => {
     if (showVariant) {
       return (
@@ -127,7 +135,7 @@ const MultiStackBar = ({
               >
                 <div>{name && <div className="uppercase text-sm pr-2">{name}</div>}</div>
                 <div className="text-foreground/50">
-                  {totalAccounted.toFixed(1)}t
+                  {totalAccounted.toFixed(1)}kg
                 </div>
                 <div className="text-foreground/50">
                   {/* % of accounted for all groups */}
@@ -159,12 +167,22 @@ const MultiStackBar = ({
             >
               {isTableDataVisible && (
                 <div>
-                  <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)] gap-2 text-xs text-left uppercase my-2 ">
-                    <div className="text-foreground/50">Material</div>
-                    <div onClick={() => requestSort("accounted")} className={`cursor-pointer ${getHeaderClass("accounted")}`}>Accounted</div>
-                    <div onClick={() => requestSort("recycleRate")} className={`text-right cursor-pointer ${getHeaderClass("recycleRate")}`}>Recycled</div>
-                    <div onClick={() => requestSort("recyclingLossRate")} className={` text-right cursor-pointer ${getHeaderClass("recyclingLossRate")}`}>R&nbsp;Loss</div>
-                    <div onClick={() => requestSort("processingLossRate")} className={`text-right cursor-pointer ${getHeaderClass("processingLossRate")}`}>P&nbsp;Loss</div>
+                  <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)] gap-2 text-xs text-left uppercase my-2">
+                    <div className="text-foreground/50">
+                      <span>Material</span> <span className="ml-1">{getHeaderIcon("label")}</span>
+                    </div>
+                    <div onClick={() => requestSort("accounted")} className={`cursor-pointer flex items-center ${getHeaderClass("accounted")}`}>
+                      <span>Waste</span> <span className="ml-1">{getHeaderIcon("accounted")}</span>
+                    </div>
+                    <div onClick={() => requestSort("recycleRate")} className={`cursor-pointer flex items-center justify-end ${getHeaderClass("recycleRate")}`}>
+                      <span className="mr-1">{getHeaderIcon("recycleRate")}</span> <span>Recycled</span>
+                    </div>
+                    <div onClick={() => requestSort("recyclingLossRate")} className={`cursor-pointer flex items-center justify-end ${getHeaderClass("recyclingLossRate")}`}>
+                      <span className="mr-1">{getHeaderIcon("recyclingLossRate")}</span> <span>R&nbsp;Loss</span>
+                    </div>
+                    <div onClick={() => requestSort("processingLossRate")} className={`cursor-pointer flex items-center justify-end ${getHeaderClass("processingLossRate")}`}>
+                      <span className="mr-1">{getHeaderIcon("processingLossRate")}</span> <span>P&nbsp;Loss</span>
+                    </div>
                   </div>
                   <div>
                     {sortedSummaries
@@ -183,7 +201,7 @@ const MultiStackBar = ({
                                 {displayLabel}
                               </span>
                             </div>
-                            <div className={`text-left ${getHeaderClass("accounted")} flex-none`}>{item.accounted.toFixed(1).padStart(4, "0")}t</div>
+                            <div className={`text-left ${getHeaderClass("accounted")} flex-none`}>{item.accounted.toFixed(1).padStart(4, "0")}kg</div>
                             <div className={`text-left ${getHeaderClass("accounted")} flex-none`}>{footprintPercentage.toFixed(1)}%</div>
                             <div className="w-full flex items-center">
                               {/* Recycling bar */}
@@ -248,6 +266,13 @@ const MultiStackBarVariant = ({ name, summaries, quantityPercentage, quantityPer
     return sortConfig.key === key ? "text-foreground" : "text-foreground/50";
   };
 
+  const getHeaderIcon = (key: SortKey) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === "ascending" ? <CaretUp size={10} /> : <CaretDown size={10} />;
+    }
+    return null;
+  };
+
   const requestSort = (key: SortKey) => {
     let direction: SortDirection = "ascending";
     if (sortConfig.key === key && sortConfig.direction === "ascending") {
@@ -275,11 +300,10 @@ const MultiStackBarVariant = ({ name, summaries, quantityPercentage, quantityPer
         >
               <div>{name && <div className="uppercase text-sm pr-2">{name}</div>}</div>
               <div className="text-foreground/50">
-                {totalQuantity.toFixed(1)}t
+                {totalAccounted.toFixed(1)}kg
               </div>
               <div className="text-foreground/50">
-                {/* % of accounted for all groups */}
-                {totalAccounted.toFixed(1)}t
+                {totalQuantity.toFixed(1)}kg
               </div>
               <div className="w-full flex">
                 {/* Total averages recycling bar */}
@@ -299,11 +323,19 @@ const MultiStackBarVariant = ({ name, summaries, quantityPercentage, quantityPer
               
           {isTableDataVisible && (
             <>
-              <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)] gap-2 text-xs text-left uppercase my-2 text-xs">
-                <div className="text-foreground/50 ">Material</div>
-                <div onClick={() => requestSort("quantity")} className={`cursor-pointer ${getHeaderClass("quantity")}`}>Quantity</div>
-                <div onClick={() => requestSort("accounted")} className={`cursor-pointer ${getHeaderClass("accounted")}`}>Accounted</div>
-                <div onClick={() => requestSort("percentage")} className={`text-right cursor-pointer ${getHeaderClass("percentage")}`}>Accounted %</div>
+              <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr] gap-2 text-xs text-left uppercase py-2 ">
+                <div className="text-foreground/50">
+                  <span>Material</span> <span className="ml-1">{getHeaderIcon("label")}</span>
+                </div>
+                <div onClick={() => requestSort("accounted")} className={`cursor-pointer flex items-center  ${getHeaderClass("accounted")}`}>
+                  <span>Accounted</span> <span className="ml-1">{getHeaderIcon("accounted")}</span>
+                </div>
+                <div onClick={() => requestSort("quantity")} className={`cursor-pointer flex items-center ${getHeaderClass("quantity")}`}>
+                  <span>Quantity</span> <span className="ml-1">{getHeaderIcon("quantity")}</span>
+                </div>
+                <div onClick={() => requestSort("percentage")} className={`cursor-pointer flex items-center justify-end ${getHeaderClass("percentage")}`}>
+                  <span className="mr-1">{getHeaderIcon("percentage")}</span> <span>Accounted %</span> 
+                </div>
               </div>
               <div>
                 {sortedSummaries.map((item, index) => {
@@ -318,11 +350,11 @@ const MultiStackBarVariant = ({ name, summaries, quantityPercentage, quantityPer
                           {item.label.name}
                         </span>
                       </div>
-                      <div className={`text-left ${getHeaderClass("quantity")}`}>
-                        {item.quantity.toFixed(1).padStart(4, "0")}t
-                      </div>
                       <div className={`text-left ${getHeaderClass("accounted")}`}>
-                        {item.accounted.toFixed(1).padStart(4, "0")}t
+                        {item.accounted.toFixed(1).padStart(4, "0")}kg
+                      </div>
+                      <div className={`text-left ${getHeaderClass("quantity")}`}>
+                        {item.quantity.toFixed(1).padStart(4, "0")}kg
                       </div>
                       <div className="w-full flex items-center">
                         <div className="h-[1em] text-left overflow-hidden flex bg-foreground/50" style={{ width: `${(item.quantity / Math.max(...sortedSummaries.map(s => s.quantity))) * 100}%` }}>
