@@ -97,7 +97,6 @@ const MultiStackBar = ({
   ); // Calculating the largest footprint percentage for normalization.
 
   const normalizedWidthGroup = ((accountedPercentage ?? 0) / (accountedPercentageLargest ?? 1)) * 100;
-  console.log(accountedPercentage, accountedPercentageLargest, normalizedWidthGroup);
 
   const getHeaderClass = (key: SortKey) => {
     return sortConfig.key === key ? "text-foreground" : "text-foreground/50";

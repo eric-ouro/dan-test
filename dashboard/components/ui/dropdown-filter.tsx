@@ -59,7 +59,6 @@ const DropdownFilter: React.FC = () => {
   const endDate = useAppSelector((state: RootState) => state.selectedDate.selected.end);
   const showVariant = useAppSelector((state: RootState) => state.accountedToggle.showVariant);
 
-  // console.log("start date", startDate, "end date", endDate);
 
   const handleToggle = (type: string, item: any) => {
     switch (type) {
@@ -97,7 +96,6 @@ const DropdownFilter: React.FC = () => {
 
   const handleDateChange = (type: string, selectedDate: Date | null) => {
     if (selectedDate) {
-      // console.log(`Selected ${type} date (UTC):`, selectedDate.toISOString());
       const formattedDate = selectedDate.toISOString().slice(0, 10);
       if (type === "start") {
         dispatch(setStart(formattedDate));
@@ -177,7 +175,6 @@ const DropdownFilter: React.FC = () => {
 
     const datePickerRef = useRef<any>(null);
 
-    // console.log(`Initial ${type} date string:`, date);
     // parse date to local date, format yyyy-mm-dd, in the local timezone
     const selectedDate = new Date(date);
     selectedDate.setHours(selectedDate.getHours() + selectedDate.getTimezoneOffset() / 60);
@@ -188,8 +185,6 @@ const DropdownFilter: React.FC = () => {
     const maxDate = new Date(validEnd);
     maxDate.setHours(maxDate.getHours() + maxDate.getTimezoneOffset() / 60);
 
-    // console.log(`Rendering ${type} date picker with date (UTC):`, selectedDate.toISOString());
-    // console.log({minDate, maxDate, selectedDate, validStart, validEnd, date});
 
     return (
       <div className="mono date-picker dropdown ">
