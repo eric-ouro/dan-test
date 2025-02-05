@@ -11,7 +11,7 @@ import FacilityFootprintSimple from "@/components/facility-footprint-simple";
 import FacilityFootprintMultiStackBar from "@/components/facility-footprint-multi-stack-bar";
 import DropdownFilter from "@/components/ui/dropdown-filter";
 import TotalAccountedSummary from "@/components/total-accounted-summary";
-
+import MapComponent from "@/components/map";
 const DashboardContent = () => {
   const [activeTab, setActiveTab] = useState("materials");
 
