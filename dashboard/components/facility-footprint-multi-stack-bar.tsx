@@ -31,12 +31,12 @@ const FacilityFootprintMultiStackBar = () => {
     },
   });
 
+  const showVariant = useAppSelector((state: RootState) => state.accountedToggle.showVariant);
+
   const [facilitySortConfig, setFacilitySortConfig] = useState<SortConfig<EnrichedWasteRateSummaryWithRatios, SortKey>>({
-    key: "accounted",
+    key: showVariant ? "quantity" : "accounted",
     direction: "descending",
   });
-
-  const showVariant = useAppSelector((state: RootState) => state.accountedToggle.showVariant);
 
   if (summariesLoading) return <div>Loading...</div>;
   if (summariesError) return <div>Error: {summariesError}</div>;
