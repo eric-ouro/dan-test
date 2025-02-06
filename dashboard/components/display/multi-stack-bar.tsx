@@ -77,9 +77,9 @@ const MultiStackBar = ({
 
   const requestSort = (key: SortKey) => {
     // Function to handle sorting requests.
-    let direction: SortDirection = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
+    let direction: SortDirection = "descending";
+    if (sortConfig.key === key) {
+      direction = sortConfig.direction === "descending" ? "ascending" : "descending";
     }
     setSortConfig({ key, direction });
   };

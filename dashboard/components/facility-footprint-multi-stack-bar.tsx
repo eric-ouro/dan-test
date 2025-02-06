@@ -106,9 +106,10 @@ const FacilityFootprintMultiStackBar = () => {
   }, [facilitySummaries, facilitySortConfig]);
 
   const requestFacilitySort = (key: SortKey) => {
-    let direction: SortDirection = "ascending";
+    // Initialize the direction as ascending, which means sorting from smallest to largest
+    let direction: SortDirection = "descending";
     if (facilitySortConfig.key === key) {
-      direction = facilitySortConfig.direction === "ascending" ? "descending" : "ascending";
+      direction = facilitySortConfig.direction === "descending" ? "ascending" : "descending";
     }
     setFacilitySortConfig({ key, direction });
   };

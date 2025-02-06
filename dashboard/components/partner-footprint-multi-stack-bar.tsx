@@ -106,9 +106,9 @@ const PartnerFootprintMultiStackBar = () => {
   }, [partnerSummaries, partnerSortConfig]);
 
   const requestPartnerSort = (key: SortKey) => {
-    let direction: SortDirection = "ascending";
+    let direction: SortDirection = "descending";
     if (partnerSortConfig.key === key) {
-      direction = partnerSortConfig.direction === "ascending" ? "descending" : "ascending";
+      direction = partnerSortConfig.direction === "descending" ? "ascending" : "descending";
     }
     setPartnerSortConfig({ key, direction });
   };
