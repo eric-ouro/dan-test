@@ -7,7 +7,7 @@ import selectedFacilitiesSlice from "@slices/selected-facilities-slice";
 import selectedPartnerFacilitiesSlice from "@slices/selected-partner-facilities-slice";
 import selectedPartnersSlice from "@slices/selected-partners-slice";
 import accountedToggleReducer from '@/lib/store/slices/toggle-slice';
-
+import percentageToggleReducer from '@/lib/store/slices/toggle-percentage-slice';
 export const makeStore = () => {
   return configureStore({
     reducer: {
@@ -18,6 +18,7 @@ export const makeStore = () => {
       selectedPartnerFacilities: selectedPartnerFacilitiesSlice,
       selectedPartners: selectedPartnersSlice,
       accountedToggle: accountedToggleReducer,
+      percentageToggle: percentageToggleReducer,
     },
   });
 };
