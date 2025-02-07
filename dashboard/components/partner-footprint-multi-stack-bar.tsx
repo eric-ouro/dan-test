@@ -46,6 +46,11 @@ const PartnerFootprintMultiStackBar = () => {
     0
   );
 
+  const totalQuantityOfAllSummaries = summaries.reduce(
+    (acc, curr) => acc + curr.quantity,
+    0
+  );
+
   const partnerSummaries = summaries.reduce<
     Record<string, { summaries: EnrichedWasteRateSummaryWithRatios[]; accountedPercentage: number; quantityPercentage: number }>
   >((acc, curr) => {
@@ -65,7 +70,7 @@ const PartnerFootprintMultiStackBar = () => {
       (acc, curr) => acc + curr.quantity,
       0
     );
-    partnerSummaries[group].quantityPercentage = (groupTotalQuantity / totalAccountedForAllSummaries ) * 100;
+    partnerSummaries[group].quantityPercentage = (groupTotalQuantity / totalQuantityOfAllSummaries) * 100;
   });
   
 
@@ -127,40 +132,37 @@ const PartnerFootprintMultiStackBar = () => {
   if (showVariant) {
     return (
       <>
-      <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr] gap-2 text-xs text-left uppercase py-2 border-b border-foreground/20">
-        <div onClick={() => requestPartnerSort("label")} className={`cursor-pointer flex items-center ${getHeaderClass("label")}`}>
-          <span>Partner</span> <span className="ml-1">{getHeaderIcon("label")}</span>
+        <div className="grid grid-cols-[minmax(200px,auto)_minmax(70px,auto)_minmax(60px,auto)_1fr] gap-2 text-xs text-left uppercase py-2 border-b border-foreground/20">
+          <div onClick={() => requestPartnerSort("label")} className={`cursor-pointer flex items-center ${getHeaderClass("label")}`}>
+            <span>Partner</span> <span className="ml-1">{getHeaderIcon("label")}</span>
+          </div>
+          <div onClick={() => requestPartnerSort("accounted")} className={`cursor-pointer flex items-center ${getHeaderClass("accounted")}`}>
+            <span>Accounted</span> <span className="ml-1">{getHeaderIcon("accounted")}</span>
+          </div>
+          <div onClick={() => requestPartnerSort("quantity")} className={`cursor-pointer flex items-center ${getHeaderClass("quantity")}`}>
+            <span>Quantity</span> <span className="ml-1">{getHeaderIcon("quantity")}</span>
+          </div>
         </div>
-        <div onClick={() => requestPartnerSort("accounted")} className={`cursor-pointer flex items-center  ${getHeaderClass("accounted")}`}>
-          <span>Accounted</span> <span className="ml-1">{getHeaderIcon("accounted")}</span>
-        </div>
-        <div onClick={() => requestPartnerSort("quantity")} className={`cursor-pointer flex items-center ${getHeaderClass("quantity")}`}>
-          <span>Quantity</span> <span className="ml-1">{getHeaderIcon("quantity")}</span>
-        </div>
-        <div onClick={() => requestPartnerSort("percentage")} className={`cursor-pointer flex items-center justify-end ${getHeaderClass("percentage")}`}>
-        <span className="mr-1">{getHeaderIcon("percentage")}</span> <span>Accounted %</span> 
-        </div>
-      </div>
 
-      {sortedPartnerSummaries.map((item) => (
-        <MultiStackBar
-          name={item.summaries[0].groupName}
-          accountedPercentage={item.accountedPercentage}
-          quantityPercentage={item.quantityPercentage}
-          summaries={item.summaries}
-          accountedPercentageLargest={accountedPercentageLargest}
-          quantityPercentageLargest={quantityPercentageLargest}
-          showTableHeader={true}
-          defaultTableDataVisible={Object.values(partnerSummaries).length === 1}
-        />
-      ))}
+        {sortedPartnerSummaries.map((item) => (
+          <MultiStackBar
+            name={item.summaries[0].groupName}
+            accountedPercentage={item.accountedPercentage}
+            quantityPercentage={item.quantityPercentage}
+            summaries={item.summaries}
+            accountedPercentageLargest={accountedPercentageLargest}
+            quantityPercentageLargest={quantityPercentageLargest}
+            showTableHeader={true}
+            defaultTableDataVisible={Object.values(partnerSummaries).length === 1}
+          />
+        ))}
       </>
     );
   }
 
   return (
     <>
-      <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)] gap-2 text-xs text-left uppercase py-2 border-b border-foreground/20">
+      <div className="grid grid-cols-[minmax(200px,auto)_minmax(60px,auto)_1fr_minmax(60px,auto)_minmax(60px,auto)] gap-2 text-xs text-left uppercase py-2 border-b border-foreground/20">
         <div onClick={() => requestPartnerSort("label")} className={`cursor-pointer flex items-center ${getHeaderClass("label")}`}>
           <span>Partner</span> <span className="ml-1">{getHeaderIcon("label")}</span>
         </div>
@@ -168,7 +170,7 @@ const PartnerFootprintMultiStackBar = () => {
           <span>Waste</span> <span className="ml-1">{getHeaderIcon("accounted")}</span>
         </div>
         <div onClick={() => requestPartnerSort("recycleRate")} className={`cursor-pointer flex items-center justify-end ${getHeaderClass("recycleRate")}`}>
-        <span className="mr-1">{getHeaderIcon("recycleRate")}</span> <span>Recycled</span> 
+          <span className="mr-1">{getHeaderIcon("recycleRate")}</span> <span>Recycled</span> 
         </div>
         <div onClick={() => requestPartnerSort("recyclingLossRate")} className={`cursor-pointer flex items-center justify-end ${getHeaderClass("recyclingLossRate")}`}>
           <span className="mr-1">{getHeaderIcon("recyclingLossRate")}</span> <span>R&nbsp;Loss</span> 

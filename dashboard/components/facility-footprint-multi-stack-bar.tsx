@@ -46,6 +46,11 @@ const FacilityFootprintMultiStackBar = () => {
     0
   );
 
+  const totalQuantityOfAllSummaries = summaries.reduce(
+    (acc, curr) => acc + curr.quantity,
+    0
+  );
+
   const facilitySummaries = summaries.reduce<
     Record<string, { summaries: EnrichedWasteRateSummaryWithRatios[]; accountedPercentage: number; quantityPercentage: number }>
   >((acc, curr) => {
@@ -65,8 +70,10 @@ const FacilityFootprintMultiStackBar = () => {
       (acc, curr) => acc + curr.quantity,
       0
     );
-    facilitySummaries[group].quantityPercentage = (groupTotalQuantity / totalAccountedForAllSummaries ) * 100;
+    facilitySummaries[group].quantityPercentage = (groupTotalQuantity / totalQuantityOfAllSummaries ) * 100;
   });
+  
+  
   
 
   const accountedPercentageLargest = Math.max(
@@ -128,7 +135,7 @@ const FacilityFootprintMultiStackBar = () => {
   if (showVariant) {
     return (
       <>
-      <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_minmax(80px,auto)_1fr] gap-2 text-xs text-left uppercase py-2 border-b border-foreground/20">
+      <div className="grid grid-cols-[minmax(200px,auto)_minmax(70px,auto)_minmax(60px,auto)_1fr] gap-2 text-xs text-left uppercase py-2 border-b border-foreground/20">
         <div onClick={() => requestFacilitySort("label")} className={`cursor-pointer flex items-center ${getHeaderClass("label")}`}>
           <span>Facility</span> <span className="ml-1">{getHeaderIcon("label")}</span>
         </div>
@@ -137,9 +144,6 @@ const FacilityFootprintMultiStackBar = () => {
         </div>
         <div onClick={() => requestFacilitySort("quantity")} className={`cursor-pointer flex items-center ${getHeaderClass("quantity")}`}>
           <span>Quantity</span> <span className="ml-1">{getHeaderIcon("quantity")}</span>
-        </div>
-        <div onClick={() => requestFacilitySort("percentage")} className={`cursor-pointer flex items-center justify-end ${getHeaderClass("percentage")}`}>
-        <span className="mr-1">{getHeaderIcon("percentage")}</span> <span>Accounted %</span> 
         </div>
       </div>
 
@@ -154,6 +158,7 @@ const FacilityFootprintMultiStackBar = () => {
           showTableHeader={true}
           defaultTableDataVisible={Object.values(facilitySummaries).length === 1}
         />
+       
       ))}
       </>
     );
@@ -161,7 +166,7 @@ const FacilityFootprintMultiStackBar = () => {
 
   return (
     <>
-      <div className="grid grid-cols-[minmax(200px,auto)_minmax(80px,auto)_1fr_minmax(80px,auto)_minmax(80px,auto)] gap-2 text-xs text-left uppercase py-2 border-b border-foreground/20">
+      <div className="grid grid-cols-[minmax(200px,auto)_minmax(60px,auto)_1fr_minmax(60px,auto)_minmax(60px,auto)] gap-2 text-xs text-left uppercase py-2 border-b border-foreground/20">
         <div onClick={() => requestFacilitySort("label")} className={`cursor-pointer flex items-center ${getHeaderClass("label")}`}>
           <span>Facility</span> <span className="ml-1">{getHeaderIcon("label")}</span>
         </div>

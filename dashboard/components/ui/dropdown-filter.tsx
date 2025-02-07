@@ -20,7 +20,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/app/datepicker.css";
 import ToggleVariant from "./toggle";
-
+import TogglePercentageQuantity from "@/components/toggle-percentage-quantity";
 const DropdownFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -234,6 +234,7 @@ const DropdownFilter: React.FC = () => {
         {renderDatePicker("end", validStart, validEnd, endDate)}
       </div>
       <ToggleVariant />
+      <TogglePercentageQuantity />
     </div>
   );
 };
