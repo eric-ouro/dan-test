@@ -3,6 +3,7 @@
 export interface DbObject {
   id: number;
   name: string;
+  display_color: string;
 }
 
 export type DbObjectFields<T extends DbObject> = Pick<T, keyof DbObject>;
@@ -185,6 +186,7 @@ export interface EnrichedWasteRateSummary extends SummaryData {
   // groupName is the name of the group - not necessarily unique
   groupName: string;
   percentage: number;
+  accountedPercentage: number;
 }
 
 export interface EnrichedWasteRateSummaryWithRatios
