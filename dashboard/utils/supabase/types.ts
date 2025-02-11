@@ -11,29 +11,45 @@ export type Database = {
     Tables: {
       bales: {
         Row: {
+          createdat: string | null
+          creatorcompanyid: number | null
+          creatorfacilityid: number | null
           id: number
-          processingstatus: number | null
+          isintermediate: boolean | null
           wastetype: number | null
           weight: number | null
         }
         Insert: {
+          createdat?: string | null
+          creatorcompanyid?: number | null
+          creatorfacilityid?: number | null
           id?: number
-          processingstatus?: number | null
+          isintermediate?: boolean | null
           wastetype?: number | null
           weight?: number | null
         }
         Update: {
+          createdat?: string | null
+          creatorcompanyid?: number | null
+          creatorfacilityid?: number | null
           id?: number
-          processingstatus?: number | null
+          isintermediate?: boolean | null
           wastetype?: number | null
           weight?: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "bales_processingstatus_fkey"
-            columns: ["processingstatus"]
+            foreignKeyName: "bales_creatorcompanyid_fkey"
+            columns: ["creatorcompanyid"]
             isOneToOne: false
-            referencedRelation: "processingstatustypes"
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bales_creatorfacilityid_fkey"
+            columns: ["creatorfacilityid"]
+            isOneToOne: false
+            referencedRelation: "facilities"
             referencedColumns: ["id"]
           },
           {
@@ -254,51 +270,52 @@ export type Database = {
         }
         Relationships: []
       }
-      processes: {
+      partner_relations: {
         Row: {
-          companyid: number
-          createdat: string
-          facilityid: number
-          id: number
-          processtype: number
-          terminatedat: string | null
+          downstream_companyid: number
+          downstream_facilityid: number
+          upstream_companyid: number
+          upstream_facilityid: number
         }
         Insert: {
-          companyid: number
-          createdat: string
-          facilityid: number
-          id?: number
-          processtype: number
-          terminatedat?: string | null
+          downstream_companyid: number
+          downstream_facilityid: number
+          upstream_companyid: number
+          upstream_facilityid: number
         }
         Update: {
-          companyid?: number
-          createdat?: string
-          facilityid?: number
-          id?: number
-          processtype?: number
-          terminatedat?: string | null
+          downstream_companyid?: number
+          downstream_facilityid?: number
+          upstream_companyid?: number
+          upstream_facilityid?: number
         }
         Relationships: [
           {
-            foreignKeyName: "processes_companyid_fkey"
-            columns: ["companyid"]
+            foreignKeyName: "partner_relations_downstream_companyid_fkey"
+            columns: ["downstream_companyid"]
             isOneToOne: false
             referencedRelation: "companies"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "processes_facilityid_fkey"
-            columns: ["facilityid"]
+            foreignKeyName: "partner_relations_downstream_facilityid_fkey"
+            columns: ["downstream_facilityid"]
             isOneToOne: false
             referencedRelation: "facilities"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "processes_processtype_fkey"
-            columns: ["processtype"]
+            foreignKeyName: "partner_relations_upstream_companyid_fkey"
+            columns: ["upstream_companyid"]
             isOneToOne: false
-            referencedRelation: "processtypes"
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "partner_relations_upstream_facilityid_fkey"
+            columns: ["upstream_facilityid"]
+            isOneToOne: false
+            referencedRelation: "facilities"
             referencedColumns: ["id"]
           },
         ]
@@ -315,82 +332,6 @@ export type Database = {
         Update: {
           id?: number
           name?: string | null
-        }
-        Relationships: []
-      }
-      processrelations: {
-        Row: {
-          addedat: string
-          baleid: number
-          endedat: string | null
-          processid: number
-          processrelationshiptype: number
-        }
-        Insert: {
-          addedat: string
-          baleid: number
-          endedat?: string | null
-          processid: number
-          processrelationshiptype: number
-        }
-        Update: {
-          addedat?: string
-          baleid?: number
-          endedat?: string | null
-          processid?: number
-          processrelationshiptype?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "processrelations_baleid_fkey"
-            columns: ["baleid"]
-            isOneToOne: false
-            referencedRelation: "bales"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "processrelations_processid_fkey"
-            columns: ["processid"]
-            isOneToOne: false
-            referencedRelation: "processes"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "processrelations_processrelationshiptype_fkey"
-            columns: ["processrelationshiptype"]
-            isOneToOne: false
-            referencedRelation: "processrelationshiptypes"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      processrelationshiptypes: {
-        Row: {
-          id: number
-          processrelationshiptype: string
-        }
-        Insert: {
-          id?: number
-          processrelationshiptype: string
-        }
-        Update: {
-          id?: number
-          processrelationshiptype?: string
-        }
-        Relationships: []
-      }
-      processtypes: {
-        Row: {
-          id: number
-          processtype: string
-        }
-        Insert: {
-          id?: number
-          processtype: string
-        }
-        Update: {
-          id?: number
-          processtype?: string
         }
         Relationships: []
       }
@@ -440,82 +381,109 @@ export type Database = {
           },
         ]
       }
-      transactions: {
+      transactionrelations: {
         Row: {
-          id: number
-          inputbale: number | null
-          inputcompany: number | null
-          inputfacility: number | null
-          outputbale: number | null
-          outputcompany: number | null
-          outputfacility: number | null
-          percent: number | null
-          time: string | null
-          transactiontype: number | null
+          addedat: string
+          baleid: number
+          endedat: string | null
+          transactionid: number
+          transactionrelationshiptype: number
         }
         Insert: {
-          id?: number
-          inputbale?: number | null
-          inputcompany?: number | null
-          inputfacility?: number | null
-          outputbale?: number | null
-          outputcompany?: number | null
-          outputfacility?: number | null
-          percent?: number | null
-          time?: string | null
-          transactiontype?: number | null
+          addedat: string
+          baleid: number
+          endedat?: string | null
+          transactionid: number
+          transactionrelationshiptype: number
         }
         Update: {
-          id?: number
-          inputbale?: number | null
-          inputcompany?: number | null
-          inputfacility?: number | null
-          outputbale?: number | null
-          outputcompany?: number | null
-          outputfacility?: number | null
-          percent?: number | null
-          time?: string | null
-          transactiontype?: number | null
+          addedat?: string
+          baleid?: number
+          endedat?: string | null
+          transactionid?: number
+          transactionrelationshiptype?: number
         }
         Relationships: [
           {
-            foreignKeyName: "transactions_inputbale_fkey"
-            columns: ["inputbale"]
+            foreignKeyName: "transactionrelations_baleid_fkey"
+            columns: ["baleid"]
             isOneToOne: false
             referencedRelation: "bales"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "transactions_inputcompany_fkey"
-            columns: ["inputcompany"]
+            foreignKeyName: "transactionrelations_transactionid_fkey"
+            columns: ["transactionid"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactionrelations_transactionrelationshiptype_fkey"
+            columns: ["transactionrelationshiptype"]
+            isOneToOne: false
+            referencedRelation: "transactionrelationshiptypes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transactionrelationshiptypes: {
+        Row: {
+          id: number
+          transactionrelationshiptype: string
+        }
+        Insert: {
+          id?: number
+          transactionrelationshiptype: string
+        }
+        Update: {
+          id?: number
+          transactionrelationshiptype?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          closed: string | null
+          created: string
+          id: number
+          partnercompany: number | null
+          partnerfacility: number | null
+          transactiontype: number
+          transactorcompany: number
+          transactorfacility: number
+        }
+        Insert: {
+          closed?: string | null
+          created: string
+          id?: number
+          partnercompany?: number | null
+          partnerfacility?: number | null
+          transactiontype: number
+          transactorcompany: number
+          transactorfacility: number
+        }
+        Update: {
+          closed?: string | null
+          created?: string
+          id?: number
+          partnercompany?: number | null
+          partnerfacility?: number | null
+          transactiontype?: number
+          transactorcompany?: number
+          transactorfacility?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_partnercompany_fkey"
+            columns: ["partnercompany"]
             isOneToOne: false
             referencedRelation: "companies"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "transactions_inputfacility_fkey"
-            columns: ["inputfacility"]
-            isOneToOne: false
-            referencedRelation: "facilities"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "transactions_outputbale_fkey"
-            columns: ["outputbale"]
-            isOneToOne: false
-            referencedRelation: "bales"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "transactions_outputcompany_fkey"
-            columns: ["outputcompany"]
-            isOneToOne: false
-            referencedRelation: "companies"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "transactions_outputfacility_fkey"
-            columns: ["outputfacility"]
+            foreignKeyName: "transactions_partnerfacility_fkey"
+            columns: ["partnerfacility"]
             isOneToOne: false
             referencedRelation: "facilities"
             referencedColumns: ["id"]
@@ -525,6 +493,20 @@ export type Database = {
             columns: ["transactiontype"]
             isOneToOne: false
             referencedRelation: "transactiontypes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_transactorcompany_fkey"
+            columns: ["transactorcompany"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_transactorfacility_fkey"
+            columns: ["transactorfacility"]
+            isOneToOne: false
+            referencedRelation: "facilities"
             referencedColumns: ["id"]
           },
         ]
@@ -543,6 +525,52 @@ export type Database = {
           type?: string | null
         }
         Relationships: []
+      }
+      user_companies: {
+        Row: {
+          companyid: number | null
+          user_id: string | null
+        }
+        Insert: {
+          companyid?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          companyid?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_companies_companyid_fkey"
+            columns: ["companyid"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_facilities: {
+        Row: {
+          facilityid: number | null
+          user_id: string | null
+        }
+        Insert: {
+          facilityid?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          facilityid?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_facilities_facilityid_fkey"
+            columns: ["facilityid"]
+            isOneToOne: false
+            referencedRelation: "facilities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_groups: {
         Row: {
