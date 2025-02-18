@@ -12,6 +12,10 @@ import FacilityFootprintMultiStackBar from "@/components/facility-footprint-mult
 import DropdownFilter from "@/components/ui/dropdown-filter";
 import TotalAccountedSummary from "@/components/total-accounted-summary";
 import MapComponent from "@/components/map";
+import PlasticFootprintSimplePie from "@/components/plastic-footprint-simple-pie";
+import FacilityFootprintSimplePie from "@/components/facility-footprint-simple-pie";
+import PartnerFootprintSimplePie from "@/components/partner-footprint-simple-pie";
+
 const DashboardContent = () => {
   const [activeTab, setActiveTab] = useState("materials");
 
@@ -46,10 +50,15 @@ const DashboardContent = () => {
         </div>
         {activeTab === "materials" && (
           <>
-            <div>
+          <div className="flex flex-row gap-5 max-h-[254px]">
+            <div className="w-full">
               <PlasticFootprintSimple />
             </div>
-            <div>
+            <div className="">
+              <PlasticFootprintSimplePie />
+            </div>
+          </div>
+          <div>
               <PlasticFootprintMultiStackBar />
             </div>
           </>
@@ -57,8 +66,13 @@ const DashboardContent = () => {
 
         {activeTab === "partners" && (
           <>
-            <div>
-              <PartnerFootprintSimple />
+            <div className="flex flex-row gap-5 max-h-[254px] ">
+              <div className="w-full">
+                <PartnerFootprintSimple />
+              </div>
+              <div className="">
+                <PartnerFootprintSimplePie />
+              </div>
             </div>
             <div>
               <PartnerFootprintMultiStackBar />
@@ -68,8 +82,13 @@ const DashboardContent = () => {
 
         {activeTab === "facilities" && (
           <>
-            <div>
-              <FacilityFootprintSimple />
+            <div className="flex flex-row gap-5 max-h-[254px]">
+              <div className="w-full">
+                <FacilityFootprintSimple />
+              </div>
+              <div className="">
+                <FacilityFootprintSimplePie />
+              </div>
             </div>
             <div>
               <FacilityFootprintMultiStackBar />

@@ -47,9 +47,9 @@ const WasteRateSummary = <T extends DbObject>({
 
   return (
     <div className="dashcomponent">
-      <div className="flex flex-col gap-1 overflow-hidden h-full">
+      <div className="flex flex-col gap-1 overflow-hidden h-[254px]  ">
         {name && <DashboardDisplayHeader headerText={name} />}
-        <div className="flex-grow flex gap-1 h-[128px]">
+        <div className="flex-grow flex gap-1 h-[full]">
           {filteredSummaries.map((item, index) => {
             const totalWidthPercentage = showVariant
               ? (item.quantity / totalFilteredQuantity) * 100
@@ -59,7 +59,7 @@ const WasteRateSummary = <T extends DbObject>({
             return (
               <div
                 key={index}
-                className="relative flex flex-col items-center min-w-[40px] w-full text-white font-regular"
+                className="relative flex flex-col items-center min-w-[40px] h-full w-full text-white font-regular"
                 style={{ width: `${totalWidthPercentage.toFixed(1)}%` }}
               >
                 <div
