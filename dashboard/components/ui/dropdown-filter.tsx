@@ -229,12 +229,12 @@ const DropdownFilter: React.FC = () => {
       {renderDropdown("Facilities", facilities.valid, facilities.selected, "facility")}
       {renderDropdown("Partners", partners.valid, partners.selected, "partner")}
       {renderDropdown("Partner Fac.", partnerFacilities.valid, partnerFacilities.selected, "partnerFacility")}
-      <div className="flex flex-row gap-1">
-        {renderDatePicker("start", validStart, validEnd, startDate)}
-        {renderDatePicker("end", validStart, validEnd, endDate)}
-      </div>
+      <div className="dropdown-filters flex flex-wrap gap-1 w-full">
+      {renderDatePicker("start", validStart, validEnd, startDate)}
+      {renderDatePicker("end", validStart, validEnd, endDate)}
       <ToggleVariant />
       <TogglePercentageQuantity />
+      </div>
     </div>
   );
 };

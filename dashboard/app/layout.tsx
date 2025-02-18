@@ -32,7 +32,7 @@ export default function RootLayout({
           />
           <link rel="icon" href="/favicon.svg" />
         </head>
-        <body className="bg-background text-foreground">
+        <body className="bg-background text-foreground max-w-[1024px] mx-auto">
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

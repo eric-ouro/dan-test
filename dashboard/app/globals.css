@@ -228,8 +228,12 @@ th {
 
 .dropdown {
   border-radius: 4px;
-  width: 210px;
   height: 33px;
+  flex-grow: 1;
+  max-width: calc(25% - (0.25rem));
+}
+.dropdown-filters {
+  flex-grow: 1;
 }
 
 button.activedropdown{
