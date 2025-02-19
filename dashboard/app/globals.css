@@ -240,6 +240,7 @@ button.activedropdown{
   box-shadow: 0px 0.3613123810646357px 0.3613123810646357px -1.25px rgba(0, 0, 0, 0.18), 0px 1.3731199819460742px 1.3731199819460742px -2.5px rgba(0, 0, 0, 0.15889), 0px 6px 6px -3.75px rgba(0, 0, 0, 0.0625);
 }
 
+
 .dropdown-content {
   display: none;
   padding: 5px;
@@ -258,8 +259,14 @@ button.activedropdown{
   position: absolute;
   border-radius: 0 0 4px 4px;
   z-index: 1;
-  right: 25px;
   box-shadow: 0px 0.3613123810646357px 0.3613123810646357px -1.25px rgba(0, 0, 0, 0.18), 0px 1.3731199819460742px 1.3731199819460742px -2.5px rgba(0, 0, 0, 0.15889), 0px 6px 6px -3.75px rgba(0, 0, 0, 0.0625);
+}
+
+.dropdown-signout.show {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .dropdown.open .dropdown-content {
@@ -267,13 +274,8 @@ button.activedropdown{
   flex-direction: column;
 }
 
-.dropdown:hover .dropdown-signout {
-  background-color: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
-}
+
+
 
 .dropdown-item {
   padding: 0px 5px;
