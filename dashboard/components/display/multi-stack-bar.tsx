@@ -253,9 +253,9 @@ const MultiStackBar = ({
                             <div className="w-full flex items-center">
                               {/* Recycling bar */}
                               <div className="h-[1em] text-left overflow-hidden flex items-center" style={{ width: `${Math.max(normalizedWidth, 10)}%` }}>
-                                <div className={`h-full flex items-center justify-start`} style={{ width: `${Math.max(item.recycleRate, 10)}%`, background: `#${displayColor}` }}></div>
-                                <div className={`h-full flex items-center justify-start bg-neutral-400`} style={{ width: `${Math.max(item.recyclingLossRate, 10)}%` }}></div>
-                                <div className={`h-full flex items-center justify-start bg-neutral-500`} style={{ width: `${Math.max(item.processingLossRate, 10)}%` }}></div>
+                                <div className={`h-full flex items-center justify-start`} style={{ width: `${Math.max(item.recycleRate, 10)}%`, background: `#${displayColor} ` }}></div>
+                                <div className={`h-full flex items-center justify-start bg-foreground/35`} style={{ width: `${Math.max(item.recyclingLossRate, 10)}%` }}></div>
+                                <div className={`h-full flex items-center justify-start bg-foreground/15`} style={{ width: `${Math.max(item.processingLossRate, 10)}%` }}></div>
                               </div>
                             </div>
                             <div className={`text-right ${getHeaderClass("recycleRate")} flex-none`}>
