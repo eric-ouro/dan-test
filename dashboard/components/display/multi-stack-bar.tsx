@@ -138,7 +138,7 @@ const MultiStackBar = ({
           <div className="flex flex-col overflow-hidden h-full border-b border-foreground/20 ">
             {showTableHeader && (
               <div 
-                className={`grid grid-cols-[minmax(200px,200px)_minmax(60px,auto)_1fr_minmax(60px,auto)_minmax(60px,auto)_minmax(60px,auto)]
+                className={`grid grid-cols-[minmax(200px,200px)_minmax(60px,auto)_1fr_minmax(60px,auto)_minmax(60px,auto)_minmax(60px,auto)] tablepadding
                   gap-2 align-middle py-3s cursor-pointer min-h-[56px] items-center ${!isTableDataVisible ? '' : 'border-b border-foreground/20'}`}
                 onClick={toggleTableDataVisibility}
               >
@@ -212,7 +212,7 @@ const MultiStackBar = ({
             >
               {isTableDataVisible && (
                 <div>
-                  <div className="grid grid-cols-[minmax(200px,auto)_minmax(60px,auto)_1fr_minmax(60px,auto)_minmax(60px,auto)] gap-2 text-xs text-left uppercase my-2">
+                  <div className="grid grid-cols-[minmax(200px,auto)_minmax(60px,auto)_1fr_minmax(60px,auto)_minmax(60px,auto)] gap-2 text-xs text-left uppercase my-2 tablepadding">
                     <div className={`text-foreground/50 ${getHeaderClass("label")}`}>
                       <span>Material</span> <span className="ml-1">{getHeaderIcon("label")}</span>
                     </div>
@@ -239,7 +239,7 @@ const MultiStackBar = ({
                         const displayColor = item.label.display_color || 'defaultColor';
 
                         return (
-                          <div className="grid grid-cols-[minmax(200px,auto)_minmax(60px,auto)_1fr_minmax(60px,auto)_minmax(60px,auto)_minmax(60px,auto)] gap-2 align-middle py-3 border-t border-foreground/20" key={index}>
+                          <div className="grid grid-cols-[minmax(200px,auto)_minmax(60px,auto)_1fr_minmax(60px,auto)_minmax(60px,auto)_minmax(60px,auto)] gap-2 align-middle py-3 border-t border-foreground/20 tablepadding" key={index}>
                             <div className={`text-foreground flex-none ${getHeaderClass("label")}`}>
                               <span className="flex items-center">
                                 <span className="inline-block w-[1em] h-[1em] flex-shrink-0 rounded-full mr-2" style={{ background: `#${displayColor}` }}></span>
@@ -349,7 +349,7 @@ const MultiStackBarVariant = ({ name, summaries, quantityPercentage, quantityPer
     <div className={`dashcomponent ${isTableDataVisible ? '' : ''} hover:bg-foreground/5`}>
       <div className="flex flex-col overflow-hidden h-full border-b border-foreground/20 ">
         {showTableHeader && (
-        <div className={`grid grid-cols-[minmax(200px,200px)_minmax(70px,auto)_minmax(60px,auto)_1fr]
+        <div className={`grid grid-cols-[minmax(200px,200px)_minmax(70px,auto)_minmax(60px,auto)_1fr] tablepadding
             gap-2 align-middle py-3s cursor-pointer min-h-[56px] items-center ${!isTableDataVisible ? '' : 'border-b border-foreground/20'}`}
           onClick={toggleTableDataVisibility}
         >

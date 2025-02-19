@@ -353,4 +353,7 @@ button.activedropdown{
   transform: translate(-50%, -50%);
 }
 
-
+.tablepadding {
+  padding-left: .5rem;
+  padding-right: .5rem;
+}

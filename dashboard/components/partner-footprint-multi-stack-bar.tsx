@@ -132,7 +132,7 @@ const PartnerFootprintMultiStackBar = () => {
   if (showVariant) {
     return (
       <>
-        <div className="grid grid-cols-[minmax(200px,auto)_minmax(70px,auto)_minmax(60px,auto)_1fr] gap-2 text-xs text-left uppercase py-2 border-b border-foreground/20">
+        <div className="grid grid-cols-[minmax(200px,auto)_minmax(70px,auto)_minmax(60px,auto)_1fr] gap-2 text-xs text-left uppercase py-2 border-b border-foreground/20 tablepadding">
           <div onClick={() => requestPartnerSort("label")} className={`cursor-pointer flex items-center ${getHeaderClass("label")}`}>
             <span>Partner</span> <span className="ml-1">{getHeaderIcon("label")}</span>
           </div>
@@ -162,7 +162,7 @@ const PartnerFootprintMultiStackBar = () => {
 
   return (
     <>
-      <div className="grid grid-cols-[minmax(200px,auto)_minmax(60px,auto)_1fr_minmax(60px,auto)_minmax(60px,auto)] gap-2 text-xs text-left uppercase py-2 border-b border-foreground/20">
+      <div className="grid grid-cols-[minmax(200px,auto)_minmax(60px,auto)_1fr_minmax(60px,auto)_minmax(60px,auto)] gap-2 text-xs text-left uppercase py-2 border-b border-foreground/20 tablepadding">
         <div onClick={() => requestPartnerSort("label")} className={`cursor-pointer flex items-center ${getHeaderClass("label")}`}>
           <span>Partner</span> <span className="ml-1">{getHeaderIcon("label")}</span>
         </div>
