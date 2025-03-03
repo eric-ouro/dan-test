@@ -383,8 +383,8 @@ const MultiStackBarVariant = ({ name, summaries, quantityPercentage, quantityPer
               
               <div className="w-full flex">
                 {/* Total averages recycling bar */}
-                <div className="h-[1em] text-left overflow-hidden flex items-center bg-foreground/50" style={{ width: `${normalizedWidthGroup}%` }}>
-                    <div className={`h-full flex items-center justify-start bg-foreground`} style={{ width: `${(totalAccounted / totalQuantity) * 100}%` }}></div>
+                <div className="h-[1em] text-left overflow-hidden flex items-center bg-foreground/35" style={{ width: `${normalizedWidthGroup}%` }}>
+                    <div className={`h-full flex items-center justify-start bg-foreground/50`} style={{ width: `${(totalAccounted / totalQuantity) * 100}%` }}></div>
                 </div>
               </div>
         </div>
