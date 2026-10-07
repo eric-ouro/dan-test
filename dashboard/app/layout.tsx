@@ -1,4 +1,6 @@
 import HeaderAuth from "@components/header-auth";
+import DevMenu from "@components/dev-menu";
+import { DevFlagsProvider } from "@lib/dev-flags";
 import Link from "next/link";
 import "./globals.css";
 
@@ -20,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="bg-background text-foreground font-dm-mono">
+        <DevFlagsProvider>
           <main className="min-h-screen flex flex-col items-center">
             <div className="flex-1 w-full flex flex-col gap-20 items-center">
               <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
@@ -31,11 +34,11 @@ export default function RootLayout({
                   <HeaderAuth />
                 </div>
               </nav>
-              <div className="flex flex-col gap-20 w-full p-5">
-                {children}
-              </div>
+              <div className="flex flex-col gap-20 w-full p-5">{children}</div>
             </div>
           </main>
+          <DevMenu />
+        </DevFlagsProvider>
       </body>
     </html>
   );
